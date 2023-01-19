@@ -23,15 +23,10 @@
                                     <thead>
                                         <tr>
                                             <th width="1%" scope="col">No</th>
-                                            {{-- <th >No PKPT</th> --}}
+                                            <th>File LHP</th>
                                             <th>Uraian Temuan</th>
                                             <th>Uraian Penyebab</th>
                                             <th>Uraian Rekomendasi</th>
-                                            {{-- <th >Uraian Tidak Lanjut</th>
-                                            <th >Nilai Rekomendasi</th>
-                                            <th >Nilai Tindak Lanjut</th>
-                                            <th >Status Nilai</th>
-                                            <th >Status</th> --}}
                                             <th >Action</th>
                                         </tr>
                                     </thead>
@@ -76,137 +71,96 @@
 @push('ajax')
 
 <script>
+    function back(){
+        window.location.href = "{{ url('pelaporan/review') }}";
+    }
 
     function hide(){
         $('#modalAdd').modal('hide');
     }
-    function back(){
-        location.assign("{{ url('pelaporan/review') }}")
-        // $('#modalAdd').modal('hide');
-    }
 
-    function tambah(id_pkpt){
-        $('#btn-save').removeAttr('disabled','false');
-        $.ajax({
-            type: 'GET',
-            url: "{{url('pelaporan/review/modal')}}",
-            data: "id_pkpt="+id_pkpt,
-            success: function(msg){
-                $('#tampil-form').html(msg);
-                $('#modalAdd').modal('show');
-
-            }
-        });
-	}
-
-    function selesai(id_pkpt){
-        $('#btn-save').removeAttr('disabled','false');
-        $.ajax({
-            type: 'GET',
-            url: "{{url('pelaporan/review/selesai')}}",
-            data: "id_pkpt="+id_pkpt,
-            success: function(msg){
-                $('#tampil-form').html(msg);
-                $('#modalAdd').modal('show');
-
-            }
-        });
-	}
-
-    function edit(id){
-        $('#btn-save').removeAttr('disabled','false');
-        $.ajax({
-            type: 'GET',
-            url: "{{url('pelaporan/review/modal')}}",
-            data: "id="+id,
-            success: function(msg){
-                $('#tampil-form').html(msg);
-                $('#modalAdd').modal('show');
-
-            }
-        });
-	}
+    function tambah(id){
+			$('#btn-save').removeAttr('disabled','false');
+			$.ajax({
+				type: 'GET',
+				url: "{{url('pelaporan/review/modal')}}",
+				data: "id="+id,
+				success: function(msg){
+					$('#tampil-form').html(msg);
+					$('#modalAdd').modal('show');
+				}
+			});
+		}
 
     $('#btn-save').on('click', () => {
-        var form=document.getElementById('form-data');
-            $.ajax({
-                type: 'POST',
-                url: "{{url('pelaporan/review/store')}}",
-                data: new FormData(form),
-                contentType: false,
-                cache: false,
-                processData:false,
-                dataType: 'json',
-                beforeSend: function () {
-                    $('#btn-save').attr('disabled', 'disabled');
-                    $('#btn-save').html('Sending..');
-                },
-                error: function (msg) {
-                        var data = msg.responseJSON;
-                        $.each(data.errors, function (key, value) {
-                            Swal.fire({
-                                title: 'Gagal',
-                                text: value,
-                                icon: 'error',
-                                confirmButtonText: 'Ok'
-                            }).then((result) => {
-                            if (result.isConfirmed) {
-                                $('#btn-save').removeAttr('disabled','false');
-                                $('#btn-save').html('Simpan');
-                            }
-                        })
-                        });
-                },
-                success:  function (msg) {
-                    if (msg.status == 'success') {
+    var form=document.getElementById('form-data');
+        $.ajax({
+            type: 'POST',
+            url: "{{url('pelaporan/review/store')}}",
+            data: new FormData(form),
+            contentType: false,
+            cache: false,
+            processData:false,
+            dataType: 'json',
+            beforeSend: function () {
+                $('#btn-save').attr('disabled', 'disabled');
+                $('#btn-save').html('Sending..');
+            },
+            error: function (msg) {
+                    var data = msg.responseJSON;
+                    $.each(data.errors, function (key, value) {
                         Swal.fire({
-                            title: 'Berhasil',
-                            text: msg.message,
-                            icon: 'success',
+                            title: 'Gagal',
+                            text: value,
+                            icon: 'error',
                             confirmButtonText: 'Ok'
                         }).then((result) => {
-                            if (result.isConfirmed) {
-                                location.reload();
-                            }
-                        })
-                    }
+                        if (result.isConfirmed) {
+                            $('#btn-save').removeAttr('disabled','false');
+                            $('#btn-save').html('Simpan');
+                        }
+                    })
+                    });
+            },
+            success:  function (msg) {
+                if (msg.status == 'success') {
+                    Swal.fire({
+                        title: 'Berhasil',
+                        text: msg.message,
+                        icon: 'success',
+                        confirmButtonText: 'Ok'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = "{{url('pelaporan/review')}}";
+                        }
+                    })
                 }
-            });
+            }
         });
+    });
+
+
+
 </script>
 
 <script>
         var handleDataTableFixedHeader = function() {
         "use strict";
-        var id_pkpt=$('#id_pkpt').val();
         if ($('#data-table-fixed-header').length !== 0) {
             var table=$('#data-table-fixed-header').DataTable({
-                
                 lengthMenu: [20, 40, 60],
                 fixedHeader: {
                     header: true,
                     headerOffset: $('#header').height()
                 },
-                responsive: false,
-                ajax:"{{ url('pelaporan/review/get-table?id_pkpt=')}}"+id_pkpt,
-                "columnDefs": [
-                    { "width": "1%", "targets": 0 }
-                ],
+                responsive: true,
+                ajax:"{{ url('pelaporan/review/get-table?id= '.$data->id.'')}}",
                 columns: [
-                    {data: 'id', render: function (data, type, row, meta)
-                        {
-                            return meta.row + meta.settings._iDisplayStart + 1;
-                        }
-                    },
-                    // { data: 'id_pkpt' },
+                    {data: 'id' },
+                    { data: 'file_lhp' },
                     { data: 'uraian_temuan' },
                     { data: 'uraian_penyebab' },
                     { data: 'uraian_rekomendasi' },
-                    // { data: 'uraian_tindak_lanjut' },
-                    // { data: 'nilai_rekomendasi' },
-                    // { data: 'nilai_tindak_lanjut' },
-                    // { data: 'status_nilai' },
-                    // { data: 'status' },
                     { data: 'action' },
                 ],
                 language: {
@@ -215,13 +169,14 @@
                         next: 'Next>>'
                     }
                 }
-                });
-            }
+            });
+        }
         };
 
         var TableManageFixedHeader = function () {
             "use strict";
             return {
+                //main function
                 init: function () {
                     handleDataTableFixedHeader();
                 }
@@ -232,7 +187,6 @@
 			TableManageFixedHeader.init();
 
 		});
-
 </script>
 
 @endpush

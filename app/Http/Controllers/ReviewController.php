@@ -54,6 +54,7 @@ class ReviewController extends Controller
                 $sts = Status::where('id', $row->status)->first();
 
                 $btn = '
+                            <span class="btn btn-ghost-warning waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Proses</span>
                             <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Terima</span>
                             <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="modal_refused(' . $row['id'] . ')">Tolak</span>
                         ';
@@ -63,102 +64,80 @@ class ReviewController extends Controller
             ->make(true);
     }
 
-    public function tampil_detail(Request $request)
+    public function getTable(Request $request)
     {
         error_reporting(0);
-        $data = Pkpt::where('id', $request->id)->first();
-        $id = $data->id;
-        return view('kertaskerja.table', compact('data', 'id'));
-    }
+        $data = Lhp::where('id_program_kerja', $request->id_program_kerja)->orderBy('id', 'desc')->get();
 
-    public function getJenisPengawasan(Request $request)
-    {
-        $data = Pkpt::where('id', $request->id)->first();
-        $e = $data->jenisPengawasan->jenis;
-        return response()->json([
-            'status' => 'success',
-            'data' => $e
-        ]);
+        return Datatables::of($data)
+            ->addColumn('file_lhp', function ($data) {
+                $fileLhp = '<span class="btn btn-icon-only btn-outline-warning btn-sm mt-2" onclick="buka_file(`' . $data['file_lhp'] . '`)"><center><img src="' . asset('public/img/pdf-file.png') . '" width="10px" height="10px"></center></span>';
+                return $fileLhp;
+            })
+            ->addColumn('uraian_temuan', function ($data) {
+                $data->uraian_temuan;
+            })
+            ->addColumn('uraian_penyebab', function ($data) {
+                $data->uraian_penyebab;
+            })
+            ->addColumn('uraian_rekomendasi', function ($data) {
+                $data->uraian_rekomendasi;
+            })
+
+            ->addColumn('action', function ($row) {
+                $btn = '
+                            <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Edit</span>
+                        ';
+                return $btn;
+            })
+            ->rawColumns(['action', 'file_lhp', 'nota_dinas', 'file_sp', 'id_pkpt'])
+            ->make(true);
     }
 
     public function create(Request $request)
     {
         $headermenu = 'Pelaporan';
         $menu = 'Reviu';
-        $data = Pkpt::where('id', $request->id)->first();
+        $data = ProgramKerja::where('id', $request->id)->first();
         return view('review.create', compact('headermenu', 'menu', 'data'));
     }
 
     public function modal(Request $request)
     {
-        error_reporting(0);
-        $status = M_Status_Lhp::all();
-        $pkpt = Pkpt::where('id', $request->id)->first();
-        $sp = ProgramKerja::where('id_pkpt', $request->id_pkpt)->first();
-        $lhp = Lhp::where('id', $request->id)->first();
-
-        return view('review.modal', compact('status', 'pkpt', 'lhp', 'sp'));
+        $data = ProgramKerja::where('id', $request->id)->first();
+        return view('review.modal', compact('data'));
     }
 
     public function store(Request $request)
     {
-        error_reporting(0);
-
-
-        $request->validate([
-            'id_pkpt' => 'required',
+        $this->validate($request, [
+            'id_program_kerja' => 'required',
             'uraian_temuan' => 'required',
             'uraian_penyebab' => 'required',
             'uraian_rekomendasi' => 'required',
+            'file_lhp' => 'required|mimes:pdf|max:2048',
         ]);
-        if ($request->id > 0) {
-            Lhp::where('id', $request->id)->update([
-                'no_sp' => $request->no_sp,
-                'id_pkpt' => $request->id_pkpt,
-                'uraian_temuan' => $request->uraian_temuan,
-                'uraian_penyebab' => $request->uraian_penyebab,
-                'uraian_rekomendasi' => $request->uraian_rekomendasi,
-                'status' => 1,
-            ]);
-        } else {
-            Lhp::create([
-                'no_sp' => $request->no_sp,
-                'id_pkpt' => $request->id_pkpt,
-                'uraian_temuan' => $request->uraian_temuan,
-                'uraian_penyebab' => $request->uraian_penyebab,
-                'uraian_rekomendasi' => $request->uraian_rekomendasi,
-                'status' => 1,
 
-            ]);
+        $data = [
+            'id_program_kerja' => $request->id_program_kerja,
+            'uraian_temuan' => $request->uraian_temuan,
+            'uraian_penyebab' => $request->uraian_penyebab,
+            'uraian_rekomendasi' => $request->uraian_rekomendasi,
+            'status' => 1,
+        ];
+
+        if ($request->hasFile('file_lhp')) {
+            $file = $request->file('file_lhp');
+            $name = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('file_lhp'), $name);
+            $data['file_lhp'] = $name;
         }
+
+        Lhp::create($data);
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Data Berhasil Disimpan'
+            'success' => 'Data berhasil disimpan.'
         ]);
-    }
-
-    public function getTable(Request $request)
-    {
-        error_reporting(0);
-        $data = Lhp::where('id_pkpt', $request->id_pkpt)->get();
-
-        return Datatables::of($data)
-            ->addColumn('uraian_temuan', function ($data) {
-                return $data['uraian_temuan'];
-            })
-            ->addColumn('uraian_penyebab', function ($data) {
-                return $data['uraian_penyebab'];
-            })
-            ->addColumn('uraian_rekomendasi', function ($data) {
-                return $data['uraian_rekomendasi'];
-            })
-            ->addColumn('action', function ($row) {
-                $crud = '
-                    <span class="btn btn-ghost-warning waves-effect waves-light btn-sm" onclick="edit(' . $row['id'] . ')">Edit</span>';
-                return $crud;
-            })
-            ->rawColumns(['action'])
-            ->make(true);
     }
 }
