@@ -6,52 +6,55 @@
                     <div class="mb-3">
                         <label class="form-label">Nomor Surat Perintah</label>
                         @if ($lhp->id==null)
-                            <input type="text" name="no_sp" class="form-control" value="{{$sp->no_sp}}">                                      
+                            <input readonly type="text" name="no_sp" class="form-control" value="{{$sp->no_sp}}">                                      
                         @else
-                            <input type="text" name="no_sp" class="form-control" value="{{$lhp->no_sp}}">
+                            <input readonly type="text" name="no_sp" class="form-control" value="{{$lhp->no_sp}}">
                         @endif
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label">Uraian Temuan</label>
-                        <input type="text" name="uraian_temuan" class="form-control" value="{{ $lhp->uraian_temuan }}">
+                        <input readonly type="text" name="uraian_temuan" class="form-control" value="{{ $lhp->uraian_temuan }}">
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label">Uraian Penyebab</label>
-                        <input type="text" name="uraian_penyebab" class="form-control" value="{{ $lhp->uraian_penyebab }}">
+                        <input readonly type="text" name="uraian_penyebab" class="form-control" value="{{ $lhp->uraian_penyebab }}">
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label">Uraian Rekomendasi</label>
-                        <input type="text" name="uraian_rekomendasi" class="form-control" value="{{ $lhp->uraian_rekomendasi }}">
+                        <input readonly type="text" name="uraian_rekomendasi" class="form-control" value="{{ $lhp->uraian_rekomendasi }}">
                     </div>
                 </div>
-
-                    {{-- <div class="mb-3">
+                <div class="col-md-6">
+                    <div class="mb-3">
                         <label class="form-label">Uraian Tindak Lanjut</label>
                         <input type="text" name="uraian_tindak_lanjut" class="form-control" required>
-                    </div> --}}
-
-                {{-- <div class="col-md-6">
+                    </div> 
+                </div>
+                <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label">Nilai Rekomendasi</label>
                         <input type="text" name="nilai_rekomendasi" class="form-control" required>
                     </div>
-
+                </div>
+                <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label">Nilai Tindak Lanjut</label>
                         <input type="text" name="nilai_tindak_lanjut" class="form-control" required>
                     </div>
-
+                </div>
+                <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label">Status Nilai</label>
                         <input type="text" name="status_nilai" class="form-control" required>
                     </div>
-
+                </div>
+                <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label">Status</label>
                         <select name="status" class="form-control">
@@ -61,8 +64,7 @@
                             @endforeach
                         </select>
                     </div>
-
-                </div> --}}
+                </div>
 
             </div>
         </div>

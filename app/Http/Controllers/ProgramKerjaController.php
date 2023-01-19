@@ -140,7 +140,6 @@ class ProgramKerjaController extends Controller
                     <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="approved(' . $row['id'] . ')">Approved</span>
                     <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="refused(' . $row['id'] . ')">Refused</span>
                 ';
-
                 if ($status==$role->sts) {
                     if($roles==2){
                         $btn=$crud;

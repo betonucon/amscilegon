@@ -64,10 +64,6 @@
 							<div id="tampil-pdf"></div>
 						</form>
 					</div>
-					<div class="modal-footer">
-						<button  class="btn btn-white" onclick="hide()">Tutup</button>
-						<button id="btn-refused"  class="btn btn-success">Simpan</button>
-					</div>
 				</div>
 			</div>
 		</div>
@@ -126,14 +122,14 @@
 					</div>
 					<div class="modal-body" style="max-height: calc(100vh - 210px);overflow-y: auto;">
 						<div id="error-notif"></div>
-						<form id="upload" enctype="multipart/form-data">
+						<form id="form-sp" enctype="multipart/form-data">
 							@csrf
 							<div id="table-sp"></div>
 						</form>
 					</div>
 					<div class="modal-footer">
-						<button  class="btn btn-white" onclick="hide()">Tutup</button>
-						<button id="btn-refused"  class="btn btn-success">Simpan</button>
+						<button  class="btn btn-white" onclick="hidesp()">Tutup</button>
+						<button id="btn-sp"  class="btn btn-success">Simpan</button>
 					</div>
 				</div>
 			</div>
@@ -197,6 +193,7 @@
     function download(id){
         location.href = "{{ url('perencanaan/surat-perintah/download?id=') }}"+id;
     }
+
     function buka_file(file){
         $('#modalshow').modal('show');
         var files=file.split(".");
@@ -207,6 +204,7 @@
             $('#tampil-pdf').html('<embed src="{{ url('public/file_upload') }}/'+file+'" width="100%" height="500px">');
         }
     }
+
     function tampil(id){
         $('#btn-save').removeAttr('disabled','false');
         $.ajax({
@@ -220,19 +218,69 @@
         });
     }
 
-    function tampil_sp(id){
-			$('#btn-save').removeAttr('disabled','false');
-			$.ajax({
-				type: 'GET',
-				url: "{{url('perencanaan/program-kerja-pengawasan/tampil-sp')}}",
-				data: "id="+id,
-				success: function(msg){
-					$('#tampil-sp').html(msg);
-					$('#tampilSp').modal('show');
+    function hidesp(){
+        $('#tampilSp').modal('hide');
+    }
 
-				}
-			});
-		}
+    function tampil_sp(id){
+        $('#btn-sp').removeAttr('disabled','false');
+        $.ajax({
+            type: 'GET',
+            url: "{{url('perencanaan/surat-perintah/tampil-sp')}}",
+            data: "id="+id,
+            success: function(msg){
+                $('#table-sp').html(msg);
+                $('#tampilSp').modal('show');
+            }
+        });
+	}
+
+    $('#btn-sp').on('click', () => {
+        var form=document.getElementById('form-sp');
+            $.ajax({
+                type: 'POST',
+                url: "{{url('perencanaan/surat-perintah/upload-sp')}}",
+                data: new FormData(form),
+                contentType: false,
+                cache: false,
+                processData:false,
+                dataType: 'json',
+                beforeSend: function () {
+                    $('#btn-sp').attr('disabled', 'disabled');
+                    $('#btn-sp').html('Sending..');
+                },
+                error: function (msg) {
+                        var data = msg.responseJSON;
+                        $.each(data.errors, function (key, value) {
+                            Swal.fire({
+                                title: 'Gagal',
+                                text: value,
+                                icon: 'error',
+                                confirmButtonText: 'Ok'
+                            }).then((result) => {
+                            if (result.isConfirmed) {
+                                $('#btn-sp').removeAttr('disabled','false');
+                                $('#btn-sp').html('Simpan');
+                            }
+                        })
+                        });
+                },
+                success:  function (msg) {
+                    if (msg.status == 'success') {
+                        Swal.fire({
+                            title: 'Berhasil',
+                            text: msg.message,
+                            icon: 'success',
+                            confirmButtonText: 'Ok'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "{{url('perencanaan/surat-perintah')}}";
+                            }
+                        })
+                    }
+                }
+            });
+        });
 
 </script>
 

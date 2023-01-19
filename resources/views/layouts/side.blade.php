@@ -90,7 +90,7 @@
                 <div class="collapse menu-dropdown" id="Tindak_lanjut">
                     <ul class="nav nav-sm flex-column">
                         <li class="nav-item">
-                            <a href="landing.html" class="nav-link" data-key="t-one-page"> Tindak Lanjut Hasil Pemeriksaan</a>
+                            <a href="{{ url('pelaporan/tindak-lanjut') }}" class="nav-link" data-key="t-one-page"> Tindak Lanjut Hasil Pemeriksaan</a>
                         </li>
                     </ul>
                 </div>

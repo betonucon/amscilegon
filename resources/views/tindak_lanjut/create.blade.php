@@ -6,13 +6,11 @@
 <div class="row">
     <div class="col-md-12">
 
-        <div class="row pb-3">
+        {{-- <div class="row pb-3">
             <div class="col-sm-12 col-md-6">
-                <span onclick="back()" class="btn btn-sm btn-danger waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Kembali</span>
-                <span onclick="tambah({{ $data->id }})" class="btn btn-sm btn-primary waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Tambah Uraian</span>
-                <span onclick="selesai({{ $data->id }})" class="btn btn-sm btn-success waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Selesai</span>
+                <span onclick="tambah({{ $data->id }})" class="btn btn-sm btn-primary waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Tambah</span>
             </div>
-        </div>
+        </div> --}}
 
         <div class="card">
             <div class="card-body">
@@ -23,15 +21,13 @@
                                     <thead>
                                         <tr>
                                             <th width="1%" scope="col">No</th>
-                                            {{-- <th >No PKPT</th> --}}
                                             <th>Uraian Temuan</th>
                                             <th>Uraian Penyebab</th>
                                             <th>Uraian Rekomendasi</th>
-                                            {{-- <th >Uraian Tidak Lanjut</th>
+                                            <th >Uraian Tidak Lanjut</th>
                                             <th >Nilai Rekomendasi</th>
                                             <th >Nilai Tindak Lanjut</th>
                                             <th >Status Nilai</th>
-                                            <th >Status</th> --}}
                                             <th >Action</th>
                                         </tr>
                                     </thead>
@@ -80,30 +76,12 @@
     function hide(){
         $('#modalAdd').modal('hide');
     }
-    function back(){
-        location.assign("{{ url('pelaporan/review') }}")
-        // $('#modalAdd').modal('hide');
-    }
 
     function tambah(id_pkpt){
         $('#btn-save').removeAttr('disabled','false');
         $.ajax({
             type: 'GET',
-            url: "{{url('pelaporan/review/modal')}}",
-            data: "id_pkpt="+id_pkpt,
-            success: function(msg){
-                $('#tampil-form').html(msg);
-                $('#modalAdd').modal('show');
-
-            }
-        });
-	}
-
-    function selesai(id_pkpt){
-        $('#btn-save').removeAttr('disabled','false');
-        $.ajax({
-            type: 'GET',
-            url: "{{url('pelaporan/review/selesai')}}",
+            url: "{{url('pelaporan/tindak-lanjut/modal')}}",
             data: "id_pkpt="+id_pkpt,
             success: function(msg){
                 $('#tampil-form').html(msg);
@@ -117,7 +95,7 @@
         $('#btn-save').removeAttr('disabled','false');
         $.ajax({
             type: 'GET',
-            url: "{{url('pelaporan/review/modal')}}",
+            url: "{{url('pelaporan/tindak-lanjut/modal')}}",
             data: "id="+id,
             success: function(msg){
                 $('#tampil-form').html(msg);
@@ -131,7 +109,7 @@
         var form=document.getElementById('form-data');
             $.ajax({
                 type: 'POST',
-                url: "{{url('pelaporan/review/store')}}",
+                url: "{{url('pelaporan/tindak-lanjut/store')}}",
                 data: new FormData(form),
                 contentType: false,
                 cache: false,
@@ -188,7 +166,7 @@
                     headerOffset: $('#header').height()
                 },
                 responsive: false,
-                ajax:"{{ url('pelaporan/review/get-table?id_pkpt=')}}"+id_pkpt,
+                ajax:"{{ url('pelaporan/tindak-lanjut/get-table?id_pkpt=')}}"+id_pkpt,
                 "columnDefs": [
                     { "width": "1%", "targets": 0 }
                 ],
@@ -198,15 +176,13 @@
                             return meta.row + meta.settings._iDisplayStart + 1;
                         }
                     },
-                    // { data: 'id_pkpt' },
                     { data: 'uraian_temuan' },
                     { data: 'uraian_penyebab' },
                     { data: 'uraian_rekomendasi' },
-                    // { data: 'uraian_tindak_lanjut' },
-                    // { data: 'nilai_rekomendasi' },
-                    // { data: 'nilai_tindak_lanjut' },
-                    // { data: 'status_nilai' },
-                    // { data: 'status' },
+                    { data: 'uraian_tindak_lanjut' },
+                    { data: 'nilai_rekomendasi' },
+                    { data: 'nilai_tindak_lanjut' },
+                    { data: 'status_nilai' },
                     { data: 'action' },
                 ],
                 language: {

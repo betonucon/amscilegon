@@ -59,18 +59,13 @@ class SuratPerintahController extends Controller
                 if ($data->file_sp == null) {
                     $notaDinas = '<span class="btn btn-icon-only btn-outline-warning btn-sm mb-1" onclick="tampil_sp(`' . $data['id'] . '`)"><center>Upload</center></span>';
                 } else {
-                    $notaDinas = '<span class="btn btn-icon-only btn-outline-warning btn-sm mb-1" onclick="buka_file(`' . $data['nota_dinas'] . '`)"><center><img src="' . asset('public/img/pdf-file.png') . '" width="10px" height="10px"></center></span>';
+                    $notaDinas = '<span class="btn btn-icon-only btn-outline-warning btn-sm mb-1" onclick="buka_file(`' . $data['file_sp'] . '`)"><center><img src="' . asset('public/img/pdf-file.png') . '" width="10px" height="10px"></center></span>';
                 }
 
                 return $notaDinas;
             })
             ->rawColumns(['no_sp', 'action', 'pkp', 'nota_dinas', 'area_pengawasannya'])
             ->make(true);
-    }
-
-    function tampilSp(Request $request)
-    {
-        return view('programkerja.modal_sp');
     }
 
     function tampiltable(Request $request)
@@ -185,5 +180,40 @@ class SuratPerintahController extends Controller
         //         'message' => 'Data Berhasil Diupdate'
         //     ]);
         // }
+    }
+
+    function tampilSp(Request $request)
+    {
+        $data = ProgramKerja::where('id', $request->id)->first();
+        return view('suratperintah.modal_sp', compact('data'));
+    }
+
+    function uploadSp(Request $request)
+    {
+        $request->validate([
+            'no_sp' => 'required',
+            'tanggal' => 'required',
+            'file_sp' => 'required|mimes:pdf',
+        ]);
+
+        $data = [
+            'no_sp' => $request->no_sp,
+            'tanggal' => $request->tanggal,
+        ];
+
+        if ($files = $request->file('file_sp')) {
+            $namapkp = 'SP' . date('YmdHis');
+            $destinationPath = 'public/file_upload/'; // upload path
+            $profileImage = $namapkp . "." . $files->getClientOriginalExtension();
+            $files->move(public_path('/file_upload'), $profileImage);
+            $data['file_sp'] = $profileImage;
+        }
+
+        ProgramKerja::where('id', $request->id)->update($data);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Data Berhasil Disimpan'
+        ]);
     }
 }

@@ -102,8 +102,8 @@
                     header: true,
                     headerOffset: $('#header').height()
                 },
-                responsive: true,
-                ajax:"{{ url('pelaporan/review/get-data')}}",
+                responsive: false,
+                ajax:"{{ url('pelaporan/tindak-lanjut/get-data')}}",
                 columns: [
                     { data: 'id', render: function (data, type, row, meta)
                         {
@@ -144,9 +144,8 @@
         $(document).ready(function() {
 			TableManageFixedHeader.init();
 		});
-
         function tambah(id){
-            location.assign("{{url('pelaporan/review/create?id=')}}" + id);
+            location.assign("{{url('pelaporan/tindak-lanjut/create?id=')}}" + id);
         }
 
 	</script>

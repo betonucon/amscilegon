@@ -44,6 +44,16 @@ class KertasKerjaController extends Controller
         ]);
     }
 
+    public function modalApprove(Request $request){
+        $data = KertasKerja::where('id', $request->id)->first();
+        return view('kertaskerja.modalApprove', compact('data'));
+    }
+
+    public function modalRefused(Request $request){
+        $data = KertasKerja::where('id', $request->id)->first();
+        return view('kertaskerja.modalRefused', compact('data'));
+    }
+
     public function getdata(Request $request)
     {
         error_reporting(0);
@@ -70,29 +80,54 @@ class KertasKerjaController extends Controller
                 $status='<span class="'.$sts->text.'">'.$sts->status.'</span>';
                 return $status;
             })
+            ->addColumn('pesan', function ($data) {
+                $roles =  Auth::user()->role_id;
+                $pesan = $data['pesan'];
+                return $pesan;
+            })
             ->addColumn('action', function ($row) {
                 $roles =  Auth::user()->role_id;
                 $status = $row['status'];
                 $sts= Status::where('id',$row->status)->first();
-                if ($roles == 6) {
-                    if ($status == 0 || $status == 1) {
-                        $btn = '
-                    <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="approved(' . $row['id'] . ')">Approved</span>
-                    <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="refused(' . $row['id'] . ')">Refused</span>
-                ';
-                    } else {
-                        $btn = '<span class="'.$sts->text.'"><i class="fa fa-check"></i> '.$sts->sts_keterangan.'</span>';
-                    }
-                } else {
-                    if ($status > 1) {
-                        $btn = '<span class="'.$sts->text.'"><i class="fa fa-check"></i> '.$sts->sts_keterangan.'</span>';
-                    } else {
+                if($roles==1){
+                    if ($status==1) {
                         $btn = '
                         <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Edit</span>
                         <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="hapus(' . $row['id'] . ')">Delete</span>
                     ';
                     }
+
+                }elseif ($roles==2) {
+                    if ($status==1) {
+                        $btn = '
+                            <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Terima</span>
+                            <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="modal_refused(' . $row['id'] . ')">Tolak</span>
+                        ';
+                    }else{
+                        $btn = '<span class="'.$sts->text.'"><i class="fa fa-check"></i>Selesai</span>';
+                    }
+                }else{
+                    $btn = '<span class="'.$sts->text.'"><i class="fa fa-check"></i> '.$sts->sts_keterangan.'</span>';
                 }
+                // if ($roles == 6) {
+                //     if ($status == 0 || $status == 1) {
+                //         $btn = '
+                //     <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="approved(' . $row['id'] . ')">Approved</span>
+                //     <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="refused(' . $row['id'] . ')">Refused</span>
+                // ';
+                //     } else {
+                //         $btn = '<span class="'.$sts->text.'"><i class="fa fa-check"></i> '.$sts->sts_keterangan.'</span>';
+                //     }
+                // } else {
+                //     if ($status > 1) {
+                //         $btn = '<span class="'.$sts->text.'"><i class="fa fa-check"></i> '.$sts->sts_keterangan.'</span>';
+                //     } else {
+                //         $btn = '
+                //         <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Edit</span>
+                //         <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="hapus(' . $row['id'] . ')">Delete</span>
+                //     ';
+                //     }
+                // }
                 return $btn;
             })
             ->rawColumns(['status', 'action','file','id_pkpt'])
@@ -166,22 +201,28 @@ class KertasKerjaController extends Controller
         $data = KertasKerja::where('id', $request->id)->first();
         $data->update([
             'status' => 2,
+            'pesan' => $request->pesan,
         ]);
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Data Berhasil Diapproved'
-        ]);
+
+        echo'ok';
+        // return response()->json([
+        //     'status' => 'success',
+        //     'message' => 'Data Berhasil Diapproved'
+        // ]);
     }
 
     public function refused(Request $request)
     {
         $data = KertasKerja::where('id', $request->id)->first();
         $data->update([
-            'status' => 3,
+            'status' => 1,
+            'pesan' => $request->pesan,
         ]);
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Data Berhasil Direfused'
-        ]);
+
+        echo'ok';
+        // return response()->json([
+        //     'status' => 'success',
+        //     'message' => 'Data Berhasil Direfused'
+        // ]);
     }
 }

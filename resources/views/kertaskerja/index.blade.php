@@ -56,6 +56,7 @@
                                                 <th >Area Pengawasan</th>
                                                 <th >File</th>
                                                 <th >Status</th>
+                                                <th >pesan</th>
                                                 <th width="5%" >Action</th>
                                             </tr>
                                         </thead>
@@ -84,6 +85,46 @@
 					<div class="modal-footer">
 						<button  class="btn btn-white" onclick="hide()">Tutup</button>
 						<button id="btn-save"  class="btn btn-success">Simpan</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="modalApprove" role="dialog" aria-labelledby="exampleModalLabelDefault" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabelDefault">{{ $menu }}</h5>
+					</div>
+					<div class="modal-body">
+						<form id="approve-data" enctype="multipart/form-data">
+							@csrf
+
+							<div id="tampil-approve"></div>
+						</form>
+                        <div class="modal-footer">
+                            <span  class="btn btn-white" onclick="hide()">Tutup</span>
+                            <span id="btn-approve"  class="btn btn-success">Simpan</span>
+                        </div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="modalrefused" role="dialog" aria-labelledby="exampleModalLabelDefault" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabelDefault">{{ $menu }}</h5>
+					</div>
+					<div class="modal-body">
+						<form id="refused-data" enctype="multipart/form-data">
+							@csrf
+
+							<div id="tampil-refused"></div>
+						</form>
+                        <div class="modal-footer">
+                            <span  class="btn btn-white" onclick="hide()">Tutup</span>
+                            <span id="btn-refused"  class="btn btn-success">Simpan</span>
+                        </div>
 					</div>
 				</div>
 			</div>
@@ -168,6 +209,7 @@
                { data: 'id_pkpt' },
                { data: 'file' },
                { data: 'status' },
+               { data: 'pesan' },
                { data: 'action' },
            ],
            language: {
@@ -270,7 +312,7 @@ $(document).ready(function() {
                         });
                 },
                 success:  function (msg) {
-                    if (msg.status == 'success') {
+                    if (msg == 'success') {
                         Swal.fire({
                             title: 'Berhasil',
                             text: msg.message,
@@ -281,6 +323,101 @@ $(document).ready(function() {
                                 window.location.href = "{{url('pelaksanaan/kertas-kerja-pemeriksaan')}}";
                             }
                         })
+                    }
+                }
+            });
+    });
+
+    $('#btn-approve').on('click', () => {
+        var form=document.getElementById('approve-data');
+            $.ajax({
+                type: 'POST',
+                url: "{{url('pelaksanaan/kertas-kerja-pemeriksaan/approved')}}",
+                data: new FormData(form),
+                contentType: false,
+                cache: false,
+                processData:false,
+                dataType: 'json',
+                beforeSend: function () {
+                    $('#btn-approve').attr('disabled', 'disabled');
+                    $('#btn-approve').html('Sending..');
+                },
+                error: function (msg) {
+                        var data = msg.responseJSON;
+                        $.each(data.errors, function (key, value) {
+                            Swal.fire({
+                                title: 'Gagal',
+                                text: value,
+                                icon: 'error',
+                                confirmButtonText: 'Ok'
+                            }).then((result) => {
+                            if (result.isConfirmed) {
+                                $('#btn-approve').removeAttr('disabled','false');
+                                $('#btn-approve').html('Simpan');
+                            }
+                        })
+                        });
+                },
+                success:  function (msg) {
+                    if (msg == 'ok') {
+                        Swal.fire({
+                            title: 'Berhasil',
+                            // text: msg.message,
+                            icon: 'success',
+                            confirmButtonText: 'Ok'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "{{url('pelaksanaan/kertas-kerja-pemeriksaan')}}";
+                            }
+                        })
+                    }
+                }
+            });
+    });
+    $('#btn-refused').on('click', () => {
+        var form=document.getElementById('refused-data');
+            $.ajax({
+                type: 'POST',
+                url: "{{url('pelaksanaan/kertas-kerja-pemeriksaan/refused')}}",
+                data: new FormData(form),
+                contentType: false,
+                cache: false,
+                processData:false,
+                dataType: 'json',
+                beforeSend: function () {
+                    $('#btn-refused').attr('disabled', 'disabled');
+                    $('#btn-refused').html('Sending..');
+                },
+                error: function (msg) {
+                        var data = msg.responseJSON;
+                        $.each(data.errors, function (key, value) {
+                            Swal.fire({
+                                title: 'Gagal',
+                                text: value,
+                                icon: 'error',
+                                confirmButtonText: 'Ok'
+                            }).then((result) => {
+                            if (result.isConfirmed) {
+                                $('#btn-refused').removeAttr('disabled','false');
+                                $('#btn-refused').html('Simpan');
+                            }
+                        })
+                        });
+                },
+                success:  function (msg) {
+                    if (msg == 'ok') {
+                        Swal.fire({
+                            title: 'Berhasil',
+                            // text: msg.message,
+                            icon: 'success',
+                            confirmButtonText: 'Ok'
+                        })
+                        location.reload();
+                        // .then((result) => {
+                        //     if (result.isConfirmed) {
+                        //         window.location.href = "{{url('pelaksanaan/kertas-kerja-pemeriksaan')}}";
+                        //     }
+                        // })
                     }
                 }
             });
@@ -322,27 +459,53 @@ $(document).ready(function() {
 			});
 		}
 
+    function modal_approved(id){
+        $('#btn-save').removeAttr('disabled','false');
+        $.ajax({
+            type: 'GET',
+            url: "{{url('pelaksanaan/kertas-kerja-pemeriksaan/modal-approve')}}",
+            data: "id="+id,
+            success: function(msg){
+                $('#tampil-approve').html(msg);
+                $('#modalApprove').modal('show');
+            }
+        });
+    }
+
+    function modal_refused(id){
+        $('#btn-refused').removeAttr('disabled','false');
+        $.ajax({
+            type: 'GET',
+            url: "{{url('pelaksanaan/kertas-kerja-pemeriksaan/modal-refused')}}",
+            data: "id="+id,
+            success: function(msg){
+                $('#tampil-refused').html(msg);
+                $('#modalrefused').modal('show');
+            }
+        });
+    }
 
     function approved(id){
-			Swal.fire({
-				title: 'Are you sure?',
-				text: "Apakah anda yakin ingin menyetujui data ini?",
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonColor: '#3085d6',
-				cancelButtonColor: '#d33',
-				confirmButtonText: 'OK'
-			}).then((result) => {
-			if (result.isConfirmed) {
+			// Swal.fire({
+			// 	title: 'Are you sure?',
+			// 	text: "Apakah anda yakin ingin menyetujui data ini?",
+			// 	icon: 'warning',
+			// 	showCancelButton: true,
+			// 	confirmButtonColor: '#3085d6',
+			// 	cancelButtonColor: '#d33',
+			// 	confirmButtonText: 'OK'
+			// }).then((result) => {
+			// if (result.isConfirmed) {
 				$.ajax({
 					type: 'GET',
                     url: "{{url('pelaksanaan/kertas-kerja-pemeriksaan/approved')}}",
                     data: "id=" + id,
 					success: function(msg){
-                        if(msg.status=='success'){
+                        if(msg=='ok'){
                             Swal.fire(
                                 'Approved!',
-                                msg.message,
+                                'berhasil disimpan',
+                                // msg.message,
                                 'success'
                             )
                             location.reload();
@@ -350,37 +513,38 @@ $(document).ready(function() {
 					}
 				});
 			}
-			});
-		}
+		// 	});
+		// }
 
     function refused(id){
-			Swal.fire({
-				title: 'Are you sure?',
-				text: "Apakah anda yakin ingin menolak data ini?",
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonColor: '#3085d6',
-				cancelButtonColor: '#d33',
-				confirmButtonText: 'OK'
-			}).then((result) => {
-			if (result.isConfirmed) {
-				$.ajax({
-					type: 'GET',
-                    url: "{{url('pelaksanaan/kertas-kerja-pemeriksaan/refused')}}",
-                    data: "id=" + id,
-					success: function(msg){
-                        if(msg.status=='success'){
-                            Swal.fire(
-                                'Refused!',
-                                msg.message,
-                                'success'
-                            )
-                            location.reload();
-                        }
-					}
-				});
+			// Swal.fire({
+			// 	title: 'Are you sure?',
+			// 	text: "Apakah anda yakin ingin menolak data ini?",
+			// 	icon: 'warning',
+			// 	showCancelButton: true,
+			// 	confirmButtonColor: '#3085d6',
+			// 	cancelButtonColor: '#d33',
+			// 	confirmButtonText: 'OK'
+			// }).then((result) => {
+			// if (result.isConfirmed) {
+            var pesan = ("#pesan").val();
+			$.ajax({
+                type: 'GET',
+                url: "{{url('pelaksanaan/kertas-kerja-pemeriksaan/refused')}}",
+                data: "id="+id+"&pesan="+pesan,
+                success: function(msg){                    
+                    if(msg=='ok'){
+                        Swal.fire(
+                            'Refused!',
+                            'berhasil disimpan',
+                            'success'
+                        )
+                        location.reload();
+                    }
+                }
+            });
 			}
-			});
-		}
+		// 	});
+		// }
 </script>
 @endpush

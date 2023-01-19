@@ -111,9 +111,10 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('create', [SuratPerintahController::class, 'create']);
             Route::get('download', [SuratPerintahController::class, 'download']);
             Route::get('tampil-table', [SuratPerintahController::class, 'tampiltable']);
-            Route::get('tampil-sp', [SuratPerintahController::class, 'tampilSp']);
             Route::post('store', [SuratPerintahController::class, 'store']);
             Route::post('update', [SuratPerintahController::class, 'update']);
+            Route::get('tampil-sp', [SuratPerintahController::class, 'tampilSp']);
+            Route::post('upload-sp', [SuratPerintahController::class, 'uploadSp']);
         });
     });
 });
@@ -126,10 +127,12 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('detail', [KertasKerjaController::class, 'tampil_detail']);
             Route::get('get-jenis-pengawasan', [KertasKerjaController::class, 'getJenisPengawasan']);
             Route::get('modal', [KertasKerjaController::class, 'modal']);
+            Route::get('modal-approve', [KertasKerjaController::class, 'modalApprove']);
+            Route::get('modal-refused', [KertasKerjaController::class, 'modalRefused']);
             Route::post('store', [KertasKerjaController::class, 'store']);
             Route::get('destroy', [KertasKerjaController::class, 'destroy']);
-            Route::get('approved', [KertasKerjaController::class, 'approved']);
-            Route::get('refused', [KertasKerjaController::class, 'refused']);
+            Route::post('approved', [KertasKerjaController::class, 'approved']);
+            Route::post('refused', [KertasKerjaController::class, 'refused']);
         });
 
         Route::group(['prefix' => 'approve-kertas-kerja'], function () {
@@ -155,21 +158,13 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/modal', [ReviewController::class, 'modal']);
             Route::post('/store', [ReviewController::class, 'store']);
         });
-
-        Route::group(['prefix' => 'monitoring'], function () {
+        Route::group(['prefix' => 'tindak-lanjut'], function () {
             Route::get('/', [MonitoringController::class, 'index']);
             Route::get('/get-data', [MonitoringController::class, 'getdata']);
-        });
-
-
-        Route::group(['prefix' => 'pemeriksaan'], function () {
-            Route::get('/', [PemeriksaanController::class, 'index']);
-            Route::get('/get-data', [PemeriksaanController::class, 'getdata']);
-        });
-
-        Route::group(['prefix' => 'evaluasi'], function () {
-            Route::get('/', [EvaluasiController::class, 'index']);
-            Route::get('/get-data', [EvaluasiController::class, 'getdata']);
+            Route::get('/get-table', [MonitoringController::class, 'getTable']);
+            Route::get('create', [MonitoringController::class, 'create']);
+            Route::get('/modal', [MonitoringController::class, 'modal']);
+            Route::post('/store', [MonitoringController::class, 'store']);
         });
     });
 });
