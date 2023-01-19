@@ -87,42 +87,18 @@ class KertasKerjaController extends Controller
                 $notaDinas = '<span class="btn btn-icon-only btn-outline-warning btn-sm mt-2" onclick="buka_file(`' . $data['file_sp'] . '`)"><center><img src="' . asset('public/img/pdf-file.png') . '" width="10px" height="10px"></center></span>';
                 return $notaDinas;
             })
-            ->addColumn('status', function ($data) {
-                $sts = Status::where('id', $data->status)->first();
-                $status = '<span class="' . $sts->text . '">' . $sts->status . '</span>';
-                return $status;
-            })
-            ->addColumn('pesan', function ($data) {
-                $roles =  Auth::user()->role_id;
-                $pesan = $data['pesan'];
-                return $pesan;
-            })
             ->addColumn('action', function ($row) {
                 $roles =  Auth::user()->role_id;
                 $status = $row['status'];
                 $sts = Status::where('id', $row->status)->first();
-                if ($roles == 1) {
-                    if ($status == 1) {
-                        $btn = '
-                        <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Edit</span>
-                        <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="hapus(' . $row['id'] . ')">Delete</span>
-                    ';
-                    }
-                } elseif ($roles == 2) {
-                    if ($status == 1) {
-                        $btn = '
+
+                $btn = '
                             <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Terima</span>
                             <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="modal_refused(' . $row['id'] . ')">Tolak</span>
                         ';
-                    } else {
-                        $btn = '<span class="' . $sts->text . '"><i class="fa fa-check"></i>Selesai</span>';
-                    }
-                } else {
-                    $btn = '<span class="' . $sts->text . '"><i class="fa fa-check"></i> ' . $sts->sts_keterangan . '</span>';
-                }
                 return $btn;
             })
-            ->rawColumns(['status', 'action', 'pkp', 'nota_dinas', 'file_sp', 'id_pkpt'])
+            ->rawColumns(['action', 'pkp', 'nota_dinas', 'file_sp', 'id_pkpt'])
             ->make(true);
     }
 

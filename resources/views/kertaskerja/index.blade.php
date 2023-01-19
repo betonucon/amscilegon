@@ -31,16 +31,7 @@
 
 		<div class="row">
 			<div class="col-lg-12">
-                <div class="row pb-3">
-                    <div class="col-sm-12 col-md-6">
-                        {{-- <span class="js-upload-file-btn btn btn-sm btn-primary waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Tambah</span> --}}
-                        <button onclick="tambah(0)" class="btn btn-sm btn-success waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Tambah</button>
-                        {{-- <span class="btn btn-sm btn-success waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Tambah</span> --}}
-                    </div>
-                    <div class="col-sm-12 col-md-6">
 
-                    </div>
-                </div>
 				<div class="card">
 					<!-- <div class="card-header">
 					</div> -->
@@ -57,8 +48,6 @@
                                                 <th >PKP</th>
                                                 <th >Nota Dinas</th>
                                                 <th >Surat Perintah</th>
-                                                <th >Status</th>
-                                                <th >pesan</th>
                                                 <th width="5%" >Action</th>
                                             </tr>
                                         </thead>
@@ -71,26 +60,7 @@
 			</div>
 		</div>
 
-		<div class="modal fade" id="modalAdd" role="dialog" aria-labelledby="exampleModalLabelDefault" aria-hidden="true">
-			<div class="modal-dialog modal-lg">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabelDefault">{{ $menu }}</h5>
-					</div>
-					<div class="modal-body">
-						<form id="form-data" method="post" action="{{url('pelaksanaan/kertas-kerja-pemeriksaan/store')}}" enctype="multipart/form-data">
-							@csrf
 
-							<div id="tampil-form"></div>
-						</form>
-					</div>
-					<div class="modal-footer">
-						<button  class="btn btn-white" onclick="hide()">Tutup</button>
-						<button id="btn-save"  class="btn btn-success">Simpan</button>
-					</div>
-				</div>
-			</div>
-		</div>
 		<div class="modal fade" id="modalApprove" role="dialog" aria-labelledby="exampleModalLabelDefault" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
@@ -212,8 +182,6 @@
                { data: 'pkp' },
                { data: 'nota_dinas' },
                { data: 'file_sp' },
-               { data: 'status' },
-               { data: 'pesan' },
                { data: 'action' },
            ],
            language: {
