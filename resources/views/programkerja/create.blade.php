@@ -12,15 +12,15 @@
             <div class="card-body">
                 <form id="form-data" method="post" action="{{ url('perencanaan/program-kerja-pengawasan/store') }}" enctype="multipart/form-data">
                     @csrf
-                    {{-- <div class="mb-3">
-                        <label class="form-label">PKPT</label>
-                        <select class="form-control"  name="jenis"  id="jenis" onchange="getTable(this.value)">
+                    <div class="mb-3">
+                        <label class="form-label">Hak Akses</label>
+                        <select class="form-control"  name="user">
                             <option value=""> --Pilih-- </option>
-                            @foreach ($jenisPkpt as $o)
-                            <option value="{{ $o->nomor_pkpt }}">{{ $o->nomor_pkpt }} </option>
+                            @foreach ($user as $el)
+                            <option value="{{ $el->id }}">{{ $el->name }} </option>
                         @endforeach
                         </select>
-                    </div> --}}
+                    </div>
 
                     <div class="mb-3">
                         <label class="form-label">PKP</label>
@@ -91,7 +91,7 @@
 					<div class="modal-footer">
 						<button  class="btn btn-white" onclick="hide()">Tutup</button>
 						<button id="btn-refused"  class="btn btn-success">Simpan</button>
-                        
+
 					</div>
 				</div>
 			</div>

@@ -54,7 +54,9 @@
                                                 <th width="1%" scope="col">No</th>
                                                 <th >Jenis Pengawasan</th>
                                                 <th >Area Pengawasan</th>
-                                                <th >File</th>
+                                                <th >PKP</th>
+                                                <th >Nota Dinas</th>
+                                                <th >Surat Perintah</th>
                                                 <th >Status</th>
                                                 <th >pesan</th>
                                                 <th width="5%" >Action</th>
@@ -205,9 +207,11 @@
                        return meta.row + meta.settings._iDisplayStart + 1;
                    }
                },
-               { data: 'jenis' },
                { data: 'id_pkpt' },
-               { data: 'file' },
+               { data: 'jenis' },
+               { data: 'pkp' },
+               { data: 'nota_dinas' },
+               { data: 'file_sp' },
                { data: 'status' },
                { data: 'pesan' },
                { data: 'action' },
@@ -532,7 +536,7 @@ $(document).ready(function() {
                 type: 'GET',
                 url: "{{url('pelaksanaan/kertas-kerja-pemeriksaan/refused')}}",
                 data: "id="+id+"&pesan="+pesan,
-                success: function(msg){                    
+                success: function(msg){
                     if(msg=='ok'){
                         Swal.fire(
                             'Refused!',

@@ -108,6 +108,7 @@
 				</div>
 			</div>
 		</div>
+
         <div class="modal fade" id="modalshow" role="dialog" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
@@ -127,6 +128,7 @@
 				</div>
 			</div>
 		</div>
+
         <div class="modal fade" id="tampiltable" role="dialog" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
@@ -347,19 +349,6 @@
             }
         });
     });
-
-    function tambah(id){
-        $('#btn-save').removeAttr('disabled','false');
-        $.ajax({
-            type: 'GET',
-            url: "{{url('master-data/opd/modal')}}",
-            data: "id="+id,
-            success: function(msg){
-                $('#tampil-form').html(msg);
-                $('#modalAdd').modal('show');
-            }
-        });
-    }
 
     $('#btn-refused').on('click', () => {
     var form=document.getElementById('form-refused');
