@@ -9,8 +9,8 @@
         <div class="row pb-3">
             <div class="col-sm-12 col-md-6">
                 <span onclick="back()" class="btn btn-sm btn-danger waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Kembali</span>
-                <span onclick="tambah({{ $data->id }})" class="btn btn-sm btn-primary waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Tambah Uraian</span>
-                <span onclick="selesai({{ $data->id }})" class="btn btn-sm btn-success waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Selesai</span>
+                <span onclick="tambah({{$data->id}})" class="btn btn-sm btn-primary waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Tambah Uraian</span>
+                <span onclick="selesai()" class="btn btn-sm btn-success waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Selesai</span>
             </div>
         </div>
 
@@ -49,7 +49,6 @@
 					<div class="modal-body">
                         <form id="form-data" enctype="multipart/form-data">
 							@csrf
-                            <input type="hidden" id="id_pkpt" name="id_pkpt" value="{{ $data->id }}">
 							<div id="tampil-form"></div>
 						</form>
 					</div>
@@ -61,9 +60,24 @@
 			</div>
 		</div>
 
+            <div class="modal fade" id="modalshow" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close">
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                                <div id="tampil-pdf"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            </div>
+        </div>
     </div>
-</div>
-</div>
 </div>
 
 @endsection
@@ -71,6 +85,17 @@
 @push('ajax')
 
 <script>
+    function buka_file(file){
+        $('#modalshow').modal('show');
+        var files=file.split(".");
+        var surat =files[3];
+        if(surat=='pdf'){
+            $('#tampil-pdf').html('<embed src="{{ url('public/file_upload') }}/'+file+'" width="100%" height="500px">');
+        }else{
+            $('#tampil-pdf').html('<embed src="{{ url('public/file_upload') }}/'+file+'" width="100%" height="500px">');
+        }
+    }
+
     function back(){
         window.location.href = "{{ url('pelaporan/review') }}";
     }
@@ -90,7 +115,7 @@
 					$('#modalAdd').modal('show');
 				}
 			});
-		}
+	}
 
     $('#btn-save').on('click', () => {
     var form=document.getElementById('form-data');
@@ -139,8 +164,6 @@
         });
     });
 
-
-
 </script>
 
 <script>
@@ -154,7 +177,7 @@
                     headerOffset: $('#header').height()
                 },
                 responsive: true,
-                ajax:"{{ url('pelaporan/review/get-table?id= '.$data->id.'')}}",
+                ajax:"{{ url('pelaporan/review/get-table?id_program_kerja= '.$data->id.'')}}",
                 columns: [
                     {data: 'id' },
                     { data: 'file_lhp' },

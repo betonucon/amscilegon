@@ -75,18 +75,18 @@ class ReviewController extends Controller
                 return $fileLhp;
             })
             ->addColumn('uraian_temuan', function ($data) {
-                $data->uraian_temuan;
+                return  $data->uraian_temuan;
             })
             ->addColumn('uraian_penyebab', function ($data) {
-                $data->uraian_penyebab;
+                return   $data->uraian_penyebab;
             })
             ->addColumn('uraian_rekomendasi', function ($data) {
-                $data->uraian_rekomendasi;
+                return   $data->uraian_rekomendasi;
             })
 
             ->addColumn('action', function ($row) {
                 $btn = '
-                            <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Edit</span>
+                            <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modalLhp(' . $row['uraian_temuan'] . ')">Edit</span>
                         ';
                 return $btn;
             })
@@ -106,6 +106,12 @@ class ReviewController extends Controller
     {
         $data = ProgramKerja::where('id', $request->id)->first();
         return view('review.modal', compact('data'));
+    }
+
+    public function modalLhp(Request $request)
+    {
+        $data = Lhp::where('uraian_temuan', $request->id)->first();
+        return view('review.modalLhp', compact('data'));
     }
 
     public function store(Request $request)

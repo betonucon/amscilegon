@@ -26,17 +26,12 @@
 			<div class="col-lg-12">
                 <div class="row pb-3">
                     <div class="col-sm-12 col-md-6">
-                        {{-- <span class="js-upload-file-btn btn btn-sm btn-primary waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Tambah</span> --}}
-                        {{-- <span onclick="tambah(0)" class="btn btn-sm btn-success waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Upload Excel</span> --}}
-                        {{-- <span onclick="tambahNonPkpt()" class="btn btn-sm btn-warning waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Non PKPT</span> --}}
                     </div>
                     <div class="col-sm-12 col-md-6">
 
                     </div>
                 </div>
 				<div class="card">
-					<!-- <div class="card-header">
-					</div> -->
 					<div class="card-body small">
 						<div id="example_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
 							<div class="row">
@@ -45,16 +40,13 @@
                                         <thead>
                                             <tr>
                                                 <th width="1%" scope="col">No</th>
-                                                <th >Area Pengawasan</th>
                                                 <th >Jenis Pengawasan</th>
+                                                <th >Area Pengawasan</th>
                                                 <th >OPD</th>
-                                                <th >Status</th>
+                                                <th >PKP</th>
+                                                <th >Nota Dinas</th>
+                                                <th >Surat Perintah</th>
                                                 <th width="5%" >Action</th>
-                                                {{-- <th >Selesai</th>
-                                                <th >Dalam Proses</th>
-                                                <th >Belum Tindak Lanjut</th>
-                                                <th >Tidak Dapat Dilanjuti</th> --}}
-                                                {{-- <th >Dokumen</th> --}}
                                             </tr>
                                         </thead>
 									</table>
@@ -65,29 +57,28 @@
 				</div>
 			</div>
 		</div>
-		<div class="modal fade" id="modalAdd" role="dialog" aria-hidden="true">
-			<div class="modal-dialog">
+
+        <!-- Modal Show File -->
+        <div class="modal fade" id="modalshow" role="dialog" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabelDefault">{{ $menu }}</h5>
+						{{-- <h5 class="modal-title" id="exampleModalLabelDefault">{{ $menu }}</h5> --}}
 						<button type="button" class="btn-close" data-bs-dismiss="modal"
 								aria-label="Close">
 						</button>
 					</div>
 					<div class="modal-body">
 						<div id="error-notif"></div>
-						<form id="form-data" enctype="multipart/form-data">
+						<form id="form-refused" enctype="multipart/form-data">
 							@csrf
-							<div id="tampil-form"></div>
+							<div id="tampil-pdf"></div>
 						</form>
-					</div>
-					<div class="modal-footer">
-						<button  class="btn btn-white" onclick="hide()">Tutup</button>
-						<button id="btn-save"  class="btn btn-success">Simpan</button>
 					</div>
 				</div>
 			</div>
 		</div>
+
 	</div>
 </div>
 @endsection
@@ -102,24 +93,21 @@
                     header: true,
                     headerOffset: $('#header').height()
                 },
-                responsive: false,
+                responsive: true,
                 ajax:"{{ url('pelaporan/tindak-lanjut/get-data')}}",
                 columns: [
-                    { data: 'id', render: function (data, type, row, meta)
-                        {
-                            return meta.row + meta.settings._iDisplayStart + 1;
-                        }
-                    },
-                    { data: 'area_pengawasan' },
-                    { data: 'jenis_pengawasan' },
-                    { data: 'opd' },
-                    // { data: 'selesai' },
-                    // { data: 'belum_selesai' },
-                    // { data: 'belum_tindak' },
-                    // { data: 'tidak_lanjut' },
-                    // { data: 'file' },
-                    { data: 'status' },
-                    { data: 'action' },
+                     { data: 'id', render: function (data, type, row, meta)
+                   {
+                       return meta.row + meta.settings._iDisplayStart + 1;
+                   }
+               },
+               { data: 'id_pkpt' },
+               { data: 'jenis' },
+               { data: 'opd' },
+               { data: 'pkp' },
+               { data: 'nota_dinas' },
+               { data: 'file_sp' },
+               { data: 'action' },
                 ],
                 language: {
                     paginate: {
@@ -144,9 +132,25 @@
         $(document).ready(function() {
 			TableManageFixedHeader.init();
 		});
-        function tambah(id){
-            location.assign("{{url('pelaporan/tindak-lanjut/create?id=')}}" + id);
-        }
+
 
 	</script>
+
+
+<script>
+         function tambah(id){
+            location.assign("{{url('pelaporan/review/create?id=')}}" + id);
+        }
+
+        function buka_file(file){
+            $('#modalshow').modal('show');
+            var files=file.split(".");
+            var surat =files[3];
+            if(surat=='pdf'){
+                $('#tampil-pdf').html('<embed src="{{ url('public/file_upload') }}/'+file+'" width="100%" height="500px">');
+            }else{
+                $('#tampil-pdf').html('<embed src="{{ url('public/file_upload') }}/'+file+'" width="100%" height="500px">');
+            }
+        }
+    </script>
 @endpush
