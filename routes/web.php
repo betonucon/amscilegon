@@ -157,6 +157,11 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('create', [ReviewController::class, 'create']);
             Route::get('/modal', [ReviewController::class, 'modal']);
             Route::post('/store', [ReviewController::class, 'store']);
+            Route::get('modal-approved', [ReviewController::class, 'modalApprove']);
+            Route::get('selesai', [ReviewController::class, 'selesai']);
+            Route::get('modal-refused', [ReviewController::class, 'modalRefused']);
+            Route::get('approved', [ReviewController::class, 'storeApprove']);
+            Route::get('refused', [ReviewController::class, 'storeRefused']);
         });
         Route::group(['prefix' => 'tindak-lanjut'], function () {
             Route::get('/', [MonitoringController::class, 'index']);

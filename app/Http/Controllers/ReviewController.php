@@ -25,7 +25,19 @@ class ReviewController extends Controller
     public function getdata(Request $request)
     {
         error_reporting(0);
-        $data = ProgramKerja::where('file_sp', '!=', null)->orderBy('id', 'desc')->get();
+
+        $role = Auth::user()->role_id;
+
+        if ($role == 3) {
+            $data = ProgramKerja::where('file_sp', '!=', null)->where('status_lhp', 1)->orderBy('id', 'desc')->get();
+        } else if ($role == 4) {
+            $data = ProgramKerja::where('file_sp', '!=', null)->where('status_lhp', 2)->orderBy('id', 'desc')->get();
+        } else if ($role == 5) {
+            $data = ProgramKerja::where('file_sp', '!=', null)->where('status_lhp', 3)->orderBy('id', 'desc')->get();
+        } else {
+            $data = ProgramKerja::where('file_sp', '!=', null)->orderBy('id', 'desc')->get();
+        }
+
 
         return Datatables::of($data)
             ->addColumn('id_pkpt', function ($data) {
@@ -50,14 +62,32 @@ class ReviewController extends Controller
             })
             ->addColumn('action', function ($row) {
                 $roles =  Auth::user()->role_id;
-                $status = $row['status'];
-                $sts = Status::where('id', $row->status)->first();
+                $el = ProgramKerja::where('id', $row['id'])->first();
 
-                $btn = '
-                            <span class="btn btn-ghost-warning waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Proses</span>
-                            <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Terima</span>
-                            <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="modal_refused(' . $row['id'] . ')">Tolak</span>
-                        ';
+                if ($roles == 2) {
+                    if ($el->status_lhp == 0) {
+                        $btn = '
+                    <span class="btn btn-ghost-warning waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Proses</span>';
+                    } else  if ($el->status_lhp == 1) {
+                        $btn = 'Disposisi Dalnis';
+                    } else  if ($el->status_lhp == 2) {
+                        $btn = 'Disposisi Irban';
+                    } else  if ($el->status_lhp == 3) {
+                        $btn = 'Disposisi Inspektur';
+                    } else {
+                        $btn = 'selesai';
+                    }
+                } else if ($roles == 3) {
+                    $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Terima</span>
+                        <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="modal_refused(' . $row['id'] . ')">Tolak</span>';
+                } else if ($roles == 4) {
+                    $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Terima</span>
+                        <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="modal_refused(' . $row['id'] . ')">Tolak</span>';
+                } else if ($roles == 5) {
+                    $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Terima</span>
+                            <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="modal_refused(' . $row['id'] . ')">Tolak</span>';
+                }
+
                 return $btn;
             })
             ->rawColumns(['action', 'pkp', 'nota_dinas', 'file_sp', 'id_pkpt'])
@@ -140,6 +170,80 @@ class ReviewController extends Controller
         }
 
         Lhp::create($data);
+
+        return response()->json([
+            'status' => 'success',
+            'success' => 'Data berhasil disimpan.'
+        ]);
+    }
+
+    function selesai(Request $request)
+    {
+
+        ProgramKerja::where('id', $request->id)->update([
+            'status_lhp' => 1,
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'success' => 'Data berhasil disimpan.'
+        ]);
+    }
+
+    function modalApprove(Request $request)
+    {
+        $data = ProgramKerja::where('id', $request->id)->first();
+        return view('review.modalApprove', compact('data'));
+    }
+
+    function modalRefused(Request $request)
+    {
+        $data = ProgramKerja::where('id', $request->id)->first();
+        return view('review.modalRefused', compact('data'));
+    }
+
+    function storeApprove(Request $request)
+    {
+        $role = Auth::user()->role_id;
+
+        if ($role == 3) {
+            ProgramKerja::where('id', $request->id)->update([
+                'pesan_lhp' => $request->pesan_lhp,
+                'status_lhp' => 2,
+            ]);
+        } else if ($role == 4) {
+            ProgramKerja::where('id', $request->id)->update([
+                'pesan_lhp' => $request->pesan_lhp,
+                'status_lhp' => 3,
+            ]);
+        } else if ($role == 5) {
+            ProgramKerja::where('id', $request->id)->update([
+                'pesan_lhp' => $request->pesan_lhp,
+                'status_lhp' => 4,
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'success' => 'Data berhasil disimpan.'
+        ]);
+    }
+
+    function storeRefused(Request $request)
+    {
+        $role = Auth::user()->role_id;
+
+        if ($role == 3) {
+            ProgramKerja::where('id', $request->id)->update([
+                'pesan_lhp' => $request->pesan_lhp,
+                'status_lhp' => 0,
+            ]);
+        } else if ($role == 4) {
+            ProgramKerja::where('id', $request->id)->update([
+                'pesan_lhp' => $request->pesan_lhp,
+                'status_lhp' => 1,
+            ]);
+        }
 
         return response()->json([
             'status' => 'success',

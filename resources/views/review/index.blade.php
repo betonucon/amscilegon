@@ -78,6 +78,52 @@
 			</div>
 		</div>
 
+        <!-- Modal Approve -->
+        <div class="modal fade" id="modalApprove" role="dialog" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-label="Close">
+						</button>
+					</div>
+					<div class="modal-body">
+						<div id="error-notif"></div>
+						<form id="form-approve" enctype="multipart/form-data">
+							@csrf
+							<div id="tampil-approve"></div>
+						</form>
+                        <div class="modal-footer">
+                            <span id="btn-approve"  class="btn btn-success">Simpan</span>
+                        </div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+         <!-- Modal Refused -->
+         <div class="modal fade" id="modalRefuse" role="dialog" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-label="Close">
+						</button>
+					</div>
+					<div class="modal-body">
+						<div id="error-notif"></div>
+						<form id="form-refuse" enctype="multipart/form-data">
+							@csrf
+							<div id="tampil-refuse"></div>
+						</form>
+                        <div class="modal-footer">
+                            <span id="btn-refuse"  class="btn btn-success">Simpan</span>
+                        </div>
+					</div>
+				</div>
+			</div>
+		</div>
+
 	</div>
 </div>
 @endsection
@@ -150,5 +196,84 @@
                 $('#tampil-pdf').html('<embed src="{{ url('public/file_upload') }}/'+file+'" width="100%" height="500px">');
             }
         }
+
+
+        function modal_approved(id){
+            $('#btn-approve').removeAttr('disabled','false');
+            $.ajax({
+                type: 'GET',
+                url: "{{url('pelaporan/review/modal-approved')}}",
+                data: "id="+id,
+                success: function(msg){
+                    $('#tampil-approve').html(msg);
+                    $('#modalApprove').modal('show');
+                }
+            });
+        }
+
+        function modal_refused(id){
+            $('#btn-refuse').removeAttr('disabled','false');
+            $.ajax({
+                type: 'GET',
+                url: "{{url('pelaporan/review/modal-refused')}}",
+                data: "id="+id,
+                success: function(msg){
+                    $('#tampil-refuse').html(msg);
+                    $('#modalRefuse').modal('show');
+                }
+            });
+        }
+
+
+        $('#btn-approve').click(function(){
+            $('#btn-approve').attr('disabled','true');
+            var data = $('#form-approve').serialize();
+            $.ajax({
+                type: 'GET',
+                url: "{{url('pelaporan/review/approved')}}",
+                data: data,
+                success: function(msg){
+                    if(msg.status=='success'){
+                        Swal.fire({ title: 'Success!', text: 'Data Berhasil Disimpan', icon: 'success', confirmButtonText: 'OK', allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false, stopKeydownPropagation: false, }).then((result) => {
+                            if (result.value) {
+                                location.reload();
+                                $('#modalApprove').modal('hide');
+                            }
+                        });
+                    }else{
+                        $('#modalApprove').modal('hide');
+                        $('#data-table-fixed-header').DataTable().ajax.reload();
+                        swal("Success!", "Data Berhasil Disimpan", "success");
+                    }
+                }
+            });
+        });
+
+        $('#btn-refuse').click(function(){
+            $('#btn-refuse').attr('disabled','true');
+            var data = $('#form-refuse').serialize();
+            $.ajax({
+                type: 'GET',
+                url: "{{url('pelaporan/review/refused')}}",
+                data: data,
+                success: function(msg){
+                    if(msg.status=='success'){
+                        Swal.fire({ title: 'Success!', text: 'Data Berhasil Disimpan', icon: 'success', confirmButtonText: 'OK', allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false, stopKeydownPropagation: false, }).then((result) => {
+                            if (result.value) {
+                                location.reload();
+                                $('#modalRefuse').modal('hide');
+                            }
+                        });
+                    }else{
+                        $('#modalRefuse').modal('hide');
+                        $('#data-table-fixed-header').DataTable().ajax.reload();
+                        swal("Success!", "Data Berhasil Disimpan", "success");
+                    }
+                }
+            });
+        });
+
+
+
     </script>
 @endpush

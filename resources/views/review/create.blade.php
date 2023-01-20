@@ -10,7 +10,7 @@
             <div class="col-sm-12 col-md-6">
                 <span onclick="back()" class="btn btn-sm btn-danger waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Kembali</span>
                 <span onclick="tambah({{$data->id}})" class="btn btn-sm btn-primary waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Tambah Uraian</span>
-                <span onclick="selesai()" class="btn btn-sm btn-success waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Selesai</span>
+                <span onclick="selesai({{$data->id}})" class="btn btn-sm btn-success waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Selesai</span>
             </div>
         </div>
 
@@ -163,6 +163,40 @@
             }
         });
     });
+
+    function selesai(id){
+        Swal.fire({
+            title: 'Apakah anda yakin?',
+            text: "Data yang sudah disetujui tidak dapat diubah kembali!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, Setujui!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: 'GET',
+                    url: "{{url('pelaporan/review/selesai')}}",
+                    data: "id="+id,
+                    success: function(msg){
+                        if (msg.status == 'success') {
+                            Swal.fire({
+                                title: 'Berhasil',
+                                text: msg.message,
+                                icon: 'success',
+                                confirmButtonText: 'Ok'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "{{url('pelaporan/review')}}";
+                                }
+                            })
+                        }
+                    }
+                });
+            }
+        })
+    }
 
 </script>
 
