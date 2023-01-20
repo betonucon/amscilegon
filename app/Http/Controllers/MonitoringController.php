@@ -24,7 +24,8 @@ class MonitoringController extends Controller
     public function getdata(Request $request)
     {
         error_reporting(0);
-        $data = ProgramKerja::where('file_sp', '!=', null)->orderBy('id', 'desc')->get();
+
+        $data = ProgramKerja::where('status_lhp', 4)->orderBy('id', 'desc')->get();
 
         return Datatables::of($data)
             ->addColumn('id_pkpt', function ($data) {
@@ -52,10 +53,6 @@ class MonitoringController extends Controller
                 return $notaDinas;
             })
             ->addColumn('action', function ($row) {
-                $roles =  Auth::user()->role_id;
-                $status = $row['status'];
-                $sts = Status::where('id', $row->status)->first();
-
                 $btn = '
                             <span class="btn btn-ghost-warning waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Proses</span>
                             <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Terima</span>
