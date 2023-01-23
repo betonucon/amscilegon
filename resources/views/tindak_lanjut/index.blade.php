@@ -63,18 +63,41 @@
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
 					<div class="modal-header">
-						{{-- <h5 class="modal-title" id="exampleModalLabelDefault">{{ $menu }}</h5> --}}
 						<button type="button" class="btn-close" data-bs-dismiss="modal"
 								aria-label="Close">
 						</button>
 					</div>
 					<div class="modal-body">
 						<div id="error-notif"></div>
-						<form id="form-refused" enctype="multipart/form-data">
+						<form id="form-create" enctype="multipart/form-data">
 							@csrf
 							<div id="tampil-pdf"></div>
 						</form>
 					</div>
+				</div>
+			</div>
+		</div>
+
+         <!-- Modal Create -->
+         <div class="modal fade" id="modalCreate" role="dialog" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-label="Close">
+						</button>
+					</div>
+					<div class="modal-body">
+						<div id="error-notif"></div>
+						<form id="form-create" enctype="multipart/form-data">
+							@csrf
+							<div id="tampil-create"></div>
+						</form>
+					</div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+                        <button id="btn-create" class="btn btn-secondary">Simpan</button>
+                    </div>
 				</div>
 			</div>
 		</div>
@@ -134,13 +157,67 @@
 		});
 
 
-	</script>
-
+</script>
 
 <script>
-         function tambah(id){
-            location.assign("{{url('pelaporan/review/create?id=')}}" + id);
+        function tambah(id){
+            $.ajax({
+                url:"{{ url('pelaporan/tindak-lanjut/modal')}}",
+                type:"GET",
+                data:{id:id},
+                success:function(data){
+                    $('#tampil-create').html(data);
+                    $('#modalCreate').modal('show');
+                }
+            })
         }
+
+        $('#btn-create').on('click', () => {
+        var form=document.getElementById('form-create');
+            $.ajax({
+                type: 'POST',
+                url:"{{ url('pelaporan/tindak-lanjut/store')}}",
+                data: new FormData(form),
+                contentType: false,
+                cache: false,
+                processData:false,
+                dataType: 'json',
+                beforeSend: function () {
+                    $('#btn-create').attr('disabled', 'disabled');
+                    $('#btn-create').html('Sending..');
+                },
+                error: function (msg) {
+                        var data = msg.responseJSON;
+                        $.each(data.errors, function (key, value) {
+                            Swal.fire({
+                                title: 'Gagal',
+                                text: value,
+                                icon: 'error',
+                                confirmButtonText: 'Ok'
+                            }).then((result) => {
+                            if (result.isConfirmed) {
+                                $('#btn-create').removeAttr('disabled','false');
+                                $('#btn-create').html('Simpan');
+                            }
+                            })
+                        });
+                },
+                success:  function (msg) {
+                    if (msg.status == 'success') {
+                        Swal.fire({
+                            title: 'Berhasil',
+                            text: msg.message,
+                            icon: 'success',
+                            confirmButtonText: 'Ok'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                locatiuon.reload();
+                            }
+                        })
+                    }
+                }
+            });
+        });
 
         function buka_file(file){
             $('#modalshow').modal('show');
@@ -152,5 +229,7 @@
                 $('#tampil-pdf').html('<embed src="{{ url('public/file_upload') }}/'+file+'" width="100%" height="500px">');
             }
         }
+
+
     </script>
 @endpush
