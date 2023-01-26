@@ -28,9 +28,11 @@ class ReviewController extends Controller
 
         $roles =  Auth::user()['role_id'];
         if($roles >= 4 && $roles <= 7){
-            $data= ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('status','>=', 5)->where('status_lhp', null)->get();
+            $data= ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('status','>=', 5)->where('status_lhp', '>=',0)->orWhere('status_lhp', null)->get();
         }else if($roles >= 8 && $roles <= 11){
-            $data = ProgramKerja::where('grouping', Auth::user()->roles->sts)->get();
+            $data = ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('status','>=', 5)->where('status_lhp', 1)->get();
+        }else if($roles >= 12 && $roles <= 15){
+            $data = ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('status','>=', 5)->where('status_lhp', 2)->get();
         }else{
             $data = ProgramKerja::where('status', 5)->get();
         }
@@ -84,15 +86,55 @@ class ReviewController extends Controller
                     } else {
                         $btn = 'selesai';
                     }
-                } else if ($roles == 3) {
-                    $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Terima</span>
-                        <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="modal_refused(' . $row['id'] . ')">Tolak</span>';
-                } else if ($roles == 4) {
-                    $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Terima</span>
-                        <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="modal_refused(' . $row['id'] . ')">Tolak</span>';
-                } else if ($roles == 5) {
-                    $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Terima</span>
+                } else if ($roles >= 8 && $roles <= 11) {
+                    if ($el->status_lhp == 1) {
+                        $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Terima</span>
                             <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="modal_refused(' . $row['id'] . ')">Tolak</span>';
+                    } else  if ($el->status_lhp == 1) {
+                        $btn = 'Disposisi Dalnis';
+                    } else  if ($el->status_lhp == 2) {
+                        $btn = 'Disposisi Irban';
+                    } else  if ($el->status_lhp == 3) {
+                        $btn = 'Disposisi Inspektur';
+                    } else {
+                        $btn = 'selesai';
+                    }
+                } else if ($roles >= 12 && $roles <= 15) {
+                    if ($el->status_lhp == 2) {
+                        $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Terima</span>
+                            <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="modal_refused(' . $row['id'] . ')">Tolak</span>';
+                    } else  if ($el->status_lhp == 1) {
+                        $btn = 'Disposisi Dalnis';
+                    } else  if ($el->status_lhp == 2) {
+                        $btn = 'Disposisi Irban';
+                    } else  if ($el->status_lhp == 3) {
+                        $btn = 'Disposisi Inspektur';
+                    } else {
+                        $btn = 'selesai';
+                    }
+                }else if ($roles == 2){
+                    if ($el->status_lhp == 3) {
+                        $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Terima</span>
+                            <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="modal_refused(' . $row['id'] . ')">Tolak</span>';
+                    } else  if ($el->status_lhp == 1) {
+                        $btn = 'Disposisi Dalnis';
+                    } else  if ($el->status_lhp == 2) {
+                        $btn = 'Disposisi Irban';
+                    } else  if ($el->status_lhp == 3) {
+                        $btn = 'Disposisi Inspektur';
+                    } else {
+                        $btn = 'selesai';
+                    }
+                }else{
+                    if ($el->status_lhp == 1) {
+                        $btn = 'Disposisi Dalnis';
+                    } else  if ($el->status_lhp == 2) {
+                        $btn = 'Disposisi Irban';
+                    } else  if ($el->status_lhp == 3) {
+                        $btn = 'Disposisi Inspektur';
+                    } else {
+                        $btn = 'selesai';
+                    }
                 }
 
                 return $btn;
@@ -251,6 +293,32 @@ class ReviewController extends Controller
 
     function storeApprove(Request $request)
     {
+        $data = ProgramKerja::where('id', $request->id)->first();
+        if ($data->status_lhp == 1) {
+            $data->update([
+                'pesan_lhp' => $request->pesan_lhp,
+                'status_lhp' => 2,
+            ]);
+        } else if ($data->status == 2) {
+            $data->update([
+                'pesan_lhp' => $request->pesan_lhp,
+                'status' => 3,
+            ]);
+        } else if ($data->status == 3) {
+            $data->update([
+                'pesan_lhp' => $request->pesan_lhp,
+                'status' => 4,
+            ]);
+        } else {
+            $data->update([
+                'pesan_lhp' => $request->pesan_lhp,
+                'status' => 1,
+            ]);
+        }
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Data Berhasil Disetujui'
+        ]);
         $role = Auth::user()->role_id;
 
         if ($role == 3) {
