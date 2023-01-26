@@ -26,17 +26,24 @@ class ReviewController extends Controller
     {
         error_reporting(0);
 
-        $role = Auth::user()->role_id;
-
-        if ($role == 3) {
-            $data = ProgramKerja::where('file_sp', '!=', null)->where('status_lhp', 1)->orderBy('id', 'desc')->get();
-        } else if ($role == 4) {
-            $data = ProgramKerja::where('file_sp', '!=', null)->where('status_lhp', 2)->orderBy('id', 'desc')->get();
-        } else if ($role == 5) {
-            $data = ProgramKerja::where('file_sp', '!=', null)->where('status_lhp', 3)->orderBy('id', 'desc')->get();
-        } else {
-            $data = ProgramKerja::where('file_sp', '!=', null)->orderBy('id', 'desc')->get();
+        $roles =  Auth::user()['role_id'];
+        if($roles >= 4 && $roles <= 7){
+            $data= ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('status','>=', 5)->where('status_lhp', null)->get();
+        }else if($roles >= 8 && $roles <= 11){
+            $data = ProgramKerja::where('grouping', Auth::user()->roles->sts)->get();
+        }else{
+            $data = ProgramKerja::where('status', 5)->get();
         }
+
+        // if ($role == 3) {
+        //     $data = ProgramKerja::where('file_sp', '!=', null)->where('status_lhp', 1)->orderBy('id', 'desc')->get();
+        // } else if ($role == 4) {
+        //     $data = ProgramKerja::where('file_sp', '!=', null)->where('status_lhp', 2)->orderBy('id', 'desc')->get();
+        // } else if ($role == 5) {
+        //     $data = ProgramKerja::where('file_sp', '!=', null)->where('status_lhp', 3)->orderBy('id', 'desc')->get();
+        // } else {
+        //     $data = ProgramKerja::where('file_sp', '!=', null)->orderBy('id', 'desc')->get();
+        // }
 
 
         return Datatables::of($data)
@@ -64,8 +71,8 @@ class ReviewController extends Controller
                 $roles =  Auth::user()->role_id;
                 $el = ProgramKerja::where('id', $row['id'])->first();
 
-                if ($roles == 2) {
-                    if ($el->status_lhp == 0) {
+                if ($roles >= 4 && $roles <= 7) {
+                    if ($el->status_lhp == null) {
                         $btn = '
                     <span class="btn btn-ghost-warning waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Proses</span>';
                     } else  if ($el->status_lhp == 1) {
@@ -111,16 +118,23 @@ class ReviewController extends Controller
                 return   $data->uraian_penyebab;
             })
             ->addColumn('uraian_rekomendasi', function ($data) {
-                return   $data->uraian_rekomendasi;
+                $cek=Lhp::where('uraian_temuan', $data['uraian_temuan'])->where('uraian_penyebab',$data['uraian_penyebab'])->count();
+                if ($cek > 0) {
+                    $get=Lhp::where('uraian_temuan', $data['uraian_temuan'])->where('uraian_penyebab',$data['uraian_penyebab'])->get();
+                    foreach ($get as $g) {
+                        $btn='-'.$g->uraian_rekomendasi;
+                    }
+                }
+                $btn=$data->uraian_rekomendasi.' '.'<span class="btn btn-ghost-success waves-effect waves-light" onclick="modalrekom(' . $data['id'] . ')"><i class="mdi mdi-plus-circle-outline"></i></span>';
+                return $btn;
             })
 
             ->addColumn('action', function ($row) {
                 $btn = '
-                            <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modalLhp(' . $row['uraian_temuan'] . ')">Edit</span>
-                        ';
+                    <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modalLhp(' . $row['uraian_temuan'] . ')">Edit</span>';
                 return $btn;
             })
-            ->rawColumns(['action', 'file_lhp', 'nota_dinas', 'file_sp', 'id_pkpt'])
+            ->rawColumns(['uraian_rekomendasi','action', 'file_lhp', 'nota_dinas', 'file_sp', 'id_pkpt'])
             ->make(true);
     }
 
@@ -136,6 +150,12 @@ class ReviewController extends Controller
     {
         $data = ProgramKerja::where('id', $request->id)->first();
         return view('review.modal', compact('data'));
+    }
+
+    public function modalrekom(Request $request)
+    {
+        $data = Lhp::where('id', $request->id)->first();
+        return view('review.modalrekomendasi', compact('data'));
     }
 
     public function modalLhp(Request $request)
@@ -168,6 +188,33 @@ class ReviewController extends Controller
             $file->move(public_path('file_lhp'), $name);
             $data['file_lhp'] = $name;
         }
+
+        Lhp::create($data);
+
+        return response()->json([
+            'status' => 'success',
+            'success' => 'Data berhasil disimpan.'
+        ]);
+    }
+
+    public function storeRekom(Request $request)
+    {
+        $this->validate($request, [
+            'id_program_kerja' => 'required',
+            'uraian_temuan' => 'required',
+            'uraian_penyebab' => 'required',
+            'uraian_rekomendasi' => 'required',
+            // 'file_lhp' => 'required|mimes:pdf|max:2048',
+        ]);
+
+        $data = [
+            'id_program_kerja' => $request->id_program_kerja,
+            'uraian_temuan' => $request->uraian_temuan,
+            'uraian_penyebab' => $request->uraian_penyebab,
+            'uraian_rekomendasi' => $request->uraian_rekomendasi,
+            'status' => 1,
+        ];
+
 
         Lhp::create($data);
 

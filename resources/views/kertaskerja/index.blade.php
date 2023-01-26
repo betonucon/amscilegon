@@ -303,6 +303,54 @@ $(document).ready(function() {
             });
     });
 
+    $('#btn-save').on('click', () => {
+    var form=document.getElementById('form-data');
+        $.ajax({
+            type: 'POST',
+            url: "{{url('perencanaan/program-kerja-pengawasan/approved')}}",
+            data: new FormData(form),
+            contentType: false,
+            cache: false,
+            processData:false,
+            dataType: 'json',
+            beforeSend: function () {
+                $('#btn-save').attr('disabled', 'disabled');
+                $('#btn-save').html('Sending..');
+            },
+            error: function (msg) {
+                    var data = msg.responseJSON;
+                    $.each(data.errors, function (key, value) {
+                        Swal.fire({
+                            title: 'Gagal',
+                            text: value,
+                            icon: 'error',
+                            confirmButtonText: 'Ok'
+                        }).then((result) => {
+                        if (result.isConfirmed) {
+                            $('#btn-save').removeAttr('disabled','false');
+                            $('#btn-save').html('Simpan');
+                        }
+                    })
+                    });
+            },
+            success:  function (msg) {
+                if (msg.status == 'success') {
+                    Swal.fire({
+                        title: 'Berhasil',
+                        text: msg.message,
+                        icon: 'success',
+                        confirmButtonText: 'Ok'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = "{{url('perencanaan/program-kerja-pengawasan')}}";
+                        }
+                    })
+                }
+            }
+        });
+    });
+
+
     $('#btn-approve').on('click', () => {
         var form=document.getElementById('approve-data');
             $.ajax({
@@ -334,10 +382,10 @@ $(document).ready(function() {
                         });
                 },
                 success:  function (msg) {
-                    if (msg == 'ok') {
+                    if (msg.status == 'success') {
                         Swal.fire({
                             title: 'Berhasil',
-                            // text: msg.message,
+                            text: msg.message,
                             icon: 'success',
                             confirmButtonText: 'Ok'
                         }).then((result) => {
@@ -380,10 +428,10 @@ $(document).ready(function() {
                         });
                 },
                 success:  function (msg) {
-                    if (msg == 'ok') {
+                    if (msg.status == 'success') {
                         Swal.fire({
                             title: 'Berhasil',
-                            // text: msg.message,
+                            text: msg.message,
                             icon: 'success',
                             confirmButtonText: 'Ok'
                         })
@@ -476,14 +524,17 @@ $(document).ready(function() {
                     url: "{{url('pelaksanaan/kertas-kerja-pemeriksaan/approved')}}",
                     data: "id=" + id,
 					success: function(msg){
-                        if(msg=='ok'){
-                            Swal.fire(
-                                'Approved!',
-                                'berhasil disimpan',
-                                // msg.message,
-                                'success'
-                            )
-                            location.reload();
+                        if (msg.status == 'success') {
+                            Swal.fire({
+                                title: 'Berhasil',
+                                text: msg.message,
+                                icon: 'success',
+                                confirmButtonText: 'Ok'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.assign("{{url('pelaksanaan/kertas-kerja-pemeriksaan')}}");
+                                }
+                            })
                         }
 					}
 				});
@@ -508,13 +559,17 @@ $(document).ready(function() {
                 url: "{{url('pelaksanaan/kertas-kerja-pemeriksaan/refused')}}",
                 data: "id="+id+"&pesan="+pesan,
                 success: function(msg){
-                    if(msg=='ok'){
-                        Swal.fire(
-                            'Refused!',
-                            'berhasil disimpan',
-                            'success'
-                        )
-                        location.reload();
+                    if (msg.status == 'success') {
+                        Swal.fire({
+                            title: 'Berhasil',
+                            text: msg.message,
+                            icon: 'success',
+                            confirmButtonText: 'Ok'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "{{url('/pelaksanaan/kertas-kerja-pemeriksaan')}}";
+                            }
+                        })
                     }
                 }
             });

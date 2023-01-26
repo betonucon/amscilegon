@@ -61,7 +61,16 @@ class KertasKerjaController extends Controller
     public function getdata(Request $request)
     {
         error_reporting(0);
-        $data = ProgramKerja::where('file_sp', '!=', null)->orderBy('id', 'desc')->get();
+        $roles =  Auth::user()->role_id;
+        $group= Auth::user()->roles->sts;
+        if($roles >= 8 && $roles <= 11){
+            $data = ProgramKerja::where('grouping',  $group)->where('file_sp', '!=', null)->orderBy('id', 'desc')->get();
+        }else if($roles >= 4 && $roles <= 7){
+            $data= ProgramKerja::where('grouping',  $group)->where('status','>=', 3)->where('file_sp', '!=', null)->orderBy('id', 'desc')->get();
+        }else{
+            $data = ProgramKerja::where('file_sp', '!=', null)->orderBy('id', 'desc')->get();
+        }
+
 
         return Datatables::of($data)
             ->addColumn('id_pkpt', function ($data) {
@@ -88,14 +97,35 @@ class KertasKerjaController extends Controller
                 return $notaDinas;
             })
             ->addColumn('action', function ($row) {
-                $roles =  Auth::user()->role_id;
+                $roles =  Auth::user()['role_id'];
                 $status = $row['status'];
-                $sts = Status::where('id', $row->status)->first();
-
-                $btn = '
-                            <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Terima</span>
-                            <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="modal_refused(' . $row['id'] . ')">Tolak</span>
-                        ';
+                if ($roles >= 4 && $roles <= 7) {
+                    if ($status == 3) {
+                        $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Terima</span>
+                        <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="modal_refused(' . $row['id'] . ')">Tolak</span>';
+                    } else  if ($status == 1) {
+                        $btn = 'Disposisi Dalnis';
+                    } else  if ($status == 2) {
+                        $btn = 'Disposisi Irban';
+                    } else  if ($status == 3) {
+                        $btn = 'Disposisi Inspektur';
+                    } else {
+                        $btn = 'selesai';
+                    }
+                }else if($roles >= 8 && $roles <= 11){
+                    if ($status == 4) {
+                        $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Terima</span>
+                        <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="modal_refused(' . $row['id'] . ')">Tolak</span>';
+                    } else  if ($status == 1) {
+                        $btn = 'Disposisi Dalnis';
+                    } else  if ($status == 2) {
+                        $btn = 'Disposisi Irban';
+                    } else  if ($status == 3) {
+                        $btn = 'Disposisi Inspektur';
+                    } else {
+                        $btn = 'selesai';
+                    }
+                }
                 return $btn;
             })
             ->rawColumns(['action', 'pkp', 'nota_dinas', 'file_sp', 'id_pkpt'])
@@ -158,31 +188,41 @@ class KertasKerjaController extends Controller
 
     public function approved(Request $request)
     {
-        $data = KertasKerja::where('id', $request->id)->first();
-        $data->update([
-            'status' => 2,
-            'pesan' => $request->pesan,
+        $data = ProgramKerja::where('id', $request->id)->first();
+        if ($data->status == 3) {
+            $data->update([
+                'pesan' => $request->pesan,
+                'status' => 4,
+            ]);
+        } else if ($data->status == 4) {
+            $data->update([
+                'pesan' => $request->pesan,
+                'status' => 5,
+            ]);
+        } 
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Data Berhasil Diapproved'
         ]);
-
-        echo 'ok';
-        // return response()->json([
-        //     'status' => 'success',
-        //     'message' => 'Data Berhasil Diapproved'
-        // ]);
     }
 
     public function refused(Request $request)
     {
-        $data = KertasKerja::where('id', $request->id)->first();
-        $data->update([
-            'status' => 1,
-            'pesan' => $request->pesan,
+        $data = ProgramKerja::where('id', $request->id)->first();
+        if ($data->status == 3) {
+            $data->update([
+                'pesan' => $request->pesan,
+                'status' => 3,
+            ]);
+        } else if ($data->status == 4) {
+            $data->update([
+                'pesan' => $request->pesan,
+                'status' => 4,
+            ]);
+        } 
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Data Berhasil Diapproved'
         ]);
-
-        echo 'ok';
-        // return response()->json([
-        //     'status' => 'success',
-        //     'message' => 'Data Berhasil Direfused'
-        // ]);
     }
 }

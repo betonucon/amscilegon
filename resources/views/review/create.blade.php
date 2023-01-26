@@ -59,6 +59,28 @@
 				</div>
 			</div>
 		</div>
+        <div class="modal fade" id="modalrekom" role="dialog" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabelDefault">{{ $menu }}</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-label="Close">
+						</button>
+					</div>
+					<div class="modal-body">
+                        <form id="form-rekom" enctype="multipart/form-data">
+							@csrf
+							<div id="tampil-rekom"></div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button  class="btn btn-white" onclick="hide()">Tutup</button>
+						<button id="btn-rekom" class="btn btn-success">Simpan</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
             <div class="modal fade" id="modalshow" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
@@ -116,6 +138,18 @@
 				}
 			});
 	}
+    function modalrekom(id){
+			$('#btn-save').removeAttr('disabled','false');
+			$.ajax({
+				type: 'GET',
+				url: "{{url('pelaporan/review/modal-rekomendasi')}}",
+				data: "id="+id,
+				success: function(msg){
+					$('#tampil-rekom').html(msg);
+					$('#modalrekom').modal('show');
+				}
+			});
+	}
 
     $('#btn-save').on('click', () => {
     var form=document.getElementById('form-data');
@@ -156,7 +190,58 @@
                         confirmButtonText: 'Ok'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            window.location.href = "{{url('pelaporan/review')}}";
+                            $('#modalAdd').modal('hide');
+                            location.reload();
+                            // window.location.href = "{{url('pelaporan/review')}}";
+                        }
+                    })
+                }
+            }
+        });
+    });
+
+    $('#btn-rekom').on('click', () => {
+    var form=document.getElementById('form-rekom');
+        $.ajax({
+            type: 'POST',
+            url: "{{url('pelaporan/review/store-rekom')}}",
+            data: new FormData(form),
+            contentType: false,
+            cache: false,
+            processData:false,
+            dataType: 'json',
+            beforeSend: function () {
+                $('#btn-save').attr('disabled', 'disabled');
+                $('#btn-save').html('Sending..');
+            },
+            error: function (msg) {
+                    var data = msg.responseJSON;
+                    $.each(data.errors, function (key, value) {
+                        Swal.fire({
+                            title: 'Gagal',
+                            text: value,
+                            icon: 'error',
+                            confirmButtonText: 'Ok'
+                        }).then((result) => {
+                        if (result.isConfirmed) {
+                            $('#btn-save').removeAttr('disabled','false');
+                            $('#btn-save').html('Simpan');
+                        }
+                    })
+                    });
+            },
+            success:  function (msg) {
+                if (msg.status == 'success') {
+                    Swal.fire({
+                        title: 'Berhasil',
+                        text: msg.message,
+                        icon: 'success',
+                        confirmButtonText: 'Ok'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $('#modalAdd').modal('hide');
+                            location.reload();
+                            // window.location.href = "{{url('pelaporan/review')}}";
                         }
                     })
                 }
