@@ -25,11 +25,11 @@ class MonitoringController extends Controller
     public function getdata(Request $request)
     {
         error_reporting(0);
-        $roles =  Auth::user()['role_id'];
-        $pkpt=Pkpt::where('opd', $roles)->first();
-        if($roles == 2){
+        $roles =  Auth::user()->roles->nama;
+        $pkpt = Pkpt::where('opd', $roles)->first();
+        if ($roles == 2) {
             $data = ProgramKerja::where('status_lhp', 4)->orderBy('id', 'desc')->get();
-        }else{
+        } else {
             $data = ProgramKerja::where('status_lhp', 4)->orderBy('id', 'desc')->where('id_pkpt', $pkpt->id)->get();
         }
 
