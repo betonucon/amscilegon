@@ -25,9 +25,10 @@ class MonitoringController extends Controller
     public function getdata(Request $request)
     {
         error_reporting(0);
+        $role =  Auth::user()->role_id;
         $roles =  Auth::user()->roles->nama;
         $pkpt = Pkpt::where('opd', $roles)->first();
-        if ($roles == 2) {
+        if ($role == 2) {
             $data = ProgramKerja::where('status_lhp', 4)->orderBy('id', 'desc')->get();
         } else {
             $data = ProgramKerja::where('status_lhp', 4)->orderBy('id', 'desc')->where('id_pkpt', $pkpt->id)->get();
@@ -59,11 +60,28 @@ class MonitoringController extends Controller
                 return $notaDinas;
             })
             ->addColumn('action', function ($row) {
-                $btn = '
-                            <span class="btn btn-ghost-warning waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Proses</span>
-                            <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Terima</span>
-                            <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="modal_refused(' . $row['id'] . ')">Tolak</span>
-                        ';
+                $roles =  Auth::user()->role_id;
+
+                if ($roles == 2) {
+                    if ($row['status_tindak_lanjut'] == 2) {
+                        $btn = 'Selesai';
+                    } else {
+                        $btn = '
+                        <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Terima</span>
+                        <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="modal_refused(' . $row['id'] . ')">Tolak</span>
+                    ';
+                    }
+                } else {
+                    if ($row['status_tindak_lanjut'] == null) {
+                        $btn =
+                            '<span class="btn btn-ghost-warning waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Proses</span>';
+                    } else   if ($row['status_tindak_lanjut'] == 1) {
+                        $btn = 'Disposisi Inspektur';
+                    } else {
+                        $btn = 'Selesai';
+                    }
+                }
+
                 return $btn;
             })
             ->rawColumns(['action', 'pkp', 'nota_dinas', 'file_sp', 'id_pkpt'])
@@ -96,7 +114,6 @@ class MonitoringController extends Controller
             $data['file'] = "$profileImage";
         }
 
-
         TindakLanjut::create($data);
 
         ProgramKerja::where('id', $request->id_program_kerja)
@@ -107,6 +124,47 @@ class MonitoringController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Data Berhasil Disimpan'
+        ]);
+    }
+
+    function modalApprove(Request $request)
+    {
+        $data = ProgramKerja::where('id', $request->id)->first();
+        return view('tindak_lanjut.modalApprove', compact('data'));
+    }
+
+    function modalRefused(Request $request)
+    {
+        $data = ProgramKerja::where('id', $request->id)->first();
+        return view('tindak_lanjut.modalRefused', compact('data'));
+    }
+
+    function storeApprove(Request $request)
+    {
+        $data = ProgramKerja::where('id', $request->id)->first();
+        $data->update([
+            'pesan_tindak_lanjut' => $request->pesan_tindak_lanjut,
+            'status_tindak_lanjut' => 2,
+        ]);
+
+
+        return response()->json([
+            'status' => 'success',
+            'success' => 'Data berhasil disimpan.'
+        ]);
+    }
+
+    function storeRefused(Request $request)
+    {
+        $data = ProgramKerja::where('id', $request->id)->first();
+        $data->update([
+            'pesan_tindak_lanjut' => $request->pesan_tindak_lanjut,
+            'status_tindak_lanjut' => 0,
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'success' => 'Data berhasil disimpan.'
         ]);
     }
 }

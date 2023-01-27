@@ -170,6 +170,10 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/get-data', [MonitoringController::class, 'getdata']);
             Route::get('/modal', [MonitoringController::class, 'modal']);
             Route::post('store', [MonitoringController::class, 'store']);
+            Route::get('modal-approved', [MonitoringController::class, 'modalApprove']);
+            Route::get('modal-refused', [MonitoringController::class, 'modalRefused']);
+            Route::get('approved', [MonitoringController::class, 'storeApprove']);
+            Route::get('refused', [MonitoringController::class, 'storeRefused']);
         });
     });
 });
