@@ -301,15 +301,10 @@
 
    function DisplayShiftTableData(model) {
         shiftDataTable = $('#shiftTable').dataTable({
-           //"bRetrieve": true,
-        //    "sPaginationType": "full_numbers",
            paging: false,
-           //"bProcessing": true,
-           //"bAutoWidth": false,
-           //"bStateSave": true,
            "aaSorting": [[5, 'asc']],
            "aaData": model,
-           rowsGroup: [2,3],
+           rowsGroup: [3],
            "aoColumns": [
            {
                "data": function (data) {
