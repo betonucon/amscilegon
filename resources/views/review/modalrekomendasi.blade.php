@@ -1,5 +1,6 @@
 <div class="card">
-    <input type="text" name="id_rekom" value="{{ $data->id_rekom }}" >
+    <input type="hidden" name="id_rekom" value="{{ $data->id_rekom }}" >
+    <input type="hidden" name="id_program_kerja" value="{{ $data->id_program_kerja }}" >
     <input type="hidden" name="uraian_temuan" value="{{ $data->uraian_temuan }}" >
     <input type="hidden" name="uraian_penyebab" value="{{ $data->uraian_penyebab }}" >
         <div class="card-body">
