@@ -39,18 +39,19 @@ class SuratPerintahController extends Controller
     {
         error_reporting(0);
         $roles =  Auth::user()->role_id;
-        $group= Auth::user()->roles->sts;
-        if($roles >= 12 && $roles <= 15){
-            $data='';
-        }elseif($roles >= 12 && $roles <= 15){
-            $data= ProgramKerja::where('role_id', Auth::user()['id'])->where('grouping',  $group)->where('status', 3)->get();
-        }elseif($roles >= 8 && $roles <= 11){
-            $data = ProgramKerja::where('grouping',  $group)->get();
-        }else if($roles >= 4 && $roles <= 7){
-            $data= ProgramKerja::where('grouping',  $group)->where('status', 3)->get();
-        }else{
-            $data = ProgramKerja::orderBy('id', 'desc')->get();
-        }
+        $group = Auth::user()->roles->sts;
+        // if($roles >= 12 && $roles <= 15){
+        //     $data='';
+        // }elseif($roles >= 12 && $roles <= 15){
+        // }elseif($roles >= 8 && $roles <= 11){
+        //     $data = ProgramKerja::where('grouping',  $group)->get();
+        // }else if($roles >= 4 && $roles <= 7){
+        //     $data= ProgramKerja::where('grouping',  $group)->where('status', 3)->get();
+        // }else{
+        //     $data = ProgramKerja::orderBy('id', 'desc')->get();
+        // }
+
+        $data = ProgramKerja::where('grouping',  $group)->where('status', 4)->get();
 
         return Datatables::of($data)
             ->addColumn('area_pengawasannya', function ($data) {
@@ -69,8 +70,13 @@ class SuratPerintahController extends Controller
                 return $notaDinas;
             })
             ->addColumn('no_sp', function ($data) {
+                $roles =  Auth::user()->role_id;
                 if ($data->file_sp == null) {
-                    $notaDinas = '<span class="btn btn-icon-only btn-outline-warning btn-sm mb-1" onclick="tampil_sp(`' . $data['id'] . '`)"><center>Upload</center></span>';
+                    if ($roles == 3) {
+                        $notaDinas = '<span class="btn btn-icon-only btn-outline-warning btn-sm mb-1" onclick="tampil_sp(`' . $data['id'] . '`)"><center>Upload</center></span>';
+                    }else{
+                        $notaDinas='Belum Di upload';
+                    }
                 } else {
                     $notaDinas = '<span class="btn btn-icon-only btn-outline-warning btn-sm mb-1" onclick="buka_file(`' . $data['file_sp'] . '`)"><center><img src="' . asset('public/img/pdf-file.png') . '" width="10px" height="10px"></center></span>';
                 }

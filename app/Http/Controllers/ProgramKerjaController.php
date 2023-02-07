@@ -103,12 +103,14 @@ class ProgramKerjaController extends Controller
     {
         error_reporting(0);
         $roles =  Auth::user()->role_id;
-        if ($roles >= 12 && $roles <= 15) {
-            $data = ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('status', 1)->get();
-        } elseif ($roles >= 8 && $roles <= 11) {
+        if ($roles >= 4 && $roles <= 7) {
             $data = ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('status', 0)->get();
+        } elseif ($roles >= 8 && $roles <= 11) {
+            $data = ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('status', 1)->get();
+        } elseif ($roles >= 12 && $roles <= 15) {
+            $data = ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('status', 2)->get();
         } elseif ($roles == 2) {
-            $data = ProgramKerja::where('status', 2)->get();
+            $data = ProgramKerja::where('status', 3)->get();
         } elseif ($roles == 3) {
             $data = ProgramKerja::orderBy('id', 'desc')->get();
         }
@@ -140,49 +142,72 @@ class ProgramKerjaController extends Controller
                         <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="hapus(' . $row['id'] . ')">Delete</span>
                     ';
                     } else  if ($status == 0) {
-                        $btn = 'Disposisi Dalnis';
+                        $btn = 'Disposisi Ketua Team';
                     } else  if ($status == 1) {
-                        $btn = 'Disposisi Irban';
+                        $btn = 'Disposisi Dalnis';
                     } else  if ($status == 2) {
+                        $btn = 'Disposisi Irban';
+                    } else  if ($status == 3) {
+                        $btn = 'Disposisi Inspektur';
+                    } else {
+                        $btn = 'selesai';
+                    }
+                } else if ($roles == 4 && $roles <= 7) {
+                    if ($status == 0) {
+                        $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="approved(' . $row['id'] . ')">Terima</span>
+                        <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="refused(' . $row['id'] . ')">Tolak</span>';
+                    } else  if ($status == 0) {
+                        $btn = 'Disposisi Ketua Team';
+                    } else  if ($status == 1) {
+                        $btn = 'Disposisi Dalnis';
+                    } else  if ($status == 2) {
+                        $btn = 'Disposisi Irban';
+                    } else  if ($status == 3) {
                         $btn = 'Disposisi Inspektur';
                     } else {
                         $btn = 'selesai';
                     }
                 } else if ($roles == 8 && $roles <= 11) {
-                    if ($status == 0) {
+                    if ($status == 1) {
                         $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="approved(' . $row['id'] . ')">Terima</span>
                         <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="refused(' . $row['id'] . ')">Tolak</span>';
                     } else  if ($status == 0) {
-                        $btn = 'Disposisi Dalnis';
+                        $btn = 'Disposisi Ketua Team';
                     } else  if ($status == 1) {
-                        $btn = 'Disposisi Irban';
+                        $btn = 'Disposisi Dalnis';
                     } else  if ($status == 2) {
+                        $btn = 'Disposisi Irban';
+                    } else  if ($status == 3) {
                         $btn = 'Disposisi Inspektur';
                     } else {
                         $btn = 'selesai';
                     }
                 } else if ($roles >= 12 && $roles <= 15) {
-                    if ($status == 1) {
+                    if ($status == 2) {
                         $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="approved(' . $row['id'] . ')">Terima</span>
                         <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="refused(' . $row['id'] . ')">Tolak</span>';
                     } else  if ($status == 0) {
-                        $btn = 'Disposisi Dalnis';
+                        $btn = 'Disposisi Ketua Team';
                     } else  if ($status == 1) {
-                        $btn = 'Disposisi Irban';
+                        $btn = 'Disposisi Dalnis';
                     } else  if ($status == 2) {
+                        $btn = 'Disposisi Irban';
+                    } else  if ($status == 3) {
                         $btn = 'Disposisi Inspektur';
                     } else {
                         $btn = 'selesai';
                     }
                 } else if ($roles == 2) {
-                    if ($status == 2) {
+                    if ($status == 3) {
                         $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="approved(' . $row['id'] . ')">Terima</span>
                         <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="refused(' . $row['id'] . ')">Tolak</span>';
                     } else  if ($status == 0) {
-                        $btn = 'Disposisi Dalnis';
+                        $btn = 'Disposisi Ketua Team';
                     } else  if ($status == 1) {
-                        $btn = 'Disposisi Irban';
+                        $btn = 'Disposisi Dalnis';
                     } else  if ($status == 2) {
+                        $btn = 'Disposisi Irban';
+                    } else  if ($status == 3) {
                         $btn = 'Disposisi Inspektur';
                     } else {
                         $btn = 'selesai';
@@ -303,6 +328,11 @@ class ProgramKerjaController extends Controller
                 'pesan' => $request->pesan,
                 'status' => 3,
             ]);
+        } else if ($data->status == 3) {
+            $data->update([
+                'pesan' => $request->pesan,
+                'status' => 4,
+            ]);
         } else {
             $data->update([
                 'pesan' => $request->pesan,
@@ -332,6 +362,11 @@ class ProgramKerjaController extends Controller
             $data->update([
                 'pesan' => $request->pesan,
                 'status' => 2,
+            ]);
+        } else if ($data->status == 4) {
+            $data->update([
+                'pesan' => $request->pesan,
+                'status' => 3,
             ]);
         }
         return response()->json([
