@@ -134,8 +134,8 @@ class KertasKerjaController extends Controller
             ->addColumn('file_kkp', function ($data) {
                 $roles =  Auth::user()->role_id;
                 $group = Auth::user()->roles->sts;
-                if ($roles >= 4 && $roles <= 7) {
-                    if ($data->file_kkp == null) {
+                if ($data->file_kkp == null) {
+                    if ($roles >= 4 && $roles <= 7) {
                         $notaDinas = '<span class="btn btn-icon-only btn-outline-warning btn-sm mb-1" onclick="tampil_kkp(`' . $data['id'] . '`)"><center>Upload</center></span>';
                     } else {
                         $notaDinas = 'Belum Di upload';
