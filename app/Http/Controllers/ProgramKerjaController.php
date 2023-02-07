@@ -104,7 +104,7 @@ class ProgramKerjaController extends Controller
         error_reporting(0);
         $roles =  Auth::user()->role_id;
         if($roles >= 12 && $roles <= 15){
-            $data= ProgramKerja::where('role_id', Auth::user()['id'])->where('grouping', Auth::user()->roles->sts)->where('status', 0)->get();
+            $data= ProgramKerja::where('role_id', Auth::user()['id'])->where('grouping', Auth::user()->roles->sts)->where('status', 1)->get();
         }elseif($roles >= 8 && $roles <= 11){
             $data = ProgramKerja::where('grouping', Auth::user()->roles->sts)->get();
         }else{
