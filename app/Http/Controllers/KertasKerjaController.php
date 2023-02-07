@@ -145,7 +145,7 @@ class KertasKerjaController extends Controller
 
             $data = [
                 'id_pkpt' => $request->id_pkpt,
-                'status' => 1,
+                'status' => 5,
             ];
 
             if ($files = $request->file('file')) {
