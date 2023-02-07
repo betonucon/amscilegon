@@ -224,8 +224,8 @@ class ReviewController extends Controller
         ]);
 
         $role=Auth::user()['role_id'];
-        $group=$role->Roles->sts;
         dd($role);
+        $group=$role->Roles->sts;
         $data = [
             'id_program_kerja' => $request->id_program_kerja,
             'uraian_temuan' => $request->uraian_temuan,
