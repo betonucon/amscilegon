@@ -27,10 +27,10 @@ class PkptController extends Controller
     {
         error_reporting(0);
         $data = Pkpt::where('jenis', detail_pkpt())->orderBy('id', 'desc')->get();
-
+        
         return Datatables::of($data)
             ->addColumn('id', function ($data) {
-                return  $data['id'] + 1;
+                return  $data['id'];
             })
             // ->addColumn('jenis', function ($data) {
             //     return $data['jenis'];

@@ -52,6 +52,6 @@ class PkptImport implements ToModel, WithStartRow, WithCalculatedFormulas
 
     public function startRow(): int
     {
-        return 7;
+        return 3;
     }
 }
