@@ -294,13 +294,13 @@ class ProgramKerjaController extends Controller
     public function modal(Request $request)
     {
         $data = ProgramKerja::where('id', $request->id)->first();
-        return view('programKerja.modal', compact('data'));
+        return view('programkerja.modal', compact('data'));
     }
 
     public function modalRefused(Request $request)
     {
         $data = ProgramKerja::where('id', $request->id)->first();
-        return view('programKerja.modal_refused', compact('data'));
+        return view('programkerja.modal_refused', compact('data'));
     }
 
     public function approved(Request $request)
