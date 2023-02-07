@@ -300,17 +300,17 @@ class ReviewController extends Controller
                 'pesan_lhp' => $request->pesan_lhp,
                 'status_lhp' => 2,
             ]);
-        } else if ($data->status == 2) {
+        } else if ($data->status_lhp == 2) {
             $data->update([
                 'pesan_lhp' => $request->pesan_lhp,
                 'status_lhp' => 3,
             ]);
-        } else if ($data->status == 3) {
+        } else if ($data->status_lhp == 3) {
             $data->update([
                 'pesan_lhp' => $request->pesan_lhp,
                 'status_lhp' => 4,
             ]);
-        } else if ($data->status == 4) {
+        } else if ($data->status_lhp == 4) {
             $data->update([
                 'pesan_lhp' => $request->pesan_lhp,
                 'status_lhp' => 5,
