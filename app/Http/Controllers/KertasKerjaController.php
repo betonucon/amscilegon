@@ -46,6 +46,33 @@ class KertasKerjaController extends Controller
         ]);
     }
 
+    function tampilKkp(Request $request)
+    {
+        $data = ProgramKerja::where('id', $request->id)->first();
+        return view('kertaskerja.modal_kkp', compact('data'));
+    }
+
+    function uploadKkp(Request $request)
+    {
+        $request->validate([
+            'file_sp' => 'required|mimes:pdf',
+        ]);
+        if ($files = $request->file('file_sp')) {
+            $namapkp = 'SP' . date('YmdHis');
+            $destinationPath = 'public/file_upload/'; // upload path
+            $profileImage = $namapkp . "." . $files->getClientOriginalExtension();
+            $files->move(public_path('/file_upload'), $profileImage);
+            $data['file_sp'] = $profileImage;
+        }
+
+        ProgramKerja::where('id', $request->id)->update($data);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Data Berhasil Disimpan'
+        ]);
+    }
+
     public function modalApprove(Request $request)
     {
         $data = KertasKerja::where('id', $request->id)->first();
@@ -104,9 +131,10 @@ class KertasKerjaController extends Controller
             })
             ->addColumn('file_kkp', function ($data) {
                 $roles =  Auth::user()->role_id;
-                if ($data->file_sp == null) {
-                    if ($roles == 3) {
-                        $notaDinas = '<span class="btn btn-icon-only btn-outline-warning btn-sm mb-1" onclick="tampil_sp(`' . $data['id'] . '`)"><center>Upload</center></span>';
+                $group = Auth::user()->roles->sts;
+                if ($data->file_kkp == null) {
+                    if ($roles >= 4 && $roles <= 7) {
+                        $notaDinas = '<span class="btn btn-icon-only btn-outline-warning btn-sm mb-1" onclick="tampil_kkp(`' . $data['id'] . '`)"><center>Upload</center></span>';
                     } else {
                         $notaDinas = 'Belum Di upload';
                     }

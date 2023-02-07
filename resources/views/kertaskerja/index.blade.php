@@ -48,6 +48,7 @@
                                                 <th >PKP</th>
                                                 <th >Nota Dinas</th>
                                                 <th >Surat Perintah</th>
+                                                <th >File KKP</th>
                                                 <th width="5%" >Action</th>
                                             </tr>
                                         </thead>
@@ -157,6 +158,31 @@
 			</div>
 		</div>
 
+         <!-- File KKP -->
+         <div class="modal fade" id="tampilSp" role="dialog" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						{{-- <h5 class="modal-title" id="exampleModalLabelDefault">{{ $menu }}</h5> --}}
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-label="Close">
+						</button>
+					</div>
+					<div class="modal-body" style="max-height: calc(100vh - 210px);overflow-y: auto;">
+						<div id="error-notif"></div>
+						<form id="form-sp" enctype="multipart/form-data">
+							@csrf
+							<div id="table-sp"></div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button  class="btn btn-white" onclick="hidesp()">Tutup</button>
+						<button id="btn-sp"  class="btn btn-success">Simpan</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
 	</div>
 </div>
 @endsection
@@ -185,6 +211,7 @@
                { data: 'pkp' },
                { data: 'nota_dinas' },
                { data: 'file_sp' },
+               { data: 'file_kkp' },
                { data: 'action' },
            ],
            language: {
@@ -214,6 +241,20 @@ $(document).ready(function() {
 </script>
 
 <script>
+
+     function tampil_kkp(id){
+        $('#btn-sp').removeAttr('disabled','false');
+        $.ajax({
+            type: 'GET',
+            url: "{{url('perencanaan/kertas-kerja-pemeriksaan/tampil-kkp')}}",
+            data: "id="+id,
+            success: function(msg){
+                $('#table-sp').html(msg);
+                $('#tampilSp').modal('show');
+            }
+        });
+	}
+
         function buka_file(file){
             $('#modalshow').modal('show');
             var files=file.split(".");
