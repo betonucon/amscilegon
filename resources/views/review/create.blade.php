@@ -333,7 +333,7 @@
            },
            {
                "data": function (data) {
-                       return data.uraian_rekomendasi;
+                       return data.uraian_rekomendasi+'<span class="btn btn-ghost-success waves-effect waves-light" onclick="modalrekom('+data.id_rekom+')"><i class="mdi mdi-plus-circle-outline"></i></span>';
                    },
                sDefaultContent: ""
            },
