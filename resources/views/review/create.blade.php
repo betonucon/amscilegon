@@ -9,7 +9,7 @@
         <div class="row pb-3">
             <div class="col-sm-12 col-md-6">
                 <span onclick="back()" class="btn btn-sm btn-danger waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Kembali</span>
-                <span onclick="tambah({{$data->id}})" class="btn btn-sm btn-primary waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Tambah Uraian</span>
+                <span onclick="tambah({{$data->id}},0)" class="btn btn-sm btn-primary waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Tambah Uraian</span>
                 <span onclick="selesai({{$data->id}})" class="btn btn-sm btn-success waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Selesai</span>
             </div>
         </div>
@@ -126,12 +126,12 @@
         $('#modalAdd').modal('hide');
     }
 
-    function tambah(id_rekom){
+    function tambah(id,id_rekom){
 			$('#btn-save').removeAttr('disabled','false');
 			$.ajax({
 				type: 'GET',
 				url: "{{url('pelaporan/review/modal')}}",
-				data: "id_rekom="+id_rekom,
+				data: "id="+id+"&id_rekom="+id_rekom,
 				success: function(msg){
 					$('#tampil-form').html(msg);
 					$('#modalAdd').modal('show');
