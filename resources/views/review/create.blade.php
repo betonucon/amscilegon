@@ -341,6 +341,12 @@
                    },
                sDefaultContent: ""
            },
+           {
+               "data": function (data) {
+                       return data[5];
+                   },
+               sDefaultContent: ""
+           },
 
            ]
        });
