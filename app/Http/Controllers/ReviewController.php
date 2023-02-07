@@ -147,7 +147,7 @@ class ReviewController extends Controller
     public function getTable(Request $request)
     {
         error_reporting(0);
-        $data = Lhp::where('id_program_kerja', $request->id_program_kerja)->orderBy('id', 'desc')->get();
+        $data = Lhp::where('id_program_kerja', $request->id_program_kerja)->orderBy('id_rekom', 'desc')->get();
 
         return Datatables::of($data)
             ->addColumn('file_lhp', function ($data) {
