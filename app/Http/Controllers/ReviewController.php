@@ -310,10 +310,10 @@ class ReviewController extends Controller
                 'pesan_lhp' => $request->pesan_lhp,
                 'status' => 4,
             ]);
-        } else {
+        } else if ($data->status == 4) {
             $data->update([
                 'pesan_lhp' => $request->pesan_lhp,
-                'status' => 1,
+                'status' => 5,
             ]);
         }
         return response()->json([
