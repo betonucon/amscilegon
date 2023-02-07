@@ -339,7 +339,7 @@
            },
            {
                "data": function (data) {
-                       return data[5];
+                       return '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modalLhp('+$data.id_rekom+')">Edit</span>';
                    },
                sDefaultContent: ""
            },
