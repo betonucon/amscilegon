@@ -221,7 +221,7 @@ class ReviewController extends Controller
         ]);
 
         $role=Auth::user()['role_id'];
-        $group=$role->roles->sts;
+        $group=$role->Roles->sts;
 
         $data = [
             'id_program_kerja' => $request->id_program_kerja,
@@ -260,8 +260,8 @@ class ReviewController extends Controller
         ]);
 
         $role=Auth::user()['role_id'];
-        $group=$role->roles->sts;
-        
+        $group=$role->Roles->sts;
+
         $data = [
             'id_program_kerja' => $request->id_program_kerja,
             'uraian_temuan' => $request->uraian_temuan,
