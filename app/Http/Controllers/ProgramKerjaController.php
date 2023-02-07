@@ -229,7 +229,7 @@ class ProgramKerjaController extends Controller
         $data = [
             'id_pkpt' => $request->id_pkpt,
             'jenis' => $get->nomor_pkpt,
-            'status' => 0,
+            'status' => 1,
             'role_id' => $request->role_id,
             'grouping' => Auth::user()->roles->sts,
         ];
