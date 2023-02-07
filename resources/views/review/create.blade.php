@@ -304,7 +304,7 @@
            paging: false,
            "aaSorting": [[5, 'asc']],
            "aaData": model,
-           rowsGroup: [3],
+           rowsGroup: [data.uraian_temuan],
            "aoColumns": [
            {
                "data": function (data) {
