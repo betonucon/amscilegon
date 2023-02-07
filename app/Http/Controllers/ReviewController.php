@@ -191,6 +191,8 @@ class ReviewController extends Controller
 
     public function modal(Request $request)
     {
+        error_reporting(0);
+        
         $program = ProgramKerja::where('id', $request->id)->first();
         $data = Lhp::where('id_rekom', $request->id_rekom)->first();
         return view('review.modal', compact('data','program'));
