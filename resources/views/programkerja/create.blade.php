@@ -17,7 +17,7 @@
                         <select class="form-control"  name="grouping">
                             <option value=""> --Pilih-- </option>
                             @foreach ($user as $el)
-                            <option value="{{ $el->sts }}">{{ $el->name.'-'.$el->Roles->nama }} </option>
+                            <option value="{{ $el->sts }}">{{ $el->name.'-'.$el->nama }} </option>
                         @endforeach
                         </select>
                     </div>
