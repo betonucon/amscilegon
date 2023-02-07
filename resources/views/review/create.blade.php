@@ -296,6 +296,7 @@
                     headerOffset: $('#header').height()
                 },
                 responsive: true,
+                rowsGroup: [0,1],
                 ajax:"{{ url('pelaporan/review/get-table?id_program_kerja= '.$data->id.'')}}",
                 columns: [
                     {data: 'id_rekom' },
