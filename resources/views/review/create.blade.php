@@ -305,7 +305,7 @@
            paging: false,
            "aaSorting": [[5, 'asc']],
            "aaData": model,
-           rowsGroup: [4],
+           rowsGroup: [2,3],
            "aoColumns": [
            {
                "data": function (data) {
