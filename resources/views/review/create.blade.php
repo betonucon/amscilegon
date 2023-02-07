@@ -30,6 +30,7 @@
                                             <th >Action</th>
                                         </tr>
                                     </thead>
+                                    <tbody></tbody>
                                 </table>
                             </div>
                         </div>
@@ -304,7 +305,7 @@
            paging: false,
            "aaSorting": [[5, 'asc']],
            "aaData": model,
-           rowsGroup: [data.uraian_temuan],
+           rowsGroup: [4],
            "aoColumns": [
            {
                "data": function (data) {
