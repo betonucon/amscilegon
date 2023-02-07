@@ -309,7 +309,7 @@
            //"bStateSave": true,
            "aaSorting": [[5, 'asc']],
            "aaData": model,
-           rowsGroup: [0,1],
+           rowsGroup: [2,3],
            "aoColumns": [
            {
                "data": function (data) {
