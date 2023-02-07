@@ -126,12 +126,12 @@
         $('#modalAdd').modal('hide');
     }
 
-    function tambah(id){
+    function tambah(id_rekom){
 			$('#btn-save').removeAttr('disabled','false');
 			$.ajax({
 				type: 'GET',
 				url: "{{url('pelaporan/review/modal')}}",
-				data: "id="+id,
+				data: "id_rekom="+id_rekom,
 				success: function(msg){
 					$('#tampil-form').html(msg);
 					$('#modalAdd').modal('show');
