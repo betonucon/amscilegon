@@ -108,7 +108,7 @@ class ProgramKerjaController extends Controller
         } elseif ($roles >= 8 && $roles <= 11) {
             $data = ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('status', 0)->get();
         } elseif ($roles == 2) {
-            $data = ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('status', 2)->get();
+            $data = ProgramKerja::where('status', 2)->get();
         } elseif ($roles == 3) {
             $data = ProgramKerja::orderBy('id', 'desc')->get();
         }
