@@ -63,10 +63,16 @@ class KertasKerjaController extends Controller
         error_reporting(0);
         $roles =  Auth::user()->role_id;
         $group = Auth::user()->roles->sts;
-        if ($roles >= 8 && $roles <= 11) {
+        // if ($roles >= 8 && $roles <= 11) {
+        //     $data = ProgramKerja::where('grouping',  $group)->where('file_sp', '!=', null)->orderBy('id', 'desc')->get();
+        // } else if ($roles >= 4 && $roles <= 7) {
+        //     $data = ProgramKerja::where('grouping',  $group)->where('status', '>=', 3)->where('file_sp', '!=', null)->orderBy('id', 'desc')->get();
+        // } else {
+        //     $data = ProgramKerja::where('file_sp', '!=', null)->orderBy('id', 'desc')->get();
+        // }
+
+        if ($roles >= 4 && $roles <= 7) {
             $data = ProgramKerja::where('grouping',  $group)->where('file_sp', '!=', null)->orderBy('id', 'desc')->get();
-        } else if ($roles >= 4 && $roles <= 7) {
-            $data = ProgramKerja::where('grouping',  $group)->where('status', '>=', 3)->where('file_sp', '!=', null)->orderBy('id', 'desc')->get();
         } else {
             $data = ProgramKerja::where('file_sp', '!=', null)->orderBy('id', 'desc')->get();
         }
