@@ -325,25 +325,27 @@
            },
            {
                "data": function (data) {
-                       return data[2];
+                       return data.uraian_temuan;
                    },
                sDefaultContent: ""
            },
            {
                "data": function (data) {
-                       return data[3];
+                       return data.uraian_penyebab;
                    },
                sDefaultContent: ""
            },
            {
                "data": function (data) {
-                       return data[4];
+                       return data.rekomendasi;
                    },
                sDefaultContent: ""
            },
            {
                "data": function (data) {
-                       return data[5];
+                    var btn = '
+                        <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modalLhp('+$row.id_rekom+')">Edit</span>';
+                        return $btn;
                    },
                sDefaultContent: ""
            },
