@@ -307,7 +307,7 @@
            //"bProcessing": true,
            //"bAutoWidth": false,
            //"bStateSave": true,
-           "aaSorting": [[5, 'asc']],
+           "aaSorting": [[4, 'asc']],
            "aaData": model,
            rowsGroup: [0,1],
            "aoColumns": [
