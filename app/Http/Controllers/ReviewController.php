@@ -202,9 +202,8 @@ class ReviewController extends Controller
     {
         error_reporting(0);
 
-        $program = ProgramKerja::where('id', $request->id)->first();
         $data = Lhp::where('id_rekom', $request->id_rekom)->first();
-        return view('review.modalrekomendasi', compact('data','program'));
+        return view('review.modalrekomendasi', compact('data'));
     }
 
     public function modalLhp(Request $request)
@@ -262,7 +261,7 @@ class ReviewController extends Controller
         ]);
 
         $role=Auth::user()['role_id'];
-        $group=$role->Roles->sts;
+        $roles=Role::where('id',$role)->first();
 
         $data = [
             'id_program_kerja' => $request->id_program_kerja,
@@ -271,7 +270,7 @@ class ReviewController extends Controller
             'uraian_rekomendasi' => $request->uraian_rekomendasi,
             'status' => 1,
             'parent_id' => $request->id_rekom,
-            'grouping' => $group,
+            'grouping' => $roles->sts,
         ];
 
 
