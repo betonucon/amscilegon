@@ -192,7 +192,7 @@ class ReviewController extends Controller
     public function modal(Request $request)
     {
         error_reporting(0);
-        
+
         $program = ProgramKerja::where('id', $request->id)->first();
         $data = Lhp::where('id_rekom', $request->id_rekom)->first();
         return view('review.modal', compact('data','program'));
@@ -233,7 +233,7 @@ class ReviewController extends Controller
             'uraian_rekomendasi' => $request->uraian_rekomendasi,
             'status' => 1,
             'parent_id' => 0,
-            'grouping' => $group,
+            'grouping' => (int) $group,
         ];
 
         if ($request->hasFile('file_lhp')) {
