@@ -55,14 +55,14 @@ class KertasKerjaController extends Controller
     function uploadKkp(Request $request)
     {
         $request->validate([
-            'file_sp' => 'required|mimes:pdf',
+            'file_kkp' => 'required|mimes:pdf',
         ]);
-        if ($files = $request->file('file_sp')) {
-            $namapkp = 'SP' . date('YmdHis');
+        if ($files = $request->file('file_kkp')) {
+            $namapkp = 'KKP' . date('YmdHis');
             $destinationPath = 'public/file_upload/'; // upload path
             $profileImage = $namapkp . "." . $files->getClientOriginalExtension();
             $files->move(public_path('/file_upload'), $profileImage);
-            $data['file_sp'] = $profileImage;
+            $data['file_kkp'] = $profileImage;
         }
 
         ProgramKerja::where('id', $request->id)->update($data);
@@ -100,6 +100,10 @@ class KertasKerjaController extends Controller
 
         if ($roles >= 4 && $roles <= 7) {
             $data = ProgramKerja::where('grouping',  $group)->where('file_sp', '!=', null)->orderBy('id', 'desc')->get();
+        }elseif ($roles >= 8 && $roles <= 11) {
+            $data = ProgramKerja::where('grouping',  $group)->where('file_kkp', '!=', null)->orderBy('id', 'desc')->where('status', 4)->get();
+        }else{
+            $data = ProgramKerja::where('grouping',  $group)->where('file_kkp', '!=', null)->orderBy('id', 'desc')->get();
         }
 
 
@@ -130,8 +134,8 @@ class KertasKerjaController extends Controller
             ->addColumn('file_kkp', function ($data) {
                 $roles =  Auth::user()->role_id;
                 $group = Auth::user()->roles->sts;
-                if ($data->file_kkp == null) {
-                    if ($roles >= 4 && $roles <= 7) {
+                if ($roles >= 4 && $roles <= 7) {
+                    if ($data->file_kkp == null) {
                         $notaDinas = '<span class="btn btn-icon-only btn-outline-warning btn-sm mb-1" onclick="tampil_kkp(`' . $data['id'] . '`)"><center>Upload</center></span>';
                     } else {
                         $notaDinas = 'Belum Di upload';
@@ -145,29 +149,12 @@ class KertasKerjaController extends Controller
             ->addColumn('action', function ($row) {
                 $roles =  Auth::user()['role_id'];
                 $status = $row['status'];
-                if ($roles >= 4 && $roles <= 7) {
-                    if ($status == 3) {
-                        $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Terima</span>
-                        <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="modal_refused(' . $row['id'] . ')">Tolak</span>';
-                    } else  if ($status == 1) {
-                        $btn = 'Disposisi Dalnis';
-                    } else  if ($status == 2) {
-                        $btn = 'Disposisi Irban';
-                    } else  if ($status == 3) {
-                        $btn = 'Disposisi Inspektur';
-                    } else {
-                        $btn = 'selesai';
-                    }
-                } else if ($roles >= 8 && $roles <= 11) {
+                if ($roles >= 8 && $roles <= 11) {
                     if ($status == 4) {
                         $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Terima</span>
                         <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="modal_refused(' . $row['id'] . ')">Tolak</span>';
-                    } else  if ($status == 1) {
+                    } else  if ($status == 4) {
                         $btn = 'Disposisi Dalnis';
-                    } else  if ($status == 2) {
-                        $btn = 'Disposisi Irban';
-                    } else  if ($status == 3) {
-                        $btn = 'Disposisi Inspektur';
                     } else {
                         $btn = 'selesai';
                     }
