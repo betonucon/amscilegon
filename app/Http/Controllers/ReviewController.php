@@ -201,7 +201,6 @@ class ReviewController extends Controller
     public function modalrekom(Request $request)
     {
         error_reporting(0);
-
         $data = Lhp::where('id_rekom', $request->id_rekom)->first();
         return view('review.modalrekomendasi', compact('data'));
     }

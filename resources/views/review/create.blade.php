@@ -138,12 +138,12 @@
 				}
 			});
 	}
-    function modalrekom(id){
+    function modalrekom(id_rekom){
 			$('#btn-save').removeAttr('disabled','false');
 			$.ajax({
 				type: 'GET',
 				url: "{{url('pelaporan/review/modal-rekomendasi')}}",
-				data: "id="+id,
+				data: "id_rekom="+id_rekom,
 				success: function(msg){
 					$('#tampil-rekom').html(msg);
 					$('#modalrekom').modal('show');
