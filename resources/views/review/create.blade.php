@@ -319,7 +319,7 @@
            },
            {
                "data": function (data) {
-                       return data[1];
+                       return data.file_lhp;
                    },
                sDefaultContent: ""
            },
