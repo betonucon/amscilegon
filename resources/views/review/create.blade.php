@@ -337,7 +337,7 @@
            },
            {
                "data": function (data) {
-                       return data.rekomendasi;
+                       return data.uraian_rekomendasi;
                    },
                sDefaultContent: ""
            },
