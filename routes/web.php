@@ -133,8 +133,8 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('destroy', [KertasKerjaController::class, 'destroy']);
             Route::post('approved', [KertasKerjaController::class, 'approved']);
             Route::post('refused', [KertasKerjaController::class, 'refused']);
-            Route::get('tampil-kkp', [SuratPerintahController::class, 'tampilKkp']);
-            Route::post('upload-kkp', [SuratPerintahController::class, 'uploadKkp']);
+            Route::get('tampil-kkp', [KertasKerjaController::class, 'tampilKkp']);
+            Route::post('upload-kkp', [KertasKerjaController::class, 'uploadKkp']);
         });
 
         Route::group(['prefix' => 'approve-kertas-kerja'], function () {
