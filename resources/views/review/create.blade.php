@@ -306,7 +306,7 @@
            "aaSorting": [[5, 'asc']],
            "aaData": model,
            rowGroup: {
-                dataSrc: [ 3 ]
+                dataSrc: [ 0 ]
             },
            "aoColumns": [
            {
