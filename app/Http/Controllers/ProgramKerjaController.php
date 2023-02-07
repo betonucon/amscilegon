@@ -104,8 +104,10 @@ class ProgramKerjaController extends Controller
         error_reporting(0);
         $roles =  Auth::user()->role_id;
         if ($roles >= 12 && $roles <= 15) {
-            $data = ProgramKerja::where('role_id', Auth::user()['id'])->where('grouping', Auth::user()->roles->sts)->where('status', 1)->get();
+            $data = ProgramKerja::where('role_id', Auth::user()['id'])->where('grouping', Auth::user()->roles->sts)->where('status', 0)->get();
         } elseif ($roles >= 8 && $roles <= 11) {
+            $data = ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('status', 1)->get();
+        } elseif ($roles == 2) {
             $data = ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('status', 2)->get();
         } elseif ($roles == 3) {
             $data = ProgramKerja::orderBy('id', 'desc')->get();
@@ -128,72 +130,59 @@ class ProgramKerjaController extends Controller
                 $notaDinas = '<span class="btn btn-icon-only btn-outline-warning btn-sm mt-2" onclick="buka_file(`' . $data['nota_dinas'] . '`)"><center><img src="' . asset('public/img/pdf-file.png') . '" width="10px" height="10px"></center></span>';
                 return $notaDinas;
             })
-            // ->addColumn('status', function ($data) {
-            //     $status = $data['status'];
-            //     if ($status == 0) {
-            //         $btn = '
-            //         <span class="btn btn-ghost-warning waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Edit</span>
-            //         <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="hapus(' . $row['id'] . ')">Delete</span>
-            //     ';
-            //     } else  if ($status == 1) {
-            //         $btn = 'Disposisi Dalnis';
-            //     } else  if ($status == 2) {
-            //         $btn = 'Disposisi Irban';
-            //     } else  if ($status == 3) {
-            //         $btn = 'Disposisi Inspektur';
-            //     } else {
-            //         $btn = 'selesai';
-            //     }
-
-            //     return $btn;
-            // })
             ->addColumn('action', function ($row) {
                 $roles =  Auth::user()['role_id'];
                 $status = $row['status'];
-                if ($roles >= 4 && $roles <= 7) {
+                if ($roles == 3) {
                     if ($status == 0) {
                         $btn = '
                         <span class="btn btn-ghost-warning waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Edit</span>
                         <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="hapus(' . $row['id'] . ')">Delete</span>
                     ';
-                    } else  if ($status == 1) {
+                    } else  if ($status == 0) {
                         $btn = 'Disposisi Dalnis';
-                    } else  if ($status == 2) {
+                    } else  if ($status == 1) {
                         $btn = 'Disposisi Irban';
-                    } else  if ($status == 3) {
+                    } else  if ($status == 2) {
                         $btn = 'Disposisi Inspektur';
                     } else {
                         $btn = 'selesai';
                     }
                 } else if ($roles == 8 && $roles <= 11) {
-                    if ($status == 1) {
+                    if ($status == 0) {
                         $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="approved(' . $row['id'] . ')">Terima</span>
                         <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="refused(' . $row['id'] . ')">Tolak</span>';
-                    } else  if ($status == 2) {
+                    } else  if ($status == 0) {
                         $btn = 'Disposisi Dalnis';
-                    } else  if ($status == 3) {
+                    } else  if ($status == 1) {
                         $btn = 'Disposisi Irban';
-                    } else  if ($status == 4) {
+                    } else  if ($status == 2) {
                         $btn = 'Disposisi Inspektur';
                     } else {
                         $btn = 'selesai';
                     }
                 } else if ($roles >= 12 && $roles <= 15) {
-                    if ($status == 2) {
+                    if ($status == 1) {
                         $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="approved(' . $row['id'] . ')">Terima</span>
                         <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="refused(' . $row['id'] . ')">Tolak</span>';
-                    } else  if ($status == 3) {
+                    } else  if ($status == 0) {
                         $btn = 'Disposisi Dalnis';
-                    } else  if ($status == 4) {
+                    } else  if ($status == 1) {
+                        $btn = 'Disposisi Irban';
+                    } else  if ($status == 2) {
                         $btn = 'Disposisi Inspektur';
                     } else {
                         $btn = 'selesai';
                     }
                 } else if ($roles == 2) {
-                    if ($status == 3) {
+                    if ($status == 2) {
                         $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="approved(' . $row['id'] . ')">Terima</span>
                         <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="refused(' . $row['id'] . ')">Tolak</span>';
-                    } else  if ($status == 4) {
+                    } else  if ($status == 0) {
+                        $btn = 'Disposisi Dalnis';
+                    } else  if ($status == 1) {
+                        $btn = 'Disposisi Irban';
+                    } else  if ($status == 2) {
                         $btn = 'Disposisi Inspektur';
                     } else {
                         $btn = 'selesai';
@@ -229,7 +218,7 @@ class ProgramKerjaController extends Controller
         $data = [
             'id_pkpt' => $request->id_pkpt,
             'jenis' => $get->nomor_pkpt,
-            'status' => 1,
+            'status' => 0,
             'role_id' => $request->role_id,
             'grouping' => Auth::user()->roles->sts,
         ];
@@ -329,13 +318,25 @@ class ProgramKerjaController extends Controller
     public function refused(Request $request)
     {
         $data = ProgramKerja::where('id', $request->id)->first();
-        $data->update([
-            'pesan' => $request->pesan,
-            'status' => 1,
-        ]);
+        if ($data->status == 1) {
+            $data->update([
+                'pesan' => $request->pesan,
+                'status' => 0,
+            ]);
+        } else if ($data->status == 2) {
+            $data->update([
+                'pesan' => $request->pesan,
+                'status' => 1,
+            ]);
+        } else if ($data->status == 3) {
+            $data->update([
+                'pesan' => $request->pesan,
+                'status' => 2,
+            ]);
+        }
         return response()->json([
             'status' => 'success',
-            'message' => 'Data Berhasil Ditolak'
+            'message' => 'Data Berhasil Disetujui'
         ]);
     }
 }
