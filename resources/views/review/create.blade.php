@@ -343,8 +343,7 @@
            },
            {
                "data": function (data) {
-                    var btn = '
-                        <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modalLhp('+$row.id_rekom+')">Edit</span>';
+                    var btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modalLhp('+$row.id_rekom+')">Edit</span>';
                         return $btn;
                    },
                sDefaultContent: ""
