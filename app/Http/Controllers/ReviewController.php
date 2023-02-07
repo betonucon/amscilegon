@@ -225,7 +225,6 @@ class ReviewController extends Controller
 
         $role=Auth::user()['role_id'];
         dd($role);
-        $group=$role->Roles->sts;
         $data = [
             'id_program_kerja' => $request->id_program_kerja,
             'uraian_temuan' => $request->uraian_temuan,
@@ -233,7 +232,7 @@ class ReviewController extends Controller
             'uraian_rekomendasi' => $request->uraian_rekomendasi,
             'status' => 1,
             'parent_id' => 0,
-            'grouping' =>$group,
+            // 'grouping' =>$group,
         ];
 
         if ($request->hasFile('file_lhp')) {
