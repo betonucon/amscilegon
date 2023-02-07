@@ -298,7 +298,7 @@
                 responsive: true,
                 ajax:"{{ url('pelaporan/review/get-table?id_program_kerja= '.$data->id.'')}}",
                 columns: [
-                    {data: 'id' },
+                    {data: 'id_rekom' },
                     { data: 'file_lhp' },
                     { data: 'uraian_temuan' },
                     { data: 'uraian_penyebab' },
