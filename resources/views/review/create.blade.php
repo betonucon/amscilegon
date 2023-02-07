@@ -291,7 +291,7 @@
     var shiftDataTable;
 
 
-
+    console.log(model)
 
    $(document).ready(function () {
 
