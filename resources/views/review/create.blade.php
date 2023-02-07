@@ -305,7 +305,9 @@
            paging: false,
            "aaSorting": [[5, 'asc']],
            "aaData": model,
-           rowsGroup: [model.uraian_penyebab],
+           rowGroup: {
+                dataSrc: [ 2, 1 ]
+            },
            "aoColumns": [
            {
                "data": function (data) {
