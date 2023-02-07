@@ -297,19 +297,19 @@ $(document).ready(function() {
         function hide_detail(){
             $('#modaldetail').modal('hide');
         }
-        $('#btn-save').on('click', () => {
-        var form=document.getElementById('form-data');
+        $('#btn-sp').on('click', () => {
+        var form=document.getElementById('form-sp');
             $.ajax({
                 type: 'POST',
-                url: "{{url('pelaksanaan/kertas-kerja-pemeriksaan/store')}}",
+                url: "{{url('pelaksanaan/kertas-kerja-pemeriksaan/upload-kkp')}}",
                 data: new FormData(form),
                 contentType: false,
                 cache: false,
                 processData:false,
                 dataType: 'json',
                 beforeSend: function () {
-                    $('#btn-save').attr('disabled', 'disabled');
-                    $('#btn-save').html('Sending..');
+                    $('#btn-sp').attr('disabled', 'disabled');
+                    $('#btn-sp').html('Sending..');
                 },
                 error: function (msg) {
                         var data = msg.responseJSON;
@@ -321,14 +321,14 @@ $(document).ready(function() {
                                 confirmButtonText: 'Ok'
                             }).then((result) => {
                             if (result.isConfirmed) {
-                                $('#btn-save').removeAttr('disabled','false');
-                                $('#btn-save').html('Simpan');
+                                $('#btn-sp').removeAttr('disabled','false');
+                                $('#btn-sp').html('Simpan');
                             }
                         })
                         });
                 },
                 success:  function (msg) {
-                    if (msg == 'success') {
+                    if (msg.status == 'success') {
                         Swal.fire({
                             title: 'Berhasil',
                             text: msg.message,
@@ -336,60 +336,13 @@ $(document).ready(function() {
                             confirmButtonText: 'Ok'
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                window.location.href = "{{url('pelaksanaan/kertas-kerja-pemeriksaan')}}";
+                                location.reload()
                             }
                         })
                     }
                 }
             });
-    });
-
-    $('#btn-save').on('click', () => {
-    var form=document.getElementById('form-data');
-        $.ajax({
-            type: 'POST',
-            url: "{{url('perencanaan/program-kerja-pengawasan/approved')}}",
-            data: new FormData(form),
-            contentType: false,
-            cache: false,
-            processData:false,
-            dataType: 'json',
-            beforeSend: function () {
-                $('#btn-save').attr('disabled', 'disabled');
-                $('#btn-save').html('Sending..');
-            },
-            error: function (msg) {
-                    var data = msg.responseJSON;
-                    $.each(data.errors, function (key, value) {
-                        Swal.fire({
-                            title: 'Gagal',
-                            text: value,
-                            icon: 'error',
-                            confirmButtonText: 'Ok'
-                        }).then((result) => {
-                        if (result.isConfirmed) {
-                            $('#btn-save').removeAttr('disabled','false');
-                            $('#btn-save').html('Simpan');
-                        }
-                    })
-                    });
-            },
-            success:  function (msg) {
-                if (msg.status == 'success') {
-                    Swal.fire({
-                        title: 'Berhasil',
-                        text: msg.message,
-                        icon: 'success',
-                        confirmButtonText: 'Ok'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href = "{{url('perencanaan/program-kerja-pengawasan')}}";
-                        }
-                    })
-                }
-            }
         });
-    });
 
 
     $('#btn-approve').on('click', () => {
