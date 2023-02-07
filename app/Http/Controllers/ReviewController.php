@@ -168,7 +168,7 @@ class ReviewController extends Controller
                         $btn='-'.$g->uraian_rekomendasi;
                     }
                 }
-                $btn=$data->uraian_rekomendasi.' '.'<span class="btn btn-ghost-success waves-effect waves-light" onclick="modalrekom(' . $data['id'] . ')"><i class="mdi mdi-plus-circle-outline"></i></span>';
+                $btn=$data->uraian_rekomendasi.' '.'<span class="btn btn-ghost-success waves-effect waves-light" onclick="modalrekom(' . $data['id_rekom'] . ')"><i class="mdi mdi-plus-circle-outline"></i></span>';
                 return $btn;
             })
 
