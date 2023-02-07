@@ -197,8 +197,11 @@ class ReviewController extends Controller
 
     public function modalrekom(Request $request)
     {
-        $data = Lhp::where('id', $request->id)->first();
-        return view('review.modalrekomendasi', compact('data'));
+        error_reporting(0);
+
+        $program = ProgramKerja::where('id', $request->id)->first();
+        $data = Lhp::where('id_rekom', $request->id_rekom)->first();
+        return view('review.modalrekomendasi', compact('data','program'));
     }
 
     public function modalLhp(Request $request)
@@ -217,12 +220,17 @@ class ReviewController extends Controller
             'file_lhp' => 'required|mimes:pdf|max:2048',
         ]);
 
+        $role=Auth::user()['role_id'];
+        $group=$role->roles->sts;
+
         $data = [
             'id_program_kerja' => $request->id_program_kerja,
             'uraian_temuan' => $request->uraian_temuan,
             'uraian_penyebab' => $request->uraian_penyebab,
             'uraian_rekomendasi' => $request->uraian_rekomendasi,
             'status' => 1,
+            'parent_id' => 0,
+            'grouping' => $group,
         ];
 
         if ($request->hasFile('file_lhp')) {
@@ -231,6 +239,7 @@ class ReviewController extends Controller
             $file->move(public_path('file_lhp'), $name);
             $data['file_lhp'] = $name;
         }
+
 
         Lhp::create($data);
 
@@ -250,12 +259,17 @@ class ReviewController extends Controller
             // 'file_lhp' => 'required|mimes:pdf|max:2048',
         ]);
 
+        $role=Auth::user()['role_id'];
+        $group=$role->roles->sts;
+        
         $data = [
             'id_program_kerja' => $request->id_program_kerja,
             'uraian_temuan' => $request->uraian_temuan,
             'uraian_penyebab' => $request->uraian_penyebab,
             'uraian_rekomendasi' => $request->uraian_rekomendasi,
             'status' => 1,
+            'parent_id' => $request->id_rekom,
+            'grouping' => $group,
         ];
 
 

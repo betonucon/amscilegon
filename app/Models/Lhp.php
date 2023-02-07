@@ -9,7 +9,7 @@ class Lhp extends Model
 {
     use HasFactory;
     protected $table='lhp';
-    protected $guarded=['id'];
+    protected $guarded=['id_rekom'];
 
     public $timestamps = false;
 }
