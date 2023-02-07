@@ -100,8 +100,6 @@ class KertasKerjaController extends Controller
 
         if ($roles >= 4 && $roles <= 7) {
             $data = ProgramKerja::where('grouping',  $group)->where('file_sp', '!=', null)->orderBy('id', 'desc')->get();
-        } else {
-            $data = ProgramKerja::where('file_sp', '!=', null)->orderBy('id', 'desc')->get();
         }
 
 
@@ -176,7 +174,7 @@ class KertasKerjaController extends Controller
                 }
                 return $btn;
             })
-            ->rawColumns(['action', 'pkp', 'nota_dinas', 'file_sp', 'id_pkpt'])
+            ->rawColumns(['file_kkp','action', 'pkp', 'nota_dinas', 'file_sp', 'id_pkpt'])
             ->make(true);
     }
 
