@@ -246,7 +246,7 @@ $(document).ready(function() {
         $('#btn-sp').removeAttr('disabled','false');
         $.ajax({
             type: 'GET',
-            url: "{{url('perencanaan/kertas-kerja-pemeriksaan/tampil-kkp')}}",
+            url: "{{url('pelaksanaan/kertas-kerja-pemeriksaan/tampil-kkp')}}",
             data: "id="+id,
             success: function(msg){
                 $('#table-sp').html(msg);
