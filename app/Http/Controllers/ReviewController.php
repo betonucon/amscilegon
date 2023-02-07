@@ -303,46 +303,46 @@ class ReviewController extends Controller
         } else if ($data->status == 2) {
             $data->update([
                 'pesan_lhp' => $request->pesan_lhp,
-                'status' => 3,
+                'status_lhp' => 3,
             ]);
         } else if ($data->status == 3) {
             $data->update([
                 'pesan_lhp' => $request->pesan_lhp,
-                'status' => 4,
+                'status_lhp' => 4,
             ]);
         } else if ($data->status == 4) {
             $data->update([
                 'pesan_lhp' => $request->pesan_lhp,
-                'status' => 5,
+                'status_lhp' => 5,
             ]);
         }
         return response()->json([
             'status' => 'success',
             'message' => 'Data Berhasil Disetujui'
         ]);
-        $role = Auth::user()->role_id;
+        // $role = Auth::user()->role_id;
 
-        if ($role == 3) {
-            ProgramKerja::where('id', $request->id)->update([
-                'pesan_lhp' => $request->pesan_lhp,
-                'status_lhp' => 2,
-            ]);
-        } else if ($role == 4) {
-            ProgramKerja::where('id', $request->id)->update([
-                'pesan_lhp' => $request->pesan_lhp,
-                'status_lhp' => 3,
-            ]);
-        } else if ($role == 5) {
-            ProgramKerja::where('id', $request->id)->update([
-                'pesan_lhp' => $request->pesan_lhp,
-                'status_lhp' => 4,
-            ]);
-        }
+        // if ($role == 12 && $role==15) {
+        //     ProgramKerja::where('id', $request->id)->update([
+        //         'pesan_lhp' => $request->pesan_lhp,
+        //         'status_lhp' => 3,
+        //     ]);
+        // } else if ($role == 12 && $role==15) {
+        //     ProgramKerja::where('id', $request->id)->update([
+        //         'pesan_lhp' => $request->pesan_lhp,
+        //         'status_lhp' => 3,
+        //     ]);
+        // } else if ($role == 5) {
+        //     ProgramKerja::where('id', $request->id)->update([
+        //         'pesan_lhp' => $request->pesan_lhp,
+        //         'status_lhp' => 4,
+        //     ]);
+        // }
 
-        return response()->json([
-            'status' => 'success',
-            'success' => 'Data berhasil disimpan.'
-        ]);
+        // return response()->json([
+        //     'status' => 'success',
+        //     'success' => 'Data berhasil disimpan.'
+        // ]);
     }
 
     function storeRefused(Request $request)
