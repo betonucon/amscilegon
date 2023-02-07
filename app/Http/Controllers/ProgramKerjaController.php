@@ -94,7 +94,7 @@ class ProgramKerjaController extends Controller
 
         $jenisPkpt = HeaderPkpt::all();
         $data = ProgramKerja::where('id', $request->id)->first();
-        $user = User::where('role_id','>=',12)->where('role_id','<=',15)->get();
+        $user = User::where('role_id', '>=', 12)->where('role_id', '<=', 15)->get();
 
         return view('programkerja.create', compact('jenisPkpt', 'menu', 'headermenu', 'data', 'user'));
     }
@@ -103,11 +103,11 @@ class ProgramKerjaController extends Controller
     {
         error_reporting(0);
         $roles =  Auth::user()->role_id;
-        if($roles >= 12 && $roles <= 15){
-            $data= ProgramKerja::where('role_id', Auth::user()['id'])->where('grouping', Auth::user()->roles->sts)->where('status', 1)->get();
-        }elseif($roles >= 8 && $roles <= 11){
-            $data = ProgramKerja::where('grouping', Auth::user()->roles->sts)->get();
-        }else{
+        if ($roles >= 12 && $roles <= 15) {
+            $data = ProgramKerja::where('role_id', Auth::user()['id'])->where('grouping', Auth::user()->roles->sts)->where('status', 1)->get();
+        } elseif ($roles >= 8 && $roles <= 11) {
+            $data = ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('status', 2)->get();
+        } elseif ($roles == 3) {
             $data = ProgramKerja::orderBy('id', 'desc')->get();
         }
         return Datatables::of($data)
@@ -166,41 +166,34 @@ class ProgramKerjaController extends Controller
                         $btn = 'selesai';
                     }
                 } else if ($roles == 8 && $roles <= 11) {
-                    if ($status == 0) {
+                    if ($status == 1) {
                         $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="approved(' . $row['id'] . ')">Terima</span>
                         <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="refused(' . $row['id'] . ')">Tolak</span>';
-                    } else  if ($status == 1) {
-                        $btn = 'Disposisi Dalnis';
                     } else  if ($status == 2) {
-                        $btn = 'Disposisi Irban';
+                        $btn = 'Disposisi Dalnis';
                     } else  if ($status == 3) {
+                        $btn = 'Disposisi Irban';
+                    } else  if ($status == 4) {
                         $btn = 'Disposisi Inspektur';
                     } else {
                         $btn = 'selesai';
                     }
-
                 } else if ($roles >= 12 && $roles <= 15) {
-                    if ($status == 1) {
+                    if ($status == 2) {
                         $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="approved(' . $row['id'] . ')">Terima</span>
                         <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="refused(' . $row['id'] . ')">Tolak</span>';
-                    } else  if ($status == 1) {
-                        $btn = 'Disposisi Dalnis';
-                    } else  if ($status == 2) {
-                        $btn = 'Disposisi Irban';
                     } else  if ($status == 3) {
+                        $btn = 'Disposisi Dalnis';
+                    } else  if ($status == 4) {
                         $btn = 'Disposisi Inspektur';
                     } else {
                         $btn = 'selesai';
                     }
                 } else if ($roles == 2) {
-                    if ($status == 2) {
+                    if ($status == 3) {
                         $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="approved(' . $row['id'] . ')">Terima</span>
                         <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="refused(' . $row['id'] . ')">Tolak</span>';
-                    } else  if ($status == 1) {
-                        $btn = 'Disposisi Dalnis';
-                    } else  if ($status == 2) {
-                        $btn = 'Disposisi Irban';
-                    } else  if ($status == 3) {
+                    } else  if ($status == 4) {
                         $btn = 'Disposisi Inspektur';
                     } else {
                         $btn = 'selesai';
