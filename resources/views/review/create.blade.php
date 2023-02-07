@@ -19,7 +19,7 @@
                     <div id="example_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
                         <div class="row">
                             <div class="col-sm-12 table-responsive">
-                                <table id="data-table-fixed-header" class="table table-bordered table-responsive dt-responsive nowrap table-striped align-middle dataTable no-footer dtr-inline collapsed" style="width: 100%;" >
+                                <table id="shiftTable" class="table table-bordered table-responsive dt-responsive nowrap table-striped align-middle dataTable no-footer dtr-inline collapsed" style="width: 100%;" >
                                     <thead>
                                         <tr>
                                             <th width="1%" scope="col">No</th>
@@ -284,9 +284,70 @@
     }
 
 </script>
+<script type="text/javascript">
+    var tes = {!! json_encode($get) !!};
 
-<script>
-        var handleDataTableFixedHeader = function() {
+    var model = tes;
+    var shiftDataTable;
+
+
+
+
+   $(document).ready(function () {
+
+           DisplayShiftTableData(model);
+
+       });
+
+   function DisplayShiftTableData(model) {
+        shiftDataTable = $('#shiftTable').dataTable({
+           //"bRetrieve": true,
+        //    "sPaginationType": "full_numbers",
+           paging: false,
+           //"bProcessing": true,
+           //"bAutoWidth": false,
+           //"bStateSave": true,
+           "aaSorting": [[4, 'asc']],
+           "aaData": model,
+           rowsGroup: [0,1],
+           "aoColumns": [
+           {
+               "data": function (data) {
+                       return data[0];
+                   },
+               sDefaultContent: ""
+           },
+           {
+               "data": function (data) {
+                       return data[1];
+                   },
+               sDefaultContent: ""
+           },
+           {
+               "data": function (data) {
+                       return data[2];
+                   },
+               sDefaultContent: ""
+           },
+           {
+               "data": function (data) {
+                       return data[3];
+                   },
+               sDefaultContent: ""
+           },
+           {
+               "data": function (data) {
+                       return data[4];
+                   },
+               sDefaultContent: ""
+           },
+
+           ]
+       });
+   }
+</script>
+{{-- <script>
+    var handleDataTableFixedHeader = function() {
         "use strict";
         if ($('#data-table-fixed-header').length !== 0) {
             var table=$('#data-table-fixed-header').DataTable({
@@ -330,6 +391,6 @@
 			TableManageFixedHeader.init();
 
 		});
-</script>
+</script> --}}
 
 @endpush
