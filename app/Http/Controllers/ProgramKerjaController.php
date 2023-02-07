@@ -94,7 +94,7 @@ class ProgramKerjaController extends Controller
 
         $jenisPkpt = HeaderPkpt::all();
         $data = ProgramKerja::where('id', $request->id)->first();
-        $user = User::where('role_id', '>=', 12)->where('role_id', '<=', 15)->get();
+        $user = Role::where('id', '>=', 12)->where('id', '<=', 15)->get();
 
         return view('programkerja.create', compact('jenisPkpt', 'menu', 'headermenu', 'data', 'user'));
     }
