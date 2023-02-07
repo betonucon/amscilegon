@@ -14,10 +14,10 @@
                     @csrf
                     <div class="mb-3">
                         <label class="form-label">Hak Akses</label>
-                        <select class="form-control"  name="role_id">
+                        <select class="form-control"  name="grouping">
                             <option value=""> --Pilih-- </option>
                             @foreach ($user as $el)
-                            <option value="{{ $el->id }}">{{ $el->name.'-'.$el->Roles->nama }} </option>
+                            <option value="{{ $el->sts }}">{{ $el->name.'-'.$el->Roles->nama }} </option>
                         @endforeach
                         </select>
                     </div>

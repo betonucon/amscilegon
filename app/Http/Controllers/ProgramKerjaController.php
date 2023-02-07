@@ -220,7 +220,7 @@ class ProgramKerjaController extends Controller
             'jenis' => $get->nomor_pkpt,
             'status' => 0,
             'role_id' => $request->role_id,
-            'grouping' => Auth::user()->roles->sts,
+            'grouping' => $request->grouping,
         ];
 
         if ($files = $request->file('pkp')) {
