@@ -51,7 +51,7 @@ class SuratPerintahController extends Controller
         //     $data = ProgramKerja::orderBy('id', 'desc')->get();
         // }
 
-        $data = ProgramKerja::where('grouping',  $group)->where('status', 4)->get();
+        $data = ProgramKerja::where('status', 4)->get();
 
         return Datatables::of($data)
             ->addColumn('area_pengawasannya', function ($data) {
@@ -74,8 +74,8 @@ class SuratPerintahController extends Controller
                 if ($data->file_sp == null) {
                     if ($roles == 3) {
                         $notaDinas = '<span class="btn btn-icon-only btn-outline-warning btn-sm mb-1" onclick="tampil_sp(`' . $data['id'] . '`)"><center>Upload</center></span>';
-                    }else{
-                        $notaDinas='Belum Di upload';
+                    } else {
+                        $notaDinas = 'Belum Di upload';
                     }
                 } else {
                     $notaDinas = '<span class="btn btn-icon-only btn-outline-warning btn-sm mb-1" onclick="buka_file(`' . $data['file_sp'] . '`)"><center><img src="' . asset('public/img/pdf-file.png') . '" width="10px" height="10px"></center></span>';

@@ -62,12 +62,12 @@ class KertasKerjaController extends Controller
     {
         error_reporting(0);
         $roles =  Auth::user()->role_id;
-        $group= Auth::user()->roles->sts;
-        if($roles >= 8 && $roles <= 11){
+        $group = Auth::user()->roles->sts;
+        if ($roles >= 8 && $roles <= 11) {
             $data = ProgramKerja::where('grouping',  $group)->where('file_sp', '!=', null)->orderBy('id', 'desc')->get();
-        }else if($roles >= 4 && $roles <= 7){
-            $data= ProgramKerja::where('grouping',  $group)->where('status','>=', 3)->where('file_sp', '!=', null)->orderBy('id', 'desc')->get();
-        }else{
+        } else if ($roles >= 4 && $roles <= 7) {
+            $data = ProgramKerja::where('grouping',  $group)->where('status', '>=', 3)->where('file_sp', '!=', null)->orderBy('id', 'desc')->get();
+        } else {
             $data = ProgramKerja::where('file_sp', '!=', null)->orderBy('id', 'desc')->get();
         }
 
@@ -96,6 +96,20 @@ class KertasKerjaController extends Controller
                 $notaDinas = '<span class="btn btn-icon-only btn-outline-warning btn-sm mt-2" onclick="buka_file(`' . $data['file_sp'] . '`)"><center><img src="' . asset('public/img/pdf-file.png') . '" width="10px" height="10px"></center></span>';
                 return $notaDinas;
             })
+            ->addColumn('file_kkp', function ($data) {
+                $roles =  Auth::user()->role_id;
+                if ($data->file_sp == null) {
+                    if ($roles == 3) {
+                        $notaDinas = '<span class="btn btn-icon-only btn-outline-warning btn-sm mb-1" onclick="tampil_sp(`' . $data['id'] . '`)"><center>Upload</center></span>';
+                    } else {
+                        $notaDinas = 'Belum Di upload';
+                    }
+                } else {
+                    $notaDinas = '<span class="btn btn-icon-only btn-outline-warning btn-sm mb-1" onclick="buka_file(`' . $data['file_sp'] . '`)"><center><img src="' . asset('public/img/pdf-file.png') . '" width="10px" height="10px"></center></span>';
+                }
+
+                return $notaDinas;
+            })
             ->addColumn('action', function ($row) {
                 $roles =  Auth::user()['role_id'];
                 $status = $row['status'];
@@ -112,7 +126,7 @@ class KertasKerjaController extends Controller
                     } else {
                         $btn = 'selesai';
                     }
-                }else if($roles >= 8 && $roles <= 11){
+                } else if ($roles >= 8 && $roles <= 11) {
                     if ($status == 4) {
                         $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Terima</span>
                         <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="modal_refused(' . $row['id'] . ')">Tolak</span>';
@@ -199,7 +213,7 @@ class KertasKerjaController extends Controller
                 'pesan' => $request->pesan,
                 'status' => 5,
             ]);
-        } 
+        }
         return response()->json([
             'status' => 'success',
             'message' => 'Data Berhasil Diapproved'
@@ -219,7 +233,7 @@ class KertasKerjaController extends Controller
                 'pesan' => $request->pesan,
                 'status' => 4,
             ]);
-        } 
+        }
         return response()->json([
             'status' => 'success',
             'message' => 'Data Berhasil Diapproved'
