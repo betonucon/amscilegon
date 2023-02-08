@@ -188,8 +188,17 @@ class ReviewController extends Controller
         $id=$request->id;
         $data = ProgramKerja::where('id', $request->id)->first();
         $get = Lhp::where('id_program_kerja', $data->id)->orderBy('parent_id','Asc')->get();
+        $output=[];
+        foreach ($get as $k) {
+            $output[]=[
+                $k->file_lhp,
+                $k->uraian_temuan,
+                $k->uraian_penyebab,
+                $k->uraian_rekomendasi,
 
-        return view('review.create', compact('headermenu', 'menu', 'data','get'));
+            ];
+        }
+        return view('review.create', compact('headermenu', 'menu', 'data','output'));
     }
 
     public function modal(Request $request)

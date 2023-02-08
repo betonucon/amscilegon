@@ -33,7 +33,7 @@
                                     <tbody>
                                         <?php
                                             $current_category = null;
-                                            foreach ($get as $row) {
+                                            foreach ($output as $row) {
                                                 echo "<td>" . $row[0] . "</td>";
                                                 echo "<td>" . $row[1] . "</td>";
                                                 if ($current_category != $row[2]) {
