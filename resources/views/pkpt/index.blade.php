@@ -123,7 +123,6 @@
                             </form>
 					</div>
 					<div class="modal-footer">
-						<button  class="btn btn-white" onclick="hide()">Tutup</button>
 						<span onclick="downloadexcell()"  class="btn btn-success">Simpan</span>
 					</div>
 				</div>
