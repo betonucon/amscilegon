@@ -187,7 +187,7 @@ class ReviewController extends Controller
         $menu = 'Reviu';
         $id=$request->id;
         $data = ProgramKerja::where('id', $request->id)->first();
-        $get = Lhp::where('id_program_kerja', $data->id)->orderBy('parent_id','Asc')->get();
+        $get = Lhp::where('id_program_kerja', $data->id)->orderBy('parent_id','Asc')->distinct()->count('uraian_penyebab')->get();
 
         return view('review.create', compact('headermenu', 'menu', 'data','get'));
     }
