@@ -41,17 +41,17 @@
                                             ["Vegetable", "Tomato"],
                                             ];
                                             $current_category = null;
-                                            foreach ($data as $row) {
-                                            if ($current_category != $row[0]) {
+                                            foreach ($get as $row) {
+                                            if ($current_category != $row[2]) {
                                                 if (!is_null($current_category)) {
                                                 echo "</tbody></tr>";
                                                 }
-                                                echo "<tr><td rowspan='" . count(array_filter($data, function($d) use ($row) { return $d[0] == $row[0]; })) . "'>" . $row[0] . "</td>";
-                                                $current_category = $row[0];
+                                                echo "<tr><td rowspan='" . count(array_filter($data, function($d) use ($row) { return $d[2] == $row[2]; })) . "'>" . $row[0] . "</td>";
+                                                $current_category = $row[2];
                                             } else {
                                                 echo "<tr>";
                                             }
-                                            echo "<td>" . $row[1] . "</td></tr>";
+                                            echo "<td>" . $row[3] . "</td></tr>";
                                             }
                                         ?>
                                     </tbody>
