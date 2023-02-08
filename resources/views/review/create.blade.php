@@ -391,7 +391,7 @@
                     [1, 'asc']
                 ],
                 rowGroup: {
-                    dataSrc: 1
+                    dataSrc: 3
                 }
             });
         }
