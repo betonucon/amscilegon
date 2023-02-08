@@ -34,16 +34,17 @@
                                         <?php
                                             $current_category = null;
                                             foreach ($output as $row) {
+                                                echo "<tr>";
                                                 echo "<td>" . $row[0] . "</td>";
                                                 echo "<td>" . $row[1] . "</td>";
                                                 if ($current_category != $row[2]) {
                                                     if (!is_null($current_category)) {
-                                                    echo "</tbody></tr>";
+                                                    // echo "</tbody></tr>";
                                                     }
                                                     echo "<tr><td rowspan='" . count(array_filter($output, function($d) use ($row) { return $d[2] == $row[2]; })) . "'>" . $row[2] . "</td>";
                                                     $current_category = $row[2];
                                                 } else {
-                                                    echo "<tr>";
+                                                    // echo "<tr>";
                                                 }
                                                 echo "<td>" . $row[3] . "</td>";
                                                 echo "<td>" . $row[3] . "</td>";
