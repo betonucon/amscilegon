@@ -32,9 +32,11 @@
                                     </thead>
                                     <tbody>
                                         <?php
+                                        $no=1;
                                             $current_category = null;
                                             foreach ($output as $row) {
                                                 echo "<tr>";
+                                                echo "<td>" . $no++. "</td>";
                                                 echo "<td>" . $row[0] . "</td>";
                                                 echo "<td>" . $row[1] . "</td>";
                                                 if ($current_category != $row[2]) {
