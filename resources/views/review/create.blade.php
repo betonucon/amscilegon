@@ -302,7 +302,7 @@
     $(document).ready(function() {
     $('#example').DataTable({
         "rowGroup": {
-            "dataSrc": 0
+            "dataSrc": 3,
         }
     });
 });
