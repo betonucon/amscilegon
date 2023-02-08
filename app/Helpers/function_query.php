@@ -15,6 +15,12 @@ function cekstatus($pkpt,$status)
     return $data;
 }
 
+function group($id,$uraian)
+{
+    $data = Lhp::where('id_rekom', $id)->where('uraian_penyebab', $uraian)->count();
+    return $data;
+}
+
 function nomor_pkpt()
 {
 

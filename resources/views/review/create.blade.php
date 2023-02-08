@@ -37,12 +37,8 @@
                                         @foreach ($get as $g)
                                             <tr>
                                                 <td>{{ $no++ }}</td>
-                                                <td>{{ $g->file_lhp }}</td>
-                                                @if (count($g->uraian_temuan)>0)
-                                                    <td rowspan="{{ count($g->uraian_temuan) }}">{{ $g->uraian_temuan }}</td>
-                                                @else  
-                                                    <td>{{ $g->uraian_temuan }}</td>
-                                                @endif
+                                                <td>{{ $g->file_lhp }}</td> 
+                                                <td rowspan="{{ group($g->id_rekom,$uraian_penyebab) }}">{{ $g->uraian_temuan }}</td>
                                                 <td>{{ $g->uraian_penyebab }}</td>
                                                 <td>{{ $g->uraian_rekomendasi }}</td>
                                             </tr>                                          
