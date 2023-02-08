@@ -38,7 +38,7 @@
                                             <tr>
                                                 <td>{{ $no++ }}</td>
                                                 <td>{{ $g->file_lhp }}</td>
-                                                <td rowspan="{{ group($g->grouping,$g->uraian_penyebab) }}">{{ $g->uraian_temuan }}</td>
+                                                <td rowspan="{{ group($g->grouping,$g->uraian_penyebab) }}">{{ $g->uraian_temuan->distinc() }}</td>
                                                 <td>{{ $g->uraian_penyebab }}</td>
                                                 <td>{{ $g->uraian_rekomendasi }}</td>
                                             </tr>                                          
