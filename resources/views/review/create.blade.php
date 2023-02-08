@@ -30,7 +30,25 @@
                                             <th >Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody></tbody>
+                                    <tbody>
+                                        @php
+                                            $no=1
+                                        @endphp
+                                        @foreach ($get as $g)
+                                        <?php $cek= $g->uraian_temuan->count() ?>
+                                            <tr>
+                                                <td>{{ $no++ }}</td>
+                                                <td>{{ $g->file_lhp }}</td>
+                                                @if ($cek>0)
+                                                    <td rowspan="{{ $cek }}">{{ $g->uraian_temuan }}</td>
+                                                @else  
+                                                    <td>{{ $g->uraian_temuan }}</td>
+                                                @endif
+                                                <td>{{ $g->uraian_penyebab }}</td>
+                                                <td>{{ $g->uraian_rekomendasi }}</td>
+                                            </tr>                                          
+                                        @endforeach
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -285,7 +303,7 @@
     }
 
 </script>
-<script type="text/javascript">
+{{-- <script type="text/javascript">
     var tes = {!! json_encode($output) !!};
 
     var model = tes;
@@ -347,7 +365,7 @@
            ]
        });
    }
-</script>
+</script> --}}
 {{-- <script>
     var handleDataTableFixedHeader = function() {
         "use strict";
