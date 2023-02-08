@@ -39,20 +39,11 @@ class SuratPerintahController extends Controller
     {
         error_reporting(0);
         $roles =  Auth::user()->role_id;
-        $group = Auth::user()->roles->sts;
-        // if($roles >= 12 && $roles <= 15){
-        //     $data='';
-        // }elseif($roles >= 12 && $roles <= 15){
-        // }elseif($roles >= 8 && $roles <= 11){
-        //     $data = ProgramKerja::where('grouping',  $group)->get();
-        // }else if($roles >= 4 && $roles <= 7){
-        //     $data= ProgramKerja::where('grouping',  $group)->where('status', 3)->get();
-        // }else{
-        //     $data = ProgramKerja::orderBy('id', 'desc')->get();
-        // }
-
-        $data = ProgramKerja::where('status', 4)->get();
-
+        if ($roles == 2 || $roles == 3) {
+            $data = ProgramKerja::where('status', 3)->get();
+        } else {
+            $data = ProgramKerja::where('grouping', Auth::user()->roles->sts)->get();
+        }
         return Datatables::of($data)
             ->addColumn('area_pengawasannya', function ($data) {
                 return '<a href="javascript:;" onclick="tampil(`' . $data->id_pkpt . '`)">' . substr($data->pkpt->area_pengawasan, 0, 50) . '...</a>';

@@ -89,23 +89,12 @@ class KertasKerjaController extends Controller
     {
         error_reporting(0);
         $roles =  Auth::user()->role_id;
-        $group = Auth::user()->roles->sts;
-        // if ($roles >= 8 && $roles <= 11) {
-        //     $data = ProgramKerja::where('grouping',  $group)->where('file_sp', '!=', null)->orderBy('id', 'desc')->get();
-        // } else if ($roles >= 4 && $roles <= 7) {
-        //     $data = ProgramKerja::where('grouping',  $group)->where('status', '>=', 3)->where('file_sp', '!=', null)->orderBy('id', 'desc')->get();
-        // } else {
-        //     $data = ProgramKerja::where('file_sp', '!=', null)->orderBy('id', 'desc')->get();
-        // }
 
-        if ($roles >= 4 && $roles <= 7) {
-            $data = ProgramKerja::where('grouping',  $group)->where('file_sp', '!=', null)->orderBy('id', 'desc')->get();
-        }elseif ($roles >= 8 && $roles <= 11) {
-            $data = ProgramKerja::where('grouping',  $group)->where('file_kkp', '!=', null)->orderBy('id', 'desc')->where('status', 4)->get();
-        }else{
-            $data = ProgramKerja::where('grouping',  $group)->where('file_kkp', '!=', null)->orderBy('id', 'desc')->get();
+        if ($roles == 2 || $roles == 3) {
+            $data = ProgramKerja::where('file_sp', '!=', null)->get();
+        } else {
+            $data = ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('file_sp', '!=', null)->get();
         }
-
 
         return Datatables::of($data)
             ->addColumn('id_pkpt', function ($data) {
@@ -149,19 +138,36 @@ class KertasKerjaController extends Controller
             ->addColumn('action', function ($row) {
                 $roles =  Auth::user()['role_id'];
                 $status = $row['status'];
-                if ($roles >= 8 && $roles <= 11) {
-                    if ($status == 4) {
+                if ($roles >= 4 && $roles <= 7) {
+                    if ($status == 3) {
+                        $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="edit(' . $row['id'] . ')">Edit</span>
+                        <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="hapus(' . $row['id'] . ')">Delete</span>';
+                    } else {
+                        $btn = 'Penyusunan LHP';
+                    }
+                } elseif ($roles >= 8 && $roles <= 11) {
+                    if ($status == 3) {
                         $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Terima</span>
                         <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="modal_refused(' . $row['id'] . ')">Tolak</span>';
-                    } else  if ($status == 4) {
+                    } else {
+                        $btn = 'Penyusunan LHP';
+                    }
+                } elseif ($roles >= 12 && $roles <= 15) {
+                    if ($status == 3) {
                         $btn = 'Disposisi Dalnis';
                     } else {
-                        $btn = 'selesai';
+                        $btn = 'Penyusunan LHP';
+                    }
+                } elseif ($roles == 2 || $roles == 3) {
+                    if ($status == 3) {
+                        $btn = 'Disposisi Dalnis';
+                    } else {
+                        $btn = 'Penyusunan LHP';
                     }
                 }
                 return $btn;
             })
-            ->rawColumns(['file_kkp','action', 'pkp', 'nota_dinas', 'file_sp', 'id_pkpt'])
+            ->rawColumns(['file_kkp', 'action', 'pkp', 'nota_dinas', 'file_sp', 'id_pkpt'])
             ->make(true);
     }
 
@@ -227,11 +233,6 @@ class KertasKerjaController extends Controller
                 'pesan' => $request->pesan,
                 'status' => 4,
             ]);
-        } else if ($data->status == 4) {
-            $data->update([
-                'pesan' => $request->pesan,
-                'status' => 5,
-            ]);
         }
         return response()->json([
             'status' => 'success',
@@ -246,11 +247,6 @@ class KertasKerjaController extends Controller
             $data->update([
                 'pesan' => $request->pesan,
                 'status' => 3,
-            ]);
-        } else if ($data->status == 4) {
-            $data->update([
-                'pesan' => $request->pesan,
-                'status' => 4,
             ]);
         }
         return response()->json([
