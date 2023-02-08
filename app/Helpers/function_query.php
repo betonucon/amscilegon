@@ -15,9 +15,9 @@ function cekstatus($pkpt,$status)
     return $data;
 }
 
-function group($id,$uraian)
+function group($group,$uraian)
 {
-    $data = Lhp::where('id_rekom', $id)->where('uraian_penyebab', $uraian)->count();
+    $data = Lhp::where('grouping', $group)->where('uraian_penyebab', $uraian)->count();
     return $data;
 }
 
