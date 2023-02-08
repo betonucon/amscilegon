@@ -30,20 +30,31 @@
                                             <th >Action</th>
                                         </tr>
                                     </thead>
-                                    {{-- <tbody>
-                                        @php
-                                            $no=1
-                                        @endphp
-                                        @foreach ($get as $g)
-                                            <tr>
-                                                <td>{{ $no++ }}</td>
-                                                <td>{{ $g->file_lhp }}</td>
-                                                <td>{{ $g->uraian_temuan }}</td>
-                                                <td>{{ $g->uraian_penyebab }}</td>
-                                                <td>{{ $g->uraian_rekomendasi }}</td>
-                                            </tr>                                          
-                                        @endforeach
-                                    </tbody> --}}
+                                    <tbody>
+                                        <?php
+                                            $data = [
+                                            ["Fruit", "Apple"],
+                                            ["Fruit", "Banana"],
+                                            ["Vegetable", "Carrot"],
+                                            ["Vegetable", "Potato"],
+                                            ["Fruit", "Grapes"],
+                                            ["Vegetable", "Tomato"],
+                                            ];
+                                            $current_category = null;
+                                            foreach ($data as $row) {
+                                            if ($current_category != $row[0]) {
+                                                if (!is_null($current_category)) {
+                                                echo "</tbody></tr>";
+                                                }
+                                                echo "<tr><td rowspan='" . count(array_filter($data, function($d) use ($row) { return $d[0] == $row[0]; })) . "'>" . $row[0] . "</td>";
+                                                $current_category = $row[0];
+                                            } else {
+                                                echo "<tr>";
+                                            }
+                                            echo "<td>" . $row[1] . "</td></tr>";
+                                            }
+                                        ?>
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -361,7 +372,7 @@
        });
    }
 </script> --}}
-<script>
+{{-- <script>
     var handleDataTableFixedHeader = function() {
         "use strict";
         if ($('#data-table-fixed-header').length !== 0) {
@@ -410,6 +421,6 @@
 			TableManageFixedHeader.init();
 
 		});
-</script>
+</script> --}}
 
 @endpush
