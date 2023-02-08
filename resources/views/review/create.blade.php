@@ -19,7 +19,7 @@
                     <div id="example_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
                         <div class="row">
                             <div class="col-sm-12 table-responsive">
-                                <table id="shiftTable" class="table table-bordered table-responsive dt-responsive nowrap table-striped align-middle dataTable no-footer dtr-inline collapsed" style="width: 100%;" >
+                                <table id="example" class="table table-bordered table-responsive dt-responsive nowrap table-striped align-middle dataTable no-footer dtr-inline collapsed" style="width: 100%;" >
                                     <thead>
                                         <tr>
                                             <th width="1%" scope="col">No</th>
@@ -38,7 +38,7 @@
                                             <tr>
                                                 <td>{{ $no++ }}</td>
                                                 <td>{{ $g->file_lhp }}</td>
-                                                <td rowspan="{{ group($g->grouping,$g->uraian_penyebab) }}">{{ $g->uraian_temuan }}</td>
+                                                <td>{{ $g->uraian_temuan }}</td>
                                                 <td>{{ $g->uraian_penyebab }}</td>
                                                 <td>{{ $g->uraian_rekomendasi }}</td>
                                             </tr>                                          
@@ -297,6 +297,15 @@
         })
     }
 
+</script>
+<script>
+    $(document).ready(function() {
+    $('#example').DataTable({
+        "rowGroup": {
+            "dataSrc": 0
+        }
+    });
+});
 </script>
 {{-- <script type="text/javascript">
     var tes = {!! json_encode($output) !!};
