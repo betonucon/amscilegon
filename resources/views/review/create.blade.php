@@ -19,7 +19,7 @@
                     <div id="example_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
                         <div class="row">
                             <div class="col-sm-12 table-responsive">
-                                <table id="example" class="display table table-bordered table-responsive dt-responsive nowrap table-striped align-middle dataTable no-footer dtr-inline collapsed" style="width: 100%;" >
+                                <table id="data-table-fixed-header" class="display table table-bordered table-responsive dt-responsive nowrap table-striped align-middle dataTable no-footer dtr-inline collapsed" style="width: 100%;" >
                                     <thead>
                                         <tr>
                                             <th width="1%" scope="col">No</th>
@@ -30,7 +30,7 @@
                                             <th >Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    {{-- <tbody>
                                         @php
                                             $no=1
                                         @endphp
@@ -43,7 +43,7 @@
                                                 <td>{{ $g->uraian_rekomendasi }}</td>
                                             </tr>                                          
                                         @endforeach
-                                    </tbody>
+                                    </tbody> --}}
                                 </table>
                             </div>
                         </div>
@@ -298,15 +298,6 @@
     }
 
 </script>
-<script>
-    $(document).ready(function() {
-    $('#example').DataTable({
-        "rowGroup": {
-            "dataSrc": 3,
-        }
-    });
-});
-</script>
 {{-- <script type="text/javascript">
     var tes = {!! json_encode($output) !!};
 
@@ -370,7 +361,7 @@
        });
    }
 </script> --}}
-{{-- <script>
+<script>
     var handleDataTableFixedHeader = function() {
         "use strict";
         if ($('#data-table-fixed-header').length !== 0) {
@@ -381,7 +372,6 @@
                     headerOffset: $('#header').height()
                 },
                 responsive: true,
-                rowsGroup: [2,3],
                 ajax:"{{ url('pelaporan/review/get-table?id_program_kerja= '.$data->id.'')}}",
                 columns: [
                     {data: 'id_rekom' },
@@ -396,6 +386,12 @@
                         previous: '<< previous',
                         next: 'Next>>'
                     }
+                },
+                order: [
+                    [1, 'asc']
+                ],
+                rowGroup: {
+                    dataSrc: 1
                 }
             });
         }
@@ -415,6 +411,6 @@
 			TableManageFixedHeader.init();
 
 		});
-</script> --}}
+</script>
 
 @endpush
