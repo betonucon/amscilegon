@@ -35,12 +35,11 @@
                                             $no=1
                                         @endphp
                                         @foreach ($get as $g)
-                                        <?php $cek= $g->uraian_temuan->count() ?>
                                             <tr>
                                                 <td>{{ $no++ }}</td>
                                                 <td>{{ $g->file_lhp }}</td>
-                                                @if ($cek>0)
-                                                    <td rowspan="{{ $cek }}">{{ $g->uraian_temuan }}</td>
+                                                @if (count($g->uraian_temuan)>0)
+                                                    <td rowspan="{{ count($g->uraian_temuan) }}">{{ $g->uraian_temuan }}</td>
                                                 @else  
                                                     <td>{{ $g->uraian_temuan }}</td>
                                                 @endif
