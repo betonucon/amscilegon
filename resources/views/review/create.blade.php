@@ -33,23 +33,20 @@
                                     <tbody>
                                         <?php
                                         $no=1;
-                                            $current_category = null;
+                                            $current_gender = "";
                                             foreach ($output as $row) {
-                                                echo "<tr>";
-                                                echo "<td>" . $no++. "</td>";
+                                                if ($row[2] != $current_gender) {
+                                                if ($current_gender != "") {
+                                                    echo "</tbody></table>";
+                                                }
+                                                $current_gender = $row[2];
+                                                echo "<tr><td colspan='4'><b>Jenis Kelamin: $current_gender</b></td></tr>";
+                                                echo "<tbody><tr>";
+                                                }
                                                 echo "<td>" . $row[0] . "</td>";
                                                 echo "<td>" . $row[1] . "</td>";
-                                                if ($current_category != $row[2]) {
-                                                    if (!is_null($current_category)) {
-                                                        // echo "</tbody></tr>";
-                                                    }
-                                                        echo "<td rowspan='" . count(array_filter($output, function($d) use ($row) { return $d[2] == $row[2]; })) . "'>" . $row[2] . "</td>";
-                                                    $current_category = $row[2];
-                                                } else {
-                                                    // echo "<tr>";
-                                                }
+                                                echo "<td>" . $row[2] . "</td>";
                                                 echo "<td>" . $row[3] . "</td>";
-                                                echo "<td>" . $row[4] . "</td>";
                                                 echo "</tr>";
                                             }
                                         ?>
