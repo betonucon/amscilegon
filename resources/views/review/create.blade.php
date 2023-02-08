@@ -388,7 +388,7 @@
                     }
                 },
                 order: [
-                    [1, 'asc']
+                    [3, 'asc']
                 ],
                 rowGroup: {
                     dataSrc: 3
