@@ -34,7 +34,7 @@
 		<div class="row">
 			<div class="col-lg-12">
                     <div class="col-sm-12 col-md-6 mb-3">
-                        @if (Auth::user()->role_id == 3)
+                        @if ( Auth::user()->role_id >= 4 &&  Auth::user()->role_id  <= 7)
                             <button onclick="tambah(0)" class="btn btn-sm btn-success waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Tambah</button>
                         @endif
                     </div>
@@ -48,7 +48,6 @@
                                             <tr>
                                                 <th width="1%" scope="col">No</th>
                                                 <th>Area Pengawasan</th>
-                                                {{-- <th>Jenis PKPT</th> --}}
                                                 <th>PKP</th>
                                                 <th>Nota Dinas</th>
                                                 <th>Status</th>
@@ -104,6 +103,10 @@
 							@csrf
 							<div id="tampil-refused"></div>
 						</form>
+					</div>
+                    <div class="modal-footer">
+						<button  class="btn btn-white" onclick="hide()">Tutup</button>
+						<button id="btn-refused"  class="btn btn-success">Simpan</button>
 					</div>
 				</div>
 			</div>

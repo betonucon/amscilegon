@@ -26,10 +26,13 @@
 			<div class="col-lg-12">
                 <div class="row pb-3">
                     <div class="col-sm-12 col-md-6">
-                        {{-- <span class="js-upload-file-btn btn btn-sm btn-primary waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Tambah</span> --}}
+                        @if (Auth::user()->role_id == 2)
                         <span onclick="tambah(0)" class="btn btn-sm btn-success waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Upload Excel</span>
+                        @endif
                         <span onclick="download()" class="btn btn-sm btn-primary waves-effect waves-light "><i class="mdi mdi-download"></i> Download Excel</span>
+                        @if (Auth::user()->role_id == 2 ||  Auth::user()->role_id >= 8 && Auth::user()->role_id <= 11)
                         <span onclick="tambahNonPkpt()" class="btn btn-sm btn-warning waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Non PKPT</span>
+                        @endif
                     </div>
                     <div class="col-sm-12 col-md-6">
 
