@@ -188,6 +188,7 @@ class ReviewController extends Controller
         $id=$request->id;
         $data = ProgramKerja::where('id', $request->id)->first();
         $get = Lhp::where('id_program_kerja', $data->id)->orderBy('parent_id','Asc')->get();
+        $count = Lhp::where('id_program_kerja', $data->id)->count();
         $output=[];
         foreach ($get as $k) {
             $output[]=[
@@ -199,7 +200,7 @@ class ReviewController extends Controller
 
             ];
         }
-        return view('review.create', compact('headermenu', 'menu', 'data','output'));
+        return view('review.create', compact('headermenu', 'menu', 'data','output','count'));
     }
 
     public function modal(Request $request)

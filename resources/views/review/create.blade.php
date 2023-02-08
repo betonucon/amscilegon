@@ -36,12 +36,12 @@
                                             $current_gender = "";
                                             foreach ($output as $row) {
                                                 if ($row[2] != $current_gender) {
-                                                if ($current_gender != "") {
-                                                    echo "</tbody></table>";
-                                                }
-                                                $current_gender = $row[2];
-                                                echo "<tr><td colspan='4'><b>Jenis Kelamin: $current_gender</b></td></tr>";
-                                                echo "<tbody><tr>";
+                                                    if ($current_gender != "") {
+                                                        echo "</tbody></table>";
+                                                    }
+                                                    $current_gender = $row[2];
+                                                    echo "<tr><td colspan='". count(array_filter($output, function($d) use ($row) { return $d[2] == $row[2]; })) ."'>$current_gender</td></tr>";
+                                                    echo "<tbody><tr>";
                                                 }
                                                 echo "<td>" . $row[0] . "</td>";
                                                 echo "<td>" . $row[1] . "</td>";
