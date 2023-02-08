@@ -303,7 +303,7 @@
    function DisplayShiftTableData(model) {
         shiftDataTable = $('#shiftTable').dataTable({
            paging: false,
-           "aaSorting": [[6, 'asc']],
+           "aaSorting": [[5, 'asc']],
            "aaData": model,
            rowGroup: [3,4],
            "aoColumns": [
