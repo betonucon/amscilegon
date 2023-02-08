@@ -387,7 +387,9 @@
                         next: 'Next>>'
                     }
                 },
+                order: [[3, 'asc']],
                 rowGroup: {
+                    enable: true,
                     dataSrc: 3
                 }
             });
