@@ -286,7 +286,7 @@
 
 </script>
 <script type="text/javascript">
-    var tes = {!! json_encode($get) !!};
+    var tes = {!! json_encode($output) !!};
 
     var model = tes;
     var shiftDataTable;
@@ -315,25 +315,25 @@
            },
            {
                "data": function (data) {
-                       return data.file_lhp;
+                       return data[1];
                    },
                sDefaultContent: ""
            },
            {
                "data": function (data) {
-                       return data.uraian_temuan;
+                       return data[2];
                    },
                sDefaultContent: ""
            },
            {
                "data": function (data) {
-                       return data.uraian_penyebab;
+                       return data[3];
                    },
                sDefaultContent: ""
            },
            {
                "data": function (data) {
-                       return data.uraian_rekomendasi+' '+'<span class="btn btn-ghost-success waves-effect waves-light" onclick="modalrekom('+data.id_rekom+')"><i class="mdi mdi-plus-circle-outline"></i></span>';
+                       return data[4]+' '+'<span class="btn btn-ghost-success waves-effect waves-light" onclick="modalrekom('+data.id_rekom+')"><i class="mdi mdi-plus-circle-outline"></i></span>';
                    },
                sDefaultContent: ""
            },
