@@ -19,7 +19,7 @@
                     <div id="example_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
                         <div class="row">
                             <div class="col-sm-12 table-responsive">
-                                <table id="example" class="table table-bordered table-responsive dt-responsive nowrap table-striped align-middle dataTable no-footer dtr-inline collapsed" style="width: 100%;" >
+                                <table id="example" class="display table table-bordered table-responsive dt-responsive nowrap table-striped align-middle dataTable no-footer dtr-inline collapsed" style="width: 100%;" >
                                     <thead>
                                         <tr>
                                             <th width="1%" scope="col">No</th>
