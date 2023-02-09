@@ -19,7 +19,43 @@
                     <div id="example_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
                         <div class="row">
                             <div class="col-sm-12 table-responsive">
-                                <table id="data-table-fixed-header" class="display table table-bordered table-responsive dt-responsive nowrap table-striped align-middle dataTable no-footer dtr-inline collapsed" style="width: 100%;" >
+                                <table border="1">
+                                    <thead>
+                                      <tr>
+                                        <th>No</th>
+                                        <th>Nama</th>
+                                        <th>Jenis Kelamin</th>
+                                        <th>Umur</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <?php 
+                                        $data = array(
+                                          array("1", "John Doe", "Laki-laki", "30"),
+                                          array("2", "Jane Doe", "Perempuan", "25"),
+                                          array("3", "Jim Smith", "Laki-laki", "35"),
+                                          array("4", "Sarah Johnson", "Perempuan", "28")
+                                        );
+                                        $current_gender = "";
+                                        foreach ($data as $row) {
+                                          if ($row[2] != $current_gender) {
+                                            if ($current_gender != "") {
+                                              echo "</tbody></table>";
+                                            }
+                                            $current_gender = $row[2];
+                                            echo "<tr><td colspan='4'><b>Jenis Kelamin: $current_gender</b></td></tr>";
+                                            echo "<tbody><tr>";
+                                          }
+                                          echo "<td>" . $row[0] . "</td>";
+                                          echo "<td>" . $row[1] . "</td>";
+                                          echo "<td>" . $row[2] . "</td>";
+                                          echo "<td>" . $row[3] . "</td>";
+                                          echo "</tr>";
+                                        }
+                                      ?>
+                                    </tbody>
+                                  </table>
+                                {{-- <table id="data-table-fixed-header" class="display table table-bordered table-responsive dt-responsive nowrap table-striped align-middle dataTable no-footer dtr-inline collapsed" style="width: 100%;" >
                                     <thead>
                                         <tr>
                                             <th width="1%" scope="col">No</th>
@@ -51,7 +87,7 @@
                                             }
                                         ?>
                                     </tbody>
-                                </table>
+                                </table> --}}
                             </div>
                         </div>
                     </div>
