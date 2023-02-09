@@ -268,11 +268,7 @@ class ReviewController extends Controller
             $data['file_lhp'] = $name;
         }
 
-        if($request->id_rekom > 0){
-            Lhp::where('id_rekom',$request->id_rekom)->update($data);
-        }else{
-            Lhp::create($data);
-        }
+        Lhp::create($data);
         
 
         return response()->json([
@@ -307,11 +303,7 @@ class ReviewController extends Controller
             'grouping' => $roles->sts,
         ];
 
-        if($request->id_rekom > 0){
-            Lhp::where('id_rekom',$request->id_rekom)->update($data);
-        }else{
-            Lhp::create($data);
-        }
+        Lhp::create($data);
 
         return response()->json([
             'status' => 'success',
