@@ -187,7 +187,7 @@ class ReviewController extends Controller
         $menu = 'Reviu';
         $id=$request->id;
         $data = ProgramKerja::where('id', $request->id)->first();
-        $get = Lhp::where('id_program_kerja', $data->id)->where('file_lhp','!==',null)->get();
+        $get = Lhp::where('id_program_kerja', $data->id)->whereNotNull('file_lhp')->get();
         $count = Lhp::where('id_program_kerja', $data->id)->count();
         $output=[];
         $no=1;
