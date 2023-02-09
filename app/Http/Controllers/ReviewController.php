@@ -232,8 +232,10 @@ class ReviewController extends Controller
     {
         $this->validate($request, [
             'id_program_kerja' => 'required',
-            'uraian_temuan' => 'required',
-            'uraian_penyebab' => 'required',
+            'kondisi' => 'required',
+            'kriteria' => 'required',
+            'penyebab' => 'required',
+            'akibat' => 'required',
             'uraian_rekomendasi' => 'required',
             'file_lhp' => 'required|mimes:pdf|max:2048',
         ]);
@@ -242,8 +244,10 @@ class ReviewController extends Controller
         $roles=Role::where('id',$role)->first();
         $data = [
             'id_program_kerja' => $request->id_program_kerja,
-            'uraian_temuan' => $request->uraian_temuan,
-            'uraian_penyebab' => $request->uraian_penyebab,
+            'kondisi' => $request->kondisi,
+            'kriteria' => $request->kriteria,
+            'penyebab' => $request->penyebab,
+            'akibat' => $request->akibat,
             'uraian_rekomendasi' => $request->uraian_rekomendasi,
             'status' => 1,
             'parent_id' => 0,
@@ -270,9 +274,10 @@ class ReviewController extends Controller
     {
         $this->validate($request, [
             'id_program_kerja' => 'required',
-            'uraian_temuan' => 'required',
-            'uraian_penyebab' => 'required',
-            'uraian_rekomendasi' => 'required',
+            'kondisi' => 'required',
+            'kriteria' => 'required',
+            'penyebab' => 'required',
+            'akibat' => 'required',
             // 'file_lhp' => 'required|mimes:pdf|max:2048',
         ]);
 
@@ -281,8 +286,10 @@ class ReviewController extends Controller
 
         $data = [
             'id_program_kerja' => $request->id_program_kerja,
-            'uraian_temuan' => $request->uraian_temuan,
-            'uraian_penyebab' => $request->uraian_penyebab,
+            'kondisi' => $request->kondisi,
+            'kriteria' => $request->kriteria,
+            'penyebab' => $request->penyebab,
+            'akibat' => $request->akibat,
             'uraian_rekomendasi' => $request->uraian_rekomendasi,
             'status' => 1,
             'parent_id' => $request->id_rekom,

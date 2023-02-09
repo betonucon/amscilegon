@@ -38,8 +38,10 @@
                                             <tr>
                                                 <td>{{ $no++ }}</td>
                                                 <td>{{ $g->file_lhp }}</td>
-                                                <td>{{ $g->uraian_temuan }}</td>
-                                                <td>{{ $g->uraian_penyebab }}</td>
+                                                <td>{{ $g->kondisi }}</td>
+                                                <td>{{ $g->kriteria }}</td>
+                                                <td>{{ $g->penyebab }}</td>
+                                                <td>{{ $g->akibat }}</td>
                                                 <td>
                                                     <span class="btn btn-ghost-success waves-effect waves-light" onclick="modalrekom({{ $g->id_rekom }})"><i class="mdi mdi-plus-circle-outline"></i></span>
                                                     <table class="display table table-bordered table-responsive">
@@ -58,7 +60,7 @@
                                                         @endforeach
                                                     </ul> --}}
                                                 </td>
-                                                <td><span class="btn btn-success waves-effect waves-light btn-sm" onclick="modalLhp({{ $g->id_rekom }})">Edit</span></td>
+                                                <td><span class="btn btn-success waves-effect waves-light btn-sm" onclick="tambah({{$data->id}},{{ $g->id_rekom }})">Edit</span></td>
                                             </tr>                                           
                                         @endforeach
                                     </tbody>
