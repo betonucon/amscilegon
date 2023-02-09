@@ -354,6 +354,10 @@ class ReviewController extends Controller
             'status_lhp' => 1,
         ]);
 
+        Lhp::where('id_program_kerja', $request->id)->update([
+            'status' => 2,
+        ]);
+
         return response()->json([
             'status' => 'success',
             'success' => 'Data berhasil disimpan.'
