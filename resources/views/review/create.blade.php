@@ -52,7 +52,11 @@
                                                         </tr>
                                                         @foreach (group($g->grouping,$g->id_rekom) as $u)
                                                         <tr>
-                                                            <td>{{ $u->uraian_rekomendasi }}--<span class="btn btn-ghost-success waves-effect waves-light" onclick="modalrekom({{ $u->id_rekom }})">edit</span></td>
+                                                            <td>
+                                                                {{ $u->uraian_rekomendasi }}--
+                                                                <span class="btn btn-ghost-success waves-effect waves-light" onclick="modalrekom({{ $u->id_rekom }})">edit</span>
+                                                                <span class="btn btn-ghost-danger waves-effect waves-light" onclick="hapusrekom({{ $u->id_rekom }})">hapus</span>
+                                                            </td>
                                                         </tr>
                                                         @endforeach
                                                     </table>
@@ -181,6 +185,17 @@
 				success: function(msg){
 					$('#tampil-rekom').html(msg);
 					$('#modalrekom').modal('show');
+				}
+			});
+	}
+
+    function hapusrekom(id_rekom){
+			$.ajax({
+				type: 'GET',
+				url: "{{url('pelaporan/review/hapus-rekomendasi')}}",
+				data: "id_rekom="+id_rekom,
+				success: function(msg){
+                    location.reload();
 				}
 			});
 	}

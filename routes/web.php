@@ -159,6 +159,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('create', [ReviewController::class, 'create']);
             Route::get('/modal', [ReviewController::class, 'modal']);
             Route::get('/modal-rekomendasi', [ReviewController::class, 'modalrekom']);
+            Route::get('/hapus-rekomendasi', [ReviewController::class, 'hapusrekom']);
             Route::post('/store', [ReviewController::class, 'store']);
             Route::post('/store-rekom', [ReviewController::class, 'storeRekom']);
             Route::get('modal-approved', [ReviewController::class, 'modalApprove']);

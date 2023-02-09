@@ -222,6 +222,13 @@ class ReviewController extends Controller
         return view('review.modalrekomendasi', compact('data'));
     }
 
+    public function hapusrekom(Request $request)
+    {
+        error_reporting(0);
+        $data = Lhp::where('id_rekom', $request->id_rekom)->delete();
+
+    }
+
     public function modalLhp(Request $request)
     {
         $data = Lhp::where('uraian_temuan', $request->id)->first();
