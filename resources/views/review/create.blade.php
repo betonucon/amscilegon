@@ -54,7 +54,7 @@
                                                         <tr>
                                                             <td>
                                                                 {{ $u->uraian_rekomendasi }}--
-                                                                <span class="btn btn-ghost-success waves-effect waves-light" onclick="modalrekom({{ $u->id_rekom }},{{ $u->parent_id }})">{{ $u->id_rekom }}edit</span>
+                                                                <span class="btn btn-ghost-success waves-effect waves-light" onclick="modalrekom({{ $u->id_rekom }},{{ $u->parent_id }})">Edit</span>
                                                                 <span class="btn btn-ghost-danger waves-effect waves-light" onclick="hapusrekom({{ $u->id_rekom }})">hapus</span>
                                                             </td>
                                                         </tr>
