@@ -42,11 +42,18 @@
                                                 <td>{{ $g->uraian_penyebab }}</td>
                                                 <td>
                                                     <span class="btn btn-ghost-success waves-effect waves-light" onclick="modalrekom({{ $g->id_rekom }})"><i class="mdi mdi-plus-circle-outline"></i></span>
-                                                    <ul>
+                                                    <table class="display table table-bordered table-responsive">
+                                                        @foreach (group($g->grouping,$g->id_rekom) as $u)
+                                                        <tr>
+                                                            <td>{{ $u->uraian_rekomendasi }}</td>
+                                                        </tr>
+                                                        @endforeach
+                                                    </table>
+                                                    {{-- <ul>
                                                         @foreach (group($g->grouping,$g->id_rekom) as $u)
                                                             <li>{{ $u->uraian_rekomendasi }}</li>
                                                         @endforeach
-                                                    </ul>
+                                                    </ul> --}}
                                                 </td>
                                                 <td><span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modalLhp({{ $g->id_rekom }})">Edit</span></td>
                                             </tr>                                           
