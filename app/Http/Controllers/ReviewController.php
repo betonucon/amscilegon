@@ -313,6 +313,8 @@ class ReviewController extends Controller
                 'penyebab' => $request->penyebab,
                 'akibat' => $request->akibat,
                 'uraian_rekomendasi' => $request->uraian_rekomendasi,
+                'parent_id' => $request->parent_id,
+                'grouping' => $roles->sts,
             ];
             Lhp::where('id_rekom', $request->id_rekom)->update($data);
         }
