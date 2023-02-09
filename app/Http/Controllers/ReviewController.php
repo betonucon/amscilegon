@@ -196,7 +196,7 @@ class ReviewController extends Controller
                 $no++,
                 $k->file_lhp,
                 $k->uraian_temuan,
-                $k->uraian_penyebab,
+                array_unique($k->uraian_penyebab),
                 $k->uraian_rekomendasi,
                 $k->id_rekom,
                 $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modalLhp(' . $k->id_rekom . ')">Edit</span>'
