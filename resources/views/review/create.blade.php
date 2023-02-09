@@ -377,7 +377,7 @@
                     }
                 },
                 rowGroup: {
-                    dataSrc: 3
+                    dataSrc: 2
                 }
             });
         }
