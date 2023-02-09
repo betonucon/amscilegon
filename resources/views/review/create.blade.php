@@ -19,7 +19,7 @@
                     <div id="example_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
                         <div class="row">
                             <div class="col-sm-12 table-responsive">
-                                <table id="data-table-fixed-header" class="display table table-bordered table-responsive dt-responsive nowrap table-striped align-middle dataTable no-footer dtr-inline collapsed" style="width: 100%;" >
+                                <table id="shiftTable" class="display table table-bordered table-responsive dt-responsive nowrap table-striped align-middle dataTable no-footer dtr-inline collapsed" style="width: 100%;" >
                                     <thead>
                                         <tr>
                                             <th width="1%" scope="col">No</th>
@@ -286,7 +286,8 @@
     }
 
 </script>
-{{-- <script type="text/javascript">
+<script src="https://cdn.datatables.net/rowgroup/1.1.2/js/dataTables.rowGroup.min.js"></script>
+<script type="text/javascript">
     var tes = {!! json_encode($output) !!};
 
     var model = tes;
@@ -348,9 +349,9 @@
            ]
        });
    }
-</script> --}}
-<script src="https://cdn.datatables.net/rowgroup/1.1.2/js/dataTables.rowGroup.min.js"></script>
-<script>
+</script>
+
+{{-- <script>
     var handleDataTableFixedHeader = function() {
         "use strict";
         if ($('#data-table-fixed-header').length !== 0) {
@@ -395,6 +396,6 @@
 			TableManageFixedHeader.init();
 
 		});
-</script>
+</script> --}}
 
 @endpush
