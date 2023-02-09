@@ -114,10 +114,6 @@
 							<div id="tampil-rekom"></div>
 						</form>
 					</div>
-					<div class="modal-footer">
-						<button  class="btn btn-white" onclick="hide()">Tutup</button>
-						<button id="btn-rekom" class="btn btn-success">Simpan</button>
-					</div>
 				</div>
 			</div>
 		</div>
@@ -254,6 +250,55 @@
         $.ajax({
             type: 'POST',
             url: "{{url('pelaporan/review/store-rekom')}}",
+            data: new FormData(form),
+            contentType: false,
+            cache: false,
+            processData:false,
+            dataType: 'json',
+            beforeSend: function () {
+                $('#btn-save').attr('disabled', 'disabled');
+                $('#btn-save').html('Sending..');
+            },
+            error: function (msg) {
+                    var data = msg.responseJSON;
+                    $.each(data.errors, function (key, value) {
+                        Swal.fire({
+                            title: 'Gagal',
+                            text: value,
+                            icon: 'error',
+                            confirmButtonText: 'Ok'
+                        }).then((result) => {
+                        if (result.isConfirmed) {
+                            $('#btn-save').removeAttr('disabled','false');
+                            $('#btn-save').html('Simpan');
+                        }
+                    })
+                    });
+            },
+            success:  function (msg) {
+                if (msg.status == 'success') {
+                    Swal.fire({
+                        title: 'Berhasil',
+                        text: msg.message,
+                        icon: 'success',
+                        confirmButtonText: 'Ok'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $('#modalAdd').modal('hide');
+                            location.reload();
+                            // window.location.href = "{{url('pelaporan/review')}}";
+                        }
+                    })
+                }
+            }
+        });
+    });
+
+    $('#edit-rekom').on('click', () => {
+    var form=document.getElementById('form-rekom');
+        $.ajax({
+            type: 'POST',
+            url: "{{url('pelaporan/review/edit-rekom')}}",
             data: new FormData(form),
             contentType: false,
             cache: false,

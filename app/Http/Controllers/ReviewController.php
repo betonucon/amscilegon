@@ -218,8 +218,9 @@ class ReviewController extends Controller
     public function modalrekom(Request $request)
     {
         error_reporting(0);
+        $id_rekom=$request->parent_id;
         $data = Lhp::where('id_rekom', $request->id_rekom)->first();
-        return view('review.modalrekomendasi', compact('data'));
+        return view('review.modalrekomendasi', compact('data','id_rekom'));
     }
 
     public function hapusrekom(Request $request)
@@ -290,34 +291,55 @@ class ReviewController extends Controller
         $role=Auth::user()['role_id'];
         $roles=Role::where('id',$role)->first();
 
+        $data = [
+            'id_program_kerja' => $request->id_program_kerja,
+            'kondisi' => $request->kondisi,
+            'kriteria' => $request->kriteria,
+            'penyebab' => $request->penyebab,
+            'akibat' => $request->akibat,
+            'uraian_rekomendasi' => $request->uraian_rekomendasi,
+            'status' => 1,
+            'parent_id' => $request->id_rekom,
+            'grouping' => $roles->sts,
+        ];
+        
+        Lhp::create($data);
 
 
-        if ($request->parent_id == 0) {
-            $data = [
-                'id_program_kerja' => $request->id_program_kerja,
-                'kondisi' => $request->kondisi,
-                'kriteria' => $request->kriteria,
-                'penyebab' => $request->penyebab,
-                'akibat' => $request->akibat,
-                'uraian_rekomendasi' => $request->uraian_rekomendasi,
-                'status' => 1,
-                'parent_id' => $request->id_rekom,
-                'grouping' => $roles->sts,
-            ];
-            Lhp::create($data);
-        }else{
-            $data = [
-                'id_program_kerja' => $request->id_program_kerja,
-                'kondisi' => $request->kondisi,
-                'kriteria' => $request->kriteria,
-                'penyebab' => $request->penyebab,
-                'akibat' => $request->akibat,
-                'uraian_rekomendasi' => $request->uraian_rekomendasi,
-                'parent_id' => $request->parent_id,
-                'grouping' => $roles->sts,
-            ];
-            Lhp::where('id_rekom', $request->id_rekom)->update($data);
-        }
+        return response()->json([
+            'status' => 'success',
+            'success' => 'Data berhasil disimpan.'
+        ]);
+    }
+
+    public function editRekom(Request $request)
+    {
+        $this->validate($request, [
+            'id_program_kerja' => 'required',
+            'kondisi' => 'required',
+            'kriteria' => 'required',
+            'penyebab' => 'required',
+            'akibat' => 'required',
+            // 'file_lhp' => 'required|mimes:pdf|max:2048',
+        ]);
+
+        $role=Auth::user()['role_id'];
+        $roles=Role::where('id',$role)->first();
+
+        $data = [
+            'id_program_kerja' => $request->id_program_kerja,
+            'kondisi' => $request->kondisi,
+            'kriteria' => $request->kriteria,
+            'penyebab' => $request->penyebab,
+            'akibat' => $request->akibat,
+            'uraian_rekomendasi' => $request->uraian_rekomendasi,
+            'status' => 1,
+            'parent_id' => $request->parent_id,
+            'grouping' => $roles->sts,
+        ];
+        
+        Lhp::where('id_rekom',$request->id_rekom)->update($data);
+
 
         return response()->json([
             'status' => 'success',

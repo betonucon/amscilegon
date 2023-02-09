@@ -45,7 +45,17 @@
         </div>
     </div>
 </div>
-
+@if ($id_rekom==0)
+    <div class="modal-footer">
+        <button  class="btn btn-white" onclick="hide()">Tutup</button>
+        <button id="btn-rekom" class="btn btn-success">Simpan</button>
+    </div>  
+@else
+    <div class="modal-footer">
+        <button  class="btn btn-white" onclick="hide()">Tutup</button>
+        <button id="edit-rekom" class="btn btn-success">Update</button>
+    </div> 
+@endif
 <script>
 
 </script>
