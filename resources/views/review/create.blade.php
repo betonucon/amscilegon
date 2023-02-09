@@ -45,7 +45,7 @@
                                                 <td>{{ $g->penyebab }}</td>
                                                 <td>{{ $g->akibat }}</td>
                                                 <td>
-                                                    <span class="btn btn-ghost-success waves-effect waves-light" onclick="modalrekom({{ $g->id_rekom }})"><i class="mdi mdi-plus-circle-outline"></i></span>
+                                                    <span class="btn btn-ghost-success waves-effect waves-light" onclick="modalrekom({{ $g->id_rekom }},0)"><i class="mdi mdi-plus-circle-outline"></i></span>
                                                     <table class="display table table-bordered table-responsive">
                                                         <tr>
                                                             <td>{{ $g->uraian_rekomendasi }}</td>
@@ -54,7 +54,7 @@
                                                         <tr>
                                                             <td>
                                                                 {{ $u->uraian_rekomendasi }}--
-                                                                <span class="btn btn-ghost-success waves-effect waves-light" onclick="modalrekom({{ $u->id_rekom }})">{{ $u->id_rekom }}edit</span>
+                                                                <span class="btn btn-ghost-success waves-effect waves-light" onclick="modalrekom({{ $u->id_rekom }},{{ $u->parent_id }})">{{ $u->id_rekom }}edit</span>
                                                                 <span class="btn btn-ghost-danger waves-effect waves-light" onclick="hapusrekom({{ $u->id_rekom }})">hapus</span>
                                                             </td>
                                                         </tr>
@@ -176,12 +176,12 @@
 				}
 			});
 	}
-    function modalrekom(id_rekom){
+    function modalrekom(id_rekom,parent_id){
 			$('#btn-save').removeAttr('disabled','false');
 			$.ajax({
 				type: 'GET',
 				url: "{{url('pelaporan/review/modal-rekomendasi')}}",
-				data: "id_rekom="+id_rekom,
+				data: "id_rekom="+id_rekom+"&parent_id="+parent_id,
 				success: function(msg){
 					$('#tampil-rekom').html(msg);
 					$('#modalrekom').modal('show');
