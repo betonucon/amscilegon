@@ -377,8 +377,6 @@
                     }
                 },
                 rowGroup: {
-                    order : [[3,'asc']],
-                    enable: true,
                     dataSrc: 3
                 }
             });
