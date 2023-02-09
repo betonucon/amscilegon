@@ -151,9 +151,9 @@
         var files=file.split(".");
         var surat =files[3];
         if(surat=='pdf'){
-            $('#tampil-pdf').html('<embed src="{{ url('public/file_upload') }}/'+file+'" width="100%" height="500px">');
+            $('#tampil-pdf').html('<embed src="{{ url('public/file_lhp') }}/'+file+'" width="100%" height="500px">');
         }else{
-            $('#tampil-pdf').html('<embed src="{{ url('public/file_upload') }}/'+file+'" width="100%" height="500px">');
+            $('#tampil-pdf').html('<embed src="{{ url('public/file_lhp') }}/'+file+'" width="100%" height="500px">');
         }
     }
 
