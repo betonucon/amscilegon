@@ -31,6 +31,25 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @php
+                                            $no=1;
+                                        @endphp
+                                        @foreach ($get as $g)
+                                            <tr>
+                                                <td>{{ $no++ }}</td>
+                                                <td>{{ $g->file_lhp }}</td>
+                                                <td>{{ $g->uraian_temuan }}</td>
+                                                <td>{{ $g->uraian_penyebab }}</td>
+                                                <td>
+                                                    <ul>
+                                                        @foreach (group($g->grouping,$g->id_rekom) as $u)
+                                                            <li>{{ $u->uraian_rekomendasi }}</li>
+                                                        @endforeach
+                                                    </ul>
+                                                </td>
+                                                <td>{{ $g->uraian_rekomendasi }}</td>
+                                            </tr>                                           
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -285,7 +304,7 @@
 
 </script>
 {{-- <script src="https://cdn.datatables.net/rowgroup/1.1.2/js/dataTables.rowGroup.min.js"></script> --}}
-<script type="text/javascript">
+{{-- <script type="text/javascript">
     var tes = {!! json_encode($output) !!};
 
     var model = tes;
@@ -339,7 +358,7 @@
             } 
        });
    }
-</script>
+</script> --}}
 
 {{-- <script>
     var handleDataTableFixedHeader = function() {

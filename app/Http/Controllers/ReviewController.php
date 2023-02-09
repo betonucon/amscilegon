@@ -187,7 +187,7 @@ class ReviewController extends Controller
         $menu = 'Reviu';
         $id=$request->id;
         $data = ProgramKerja::where('id', $request->id)->first();
-        $get = Lhp::where('id_program_kerja', $data->id)->orderBy('parent_id','Asc')->get();
+        $get = Lhp::where('id_program_kerja', $data->id)->get();
         $count = Lhp::where('id_program_kerja', $data->id)->count();
         $output=[];
         $no=1;
@@ -203,7 +203,7 @@ class ReviewController extends Controller
 
             ];
         }
-        return view('review.create', compact('headermenu', 'menu', 'data','output','count'));
+        return view('review.create', compact('headermenu', 'menu', 'data','output','count','get'));
     }
 
     public function modal(Request $request)
