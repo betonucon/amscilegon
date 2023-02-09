@@ -55,7 +55,7 @@
                                                         @endforeach
                                                     </ul> --}}
                                                 </td>
-                                                <td><span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modalLhp({{ $g->id_rekom }})">Edit</span></td>
+                                                <td><span class="btn btn-success waves-effect waves-light btn-sm" onclick="modalLhp({{ $g->id_rekom }})">Edit</span></td>
                                             </tr>                                           
                                         @endforeach
                                     </tbody>
