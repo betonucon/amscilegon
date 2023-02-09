@@ -27,7 +27,7 @@
                                             <th>Uraian Temuan</th>
                                             <th>Uraian Penyebab</th>
                                             <th>Uraian Rekomendasi</th>
-                                            <th >Action</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
