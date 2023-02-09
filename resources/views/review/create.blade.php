@@ -376,9 +376,7 @@
                         next: 'Next>>'
                     }
                 },
-                rowGroup: {
-                    dataSrc: 2
-                }
+                rowGroup: [3]
             });
         }
         };
