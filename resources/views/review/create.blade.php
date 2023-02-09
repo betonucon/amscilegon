@@ -335,13 +335,13 @@
            },
            {
                "data": function (data) {
-                       return data[4]+' '+'<span class="btn btn-ghost-success waves-effect waves-light" onclick="modalrekom('+data[4]+')"><i class="mdi mdi-plus-circle-outline"></i></span>';
+                       return data[4]+' '+'<span class="btn btn-ghost-success waves-effect waves-light" onclick="modalrekom('+data[5]+')"><i class="mdi mdi-plus-circle-outline"></i></span>';
                    },
                sDefaultContent: ""
            },
            {
                "data": function (data) {
-                        return'<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modalLhp('+data[4]+')">Edit</span>';  
+                        return'<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modalLhp('+data[5]+')">Edit</span>';  
                    },
                sDefaultContent: ""
            },

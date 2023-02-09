@@ -190,8 +190,10 @@ class ReviewController extends Controller
         $get = Lhp::where('id_program_kerja', $data->id)->orderBy('parent_id','Asc')->get();
         $count = Lhp::where('id_program_kerja', $data->id)->count();
         $output=[];
+        $no=1;
         foreach ($get as $k) {
             $output[]=[
+                $no++,
                 $k->file_lhp,
                 $k->uraian_temuan,
                 $k->uraian_penyebab,
