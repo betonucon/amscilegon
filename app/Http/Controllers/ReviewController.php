@@ -307,7 +307,11 @@ class ReviewController extends Controller
             'grouping' => $roles->sts,
         ];
 
-        Lhp::create($data);
+        if($request->id_rekom > 0){
+            Lhp::where('id_rekom',$request->id_rekom)->update($data);
+        }else{
+            Lhp::create($data);
+        }
 
         return response()->json([
             'status' => 'success',
