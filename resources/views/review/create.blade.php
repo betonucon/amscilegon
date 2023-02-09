@@ -27,8 +27,8 @@
                                             <th>Kondisi</th>
                                             <th>Kriteria</th>
                                             <th>Penyebab</th>
-                                            <th>akibat</th>
-                                            <th>Uraian Rekomendasi</th>
+                                            <th>Akibat</th>
+                                            <th>Rekomendasi</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
