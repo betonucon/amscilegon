@@ -305,7 +305,7 @@
            paging: false,
            "aaSorting": [[5, 'asc']],
            "aaData": model,
-           rowsGroup: [0,1],
+           rowsGroup: [3],
            "aoColumns": [
            {
                "data": function (data) {
@@ -344,7 +344,20 @@
                sDefaultContent: ""
            },
 
-           ]
+           ],
+           'createdRow': function(row, data, dataIndex){
+                if(data[3] === ''){
+                    // Add COLSPAN attribute
+                    $('td:eq(1)', row).attr('colspan', 5);
+
+                    // Hide required number of columns
+                    // next to the cell with COLSPAN attribute
+                    $('td:eq(2)', row).css('display', 'none');
+                    $('td:eq(3)', row).css('display', 'none');
+                    $('td:eq(4)', row).css('display', 'none');
+                    $('td:eq(5)', row).css('display', 'none');
+                }
+            } 
        });
    }
 </script>
