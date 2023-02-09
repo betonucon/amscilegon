@@ -305,7 +305,6 @@
            paging: false,
            "aaSorting": [[5, 'asc']],
            "aaData": model,
-           rowsGroup: [3],
            "aoColumns": [
            {
                "data": function (data) {
@@ -345,19 +344,29 @@
            },
 
            ],
-           'createdRow': function(row, data, dataIndex){
-                if(data[3] === ''){
-                    // Add COLSPAN attribute
-                    $('td:eq(1)', row).attr('colspan', 5);
+           'columnDefs': [
+         {
+            'targets': [1, 2, 3, 4, 5],
+            'orderable': false,
+            'searchable': false
+         }
+      ],
+        'rowsGroup': [0],
+        'createdRow': function(row, data, dataIndex){
+            // Use empty value in the "Office" column
+            // as an indication that grouping with COLSPAN is needed
+            if(data[2] === ''){
+                // Add COLSPAN attribute
+                $('td:eq(1)', row).attr('colspan', 5);
 
-                    // Hide required number of columns
-                    // next to the cell with COLSPAN attribute
-                    $('td:eq(2)', row).css('display', 'none');
-                    $('td:eq(3)', row).css('display', 'none');
-                    $('td:eq(4)', row).css('display', 'none');
-                    $('td:eq(5)', row).css('display', 'none');
-                }
-            } 
+                // Hide required number of columns
+                // next to the cell with COLSPAN attribute
+                $('td:eq(2)', row).css('display', 'none');
+                $('td:eq(3)', row).css('display', 'none');
+                $('td:eq(4)', row).css('display', 'none');
+                $('td:eq(5)', row).css('display', 'none');
+            }
+        }   
        });
    }
 </script>
