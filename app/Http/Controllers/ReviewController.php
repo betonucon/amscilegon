@@ -190,13 +190,14 @@ class ReviewController extends Controller
         $get = Lhp::where('id_program_kerja', $data->id)->orderBy('parent_id','Asc')->get();
         $count = Lhp::where('id_program_kerja', $data->id)->count();
         $output=[];
+        array_unique($output);
         $no=1;
         foreach ($get as $k) {
             $output[]=[
                 $no++,
                 $k->file_lhp,
                 $k->uraian_temuan,
-                array_unique($k->uraian_penyebab),
+                $k->uraian_penyebab,
                 $k->uraian_rekomendasi,
                 $k->id_rekom,
                 $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modalLhp(' . $k->id_rekom . ')">Edit</span>'
