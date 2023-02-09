@@ -290,21 +290,30 @@ class ReviewController extends Controller
         $role=Auth::user()['role_id'];
         $roles=Role::where('id',$role)->first();
 
-        $data = [
-            'id_program_kerja' => $request->id_program_kerja,
-            'kondisi' => $request->kondisi,
-            'kriteria' => $request->kriteria,
-            'penyebab' => $request->penyebab,
-            'akibat' => $request->akibat,
-            'uraian_rekomendasi' => $request->uraian_rekomendasi,
-            'status' => 1,
-            'parent_id' => $request->id_rekom,
-            'grouping' => $roles->sts,
-        ];
+
 
         if ($request->parent_id == 0) {
+            $data = [
+                'id_program_kerja' => $request->id_program_kerja,
+                'kondisi' => $request->kondisi,
+                'kriteria' => $request->kriteria,
+                'penyebab' => $request->penyebab,
+                'akibat' => $request->akibat,
+                'uraian_rekomendasi' => $request->uraian_rekomendasi,
+                'status' => 1,
+                'parent_id' => $request->id_rekom,
+                'grouping' => $roles->sts,
+            ];
             Lhp::create($data);
         }else{
+            $data = [
+                'id_program_kerja' => $request->id_program_kerja,
+                'kondisi' => $request->kondisi,
+                'kriteria' => $request->kriteria,
+                'penyebab' => $request->penyebab,
+                'akibat' => $request->akibat,
+                'uraian_rekomendasi' => $request->uraian_rekomendasi,
+            ];
             Lhp::where('id_rekom', $request->id_rekom)->update($data);
         }
 
