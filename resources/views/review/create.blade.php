@@ -302,71 +302,41 @@
 
    function DisplayShiftTableData(model) {
         shiftDataTable = $('#shiftTable').dataTable({
-           paging: false,
-           "aaSorting": [[5, 'asc']],
-           "aaData": model,
-           "aoColumns": [
-           {
-               "data": function (data) {
-                       return data[0];
-                   },
-               sDefaultContent: ""
-           },
-           {
-               "data": function (data) {
-                       return data[1];
-                   },
-               sDefaultContent: ""
-           },
-           {
-               "data": function (data) {
-                       return data[2];
-                   },
-               sDefaultContent: ""
-           },
-           {
-               "data": function (data) {
-                       return data[3];
-                   },
-               sDefaultContent: ""
-           },
-           {
-               "data": function (data) {
-                       return data[4]+' '+'<span class="btn btn-ghost-success waves-effect waves-light" onclick="modalrekom('+data[5]+')"><i class="mdi mdi-plus-circle-outline"></i></span>';
-                   },
-               sDefaultContent: ""
-           },
-           {
-               "data": function (data) {
-                        return'<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modalLhp('+data[5]+')">Edit</span>';  
-                   },
-               sDefaultContent: ""
-           },
+            'data': [
+                ["Tiger Nixon","System Architect","Edinburgh","5421","2011/04/25","$320,800"],
+                ["Tiger Nixon","Additional information","","","",""],
+                ["Garrett Winters","Accountant","Tokyo","8422","2011/07/25","$170,750"],
+                ["Garrett Winters","Additional information","","","",""],
+                ["Ashton Cox","Junior Technical Author","San Francisco","1562","2009/01/12","$86,000"],
+                ["Ashton Cox","Additional information","","","",""],
+                ["Cedric Kelly","Senior Javascript Developer","Edinburgh","6224","2012/03/29","$433,060"],
+                ["Cedric Kelly","Additional information","","","",""],
+                ["Airi Satou","Accountant","Tokyo","5407","2008/11/28","$162,700"],
+                ["Airi Satou","Additional information","","","",""]
+            ],
+            'columnDefs': [
+                {
+                    'targets': [1, 2, 3, 4, 5],
+                    'orderable': false,
+                    'searchable': false
+                }
+            ],
+            'rowsGroup': [0],
+            'createdRow': function(row, data, dataIndex){
+                // Use empty value in the "Office" column
+                // as an indication that grouping with COLSPAN is needed
+                if(data[2] === ''){
+                    // Add COLSPAN attribute
+                    $('td:eq(1)', row).attr('colspan', 5);
 
-           ],
-           'columnDefs': [
-         {
-            'targets': [1, 2, 3, 4, 5],
-            'orderable': false,
-            'searchable': false
-         }
-      ],
-        'rowsGroup': [0],
-        'createdRow': function(row, data, dataIndex){
-            // Use empty value in the "Office" column
-            // as an indication that grouping with COLSPAN is needed
-            if(data[2] === ''){
-                // Add COLSPAN attribute
-                $('td:eq(1)', row).attr('colspan', 5);
-
-                // Hide required number of columns
-                // next to the cell with COLSPAN attribute
-                $('td:eq(2)', row).css('display', 'none');
-                $('td:eq(3)', row).css('display', 'none');
-                $('td:eq(4)', row).css('display', 'none');
-                $('td:eq(5)', row).css('display', 'none');
-            }
-        }   
+                    // Hide required number of columns
+                    // next to the cell with COLSPAN attribute
+                    $('td:eq(2)', row).css('display', 'none');
+                    $('td:eq(3)', row).css('display', 'none');
+                    $('td:eq(4)', row).css('display', 'none');
+                    $('td:eq(5)', row).css('display', 'none');
+                }
+            } 
        });
    }
 </script>
