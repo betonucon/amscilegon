@@ -52,7 +52,7 @@
                                                         </tr>
                                                         @foreach (group($g->grouping,$g->id_rekom) as $u)
                                                         <tr>
-                                                            <td>{{ $u->uraian_rekomendasi }}</td>
+                                                            <td>{{ $u->uraian_rekomendasi }}--<span class="btn btn-ghost-success waves-effect waves-light" onclick="modalrekom({{ $u->id_rekom }})">edit</span></td>
                                                         </tr>
                                                         @endforeach
                                                     </table>
