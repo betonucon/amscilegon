@@ -19,37 +19,42 @@
                     <div id="example_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
                         <div class="row">
                             <div class="col-sm-12 table-responsive">
-                                <table border="1">
+                                <table>
                                     <thead>
                                       <tr>
-                                        <th>No</th>
                                         <th>Nama</th>
-                                        <th>Jenis Kelamin</th>
-                                        <th>Umur</th>
+                                        <th>Alamat</th>
+                                        <th>Kota</th>
+                                        <th>Negara</th>
+                                        <th>Kode Pos</th>
                                       </tr>
                                     </thead>
                                     <tbody>
-                                      <?php 
+                                      <?php
                                         $data = array(
-                                          array("1", "John Doe", "Laki-laki", "30"),
-                                          array("2", "Jane Doe", "Perempuan", "25"),
-                                          array("3", "Jim Smith", "Laki-laki", "35"),
-                                          array("4", "Sarah Johnson", "Perempuan", "28")
+                                          array("Nama" => "John Doe", "Alamat" => "Jl. Example 1", "Kota" => "New York", "Negara" => "USA", "Kode Pos" => "10001"),
+                                          array("Nama" => "Jane Doe", "Alamat" => "Jl. Example 2", "Kota" => "Los Angeles", "Negara" => "USA", "Kode Pos" => "90001"),
+                                          array("Nama" => "Jim Smith", "Alamat" => "Jl. Example 3", "Kota" => "Chicago", "Negara" => "USA", "Kode Pos" => "60001"),
+                                          array("Nama" => "Sarah Johnson", "Alamat" => "Jl. Example 4", "Kota" => "Houston", "Negara" => "USA", "Kode Pos" => "77001"),
+                                          array("Nama" => "Emma Watson", "Alamat" => "Jl. Example 5", "Kota" => "Miami", "Negara" => "USA", "Kode Pos" => "33101"),
+                                          array("Nama" => "William Brown", "Alamat" => "Jl. Example 6", "Kota" => "Dallas", "Negara" => "USA", "Kode Pos" => "75201")
                                         );
-                                        $current_gender = "";
+                                  
+                                        $current_negara = "";
                                         foreach ($data as $row) {
-                                          if ($row[2] != $current_gender) {
-                                            if ($current_gender != "") {
+                                          if ($row["Negara"] != $current_negara) {
+                                            if ($current_negara != "") {
                                               echo "</tbody></table>";
                                             }
-                                            $current_gender = $row[2];
-                                            echo "<tr><td colspan='4'><b>Jenis Kelamin: $current_gender</b></td></tr>";
-                                            echo "<tbody><tr>";
+                                            $current_negara = $row["Negara"];
+                                            echo "<tbody><tr><td colspan='5'><b>" . $current_negara . "</b></td></tr>";
                                           }
-                                          echo "<td>" . $row[0] . "</td>";
-                                          echo "<td>" . $row[1] . "</td>";
-                                          echo "<td>" . $row[2] . "</td>";
-                                          echo "<td>" . $row[3] . "</td>";
+                                          echo "<tr>";
+                                          echo "<td>" . $row["Nama"] . "</td>";
+                                          echo "<td>" . $row["Alamat"] . "</td>";
+                                          echo "<td>" . $row["Kota"] . "</td>";
+                                          echo "<td>" . $row["Negara"] . "</td>";
+                                          echo "<td>" . $row["Kode Pos"] . "</td>";
                                           echo "</tr>";
                                         }
                                       ?>
