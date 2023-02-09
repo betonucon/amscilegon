@@ -39,7 +39,7 @@
                                         @foreach ($get as $g)
                                             <tr>
                                                 <td>{{ $no++ }}</td>
-                                                <td>{{ $g->file_lhp }}</td>
+                                                <td><span class="btn btn-icon-only btn-outline-warning btn-sm mt-2" onclick="buka_file(`{{ $g->file_lhp }}`)"><center><img src="' . asset('public/img/pdf-file.png') . '" width="10px" height="10px"></center></span></td>
                                                 <td>{{ $g->kondisi }}</td>
                                                 <td>{{ $g->kriteria }}</td>
                                                 <td>{{ $g->penyebab }}</td>
@@ -54,7 +54,7 @@
                                                         <tr>
                                                             <td>
                                                                 {{ $u->uraian_rekomendasi }}--
-                                                                <span class="btn btn-ghost-success waves-effect waves-light" onclick="modalrekom({{ $u->id_rekom }})">edit</span>
+                                                                <span class="btn btn-ghost-success waves-effect waves-light" onclick="modalrekom({{ $u->id_rekom }})">{{ $u->id_rekom }}edit</span>
                                                                 <span class="btn btn-ghost-danger waves-effect waves-light" onclick="hapusrekom({{ $u->id_rekom }})">hapus</span>
                                                             </td>
                                                         </tr>
