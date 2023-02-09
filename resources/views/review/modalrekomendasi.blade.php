@@ -5,6 +5,7 @@
     <input type="hidden" name="kriteria" value="{{ $data->kriteria }}" >
     <input type="hidden" name="penyebab" value="{{ $data->penyebab }}" >
     <input type="hidden" name="akibat" value="{{ $data->akibat }}" >
+    <input type="text" name="akibat" value="{{ $data->parent_id }}" >
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
