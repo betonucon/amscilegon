@@ -114,6 +114,11 @@
 							<div id="tampil-rekom"></div>
 						</form>
 					</div>
+					<div class="modal-footer">
+						<button  class="btn btn-white" onclick="hide()">Tutup</button>
+						<button id="btn-rekom" class="btn btn-success">Simpan</button>
+						<button id="edit-rekom" class="btn btn-primary">Update</button>
+					</div>
 				</div>
 			</div>
 		</div>

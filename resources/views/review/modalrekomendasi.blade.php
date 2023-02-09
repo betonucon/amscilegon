@@ -5,7 +5,7 @@
     <input type="hidden" name="kriteria" value="{{ $data->kriteria }}" >
     <input type="hidden" name="penyebab" value="{{ $data->penyebab }}" >
     <input type="hidden" name="akibat" value="{{ $data->akibat }}" >
-    <input type="text" name="akibat" value="{{ $data->parent_id }}" >
+    <input type="hidden" name="akibat" value="{{ $data->parent_id }}" >
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
@@ -45,17 +45,7 @@
         </div>
     </div>
 </div>
-@if ($id_rekom==0)
-    <div class="modal-footer">
-        <button  class="btn btn-white" onclick="hide()">Tutup</button>
-        <button id="btn-rekom" class="btn btn-success">Simpan</button>
-    </div>  
-@else
-    <div class="modal-footer">
-        <button  class="btn btn-white" onclick="hide()">Tutup</button>
-        <button id="edit-rekom" class="btn btn-success">Update</button>
-    </div> 
-@endif
+
 <script>
 
 </script>
