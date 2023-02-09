@@ -24,8 +24,10 @@
                                         <tr>
                                             <th width="1%" scope="col">No</th>
                                             <th>File LHP</th>
-                                            <th>Uraian Temuan</th>
-                                            <th>Uraian Penyebab</th>
+                                            <th>Kondisi</th>
+                                            <th>Kriteria</th>
+                                            <th>Penyebab</th>
+                                            <th>akibat</th>
                                             <th>Uraian Rekomendasi</th>
                                             <th>Action</th>
                                         </tr>
