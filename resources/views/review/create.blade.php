@@ -19,48 +19,7 @@
                     <div id="example_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
                         <div class="row">
                             <div class="col-sm-12 table-responsive">
-                                <table>
-                                    <thead>
-                                      <tr>
-                                        <th>Nama</th>
-                                        <th>Alamat</th>
-                                        <th>Kota</th>
-                                        <th>Negara</th>
-                                        <th>Kode Pos</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      <?php
-                                        $data = array(
-                                          array("Nama" => "John Doe", "Alamat" => "Jl. Example 1", "Kota" => "New York", "Negara" => "USA", "Kode Pos" => "10001"),
-                                          array("Nama" => "Jane Doe", "Alamat" => "Jl. Example 2", "Kota" => "Los Angeles", "Negara" => "USA", "Kode Pos" => "90001"),
-                                          array("Nama" => "Jim Smith", "Alamat" => "Jl. Example 3", "Kota" => "Chicago", "Negara" => "USA", "Kode Pos" => "60001"),
-                                          array("Nama" => "Sarah Johnson", "Alamat" => "Jl. Example 4", "Kota" => "Houston", "Negara" => "USA", "Kode Pos" => "77001"),
-                                          array("Nama" => "Emma Watson", "Alamat" => "Jl. Example 5", "Kota" => "Miami", "Negara" => "USA", "Kode Pos" => "33101"),
-                                          array("Nama" => "William Brown", "Alamat" => "Jl. Example 6", "Kota" => "Dallas", "Negara" => "USA", "Kode Pos" => "75201")
-                                        );
-                                  
-                                        $current_negara = "";
-                                        foreach ($data as $row) {
-                                          if ($row["Negara"] != $current_negara) {
-                                            if ($current_negara != "") {
-                                              echo "</tbody></table>";
-                                            }
-                                            $current_negara = $row["Negara"];
-                                            echo "<tbody><tr><td colspan='5'><b>" . $current_negara . "</b></td></tr>";
-                                          }
-                                          echo "<tr>";
-                                          echo "<td>" . $row["Nama"] . "</td>";
-                                          echo "<td>" . $row["Alamat"] . "</td>";
-                                          echo "<td>" . $row["Kota"] . "</td>";
-                                          echo "<td>" . $row["Negara"] . "</td>";
-                                          echo "<td>" . $row["Kode Pos"] . "</td>";
-                                          echo "</tr>";
-                                        }
-                                      ?>
-                                    </tbody>
-                                  </table>
-                                {{-- <table id="data-table-fixed-header" class="display table table-bordered table-responsive dt-responsive nowrap table-striped align-middle dataTable no-footer dtr-inline collapsed" style="width: 100%;" >
+                                <table id="data-table-fixed-header" class="display table table-bordered table-responsive dt-responsive nowrap table-striped align-middle dataTable no-footer dtr-inline collapsed" style="width: 100%;" >
                                     <thead>
                                         <tr>
                                             <th width="1%" scope="col">No</th>
@@ -72,27 +31,8 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php
-                                        $no=1;
-                                            $current_gender = "";
-                                            foreach ($output as $row) {
-                                                if ($row[2] != $current_gender) {
-                                                    if ($current_gender != "") {
-                                                        echo "</tbody></table>";
-                                                    }
-                                                    $current_gender = $row[2];
-                                                    echo "<tr><td colspan='". count(array_filter($output, function($d) use ($row) { return $d[2] == $row[2]; })) ."'>$current_gender</td></tr>";
-                                                    echo "<tbody><tr>";
-                                                }
-                                                echo "<td>" . $row[0] . "</td>";
-                                                echo "<td>" . $row[1] . "</td>";
-                                                echo "<td>" . $row[2] . "</td>";
-                                                echo "<td>" . $row[3] . "</td>";
-                                                echo "</tr>";
-                                            }
-                                        ?>
                                     </tbody>
-                                </table> --}}
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -409,7 +349,8 @@
        });
    }
 </script> --}}
-{{-- <script>
+<script src="https://cdn.datatables.net/rowgroup/1.1.2/js/dataTables.rowGroup.min.js"></script>
+<script>
     var handleDataTableFixedHeader = function() {
         "use strict";
         if ($('#data-table-fixed-header').length !== 0) {
@@ -458,6 +399,6 @@
 			TableManageFixedHeader.init();
 
 		});
-</script> --}}
+</script>
 
 @endpush
