@@ -27,7 +27,11 @@ class ReviewController extends Controller
         error_reporting(0);
 
         $roles =  Auth::user()['role_id'];
-        $data= ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('status','>=', 5)->get();
+        if($roles==2){
+            $data= ProgramKerja::where('status','>=', 5)->get();
+        }else{
+            $data= ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('status','>=', 5)->get();
+        }
         // if($roles >= 4 && $roles <= 7){
         //     $data= ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('status','>=', 5)->where('status_lhp', '>=',0)->orWhere('status_lhp', null)->get();
         // }else if($roles >= 8 && $roles <= 11){
