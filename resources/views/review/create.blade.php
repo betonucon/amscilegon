@@ -47,7 +47,9 @@
                                                 <td>{{ $g->penyebab }}</td>
                                                 <td>{{ $g->akibat }}</td>
                                                 <td>
-                                                    <span class="btn btn-ghost-success waves-effect waves-light mb-3" onclick="modalrekom({{ $g->id_rekom }},0)"><i class="mdi mdi-plus-circle-outline"></i></span>
+                                                    @if (Auth::user()['role_id'] >= 4 && Auth::user()['role_id'] <= 7)
+                                                        <span class="btn btn-ghost-success waves-effect waves-light mb-3" onclick="modalrekom({{ $g->id_rekom }},0)"><i class="mdi mdi-plus-circle-outline"></i></span>
+                                                    @endif
                                                     <table class="display table  table-responsive">
                                                         <tr>
                                                             <td colspan="2">{{ $g->uraian_rekomendasi }}</td>
@@ -57,10 +59,12 @@
                                                             <td>
                                                                 {{ $u->uraian_rekomendasi }}
                                                             </td>
-                                                            <td>
-                                                                <span class="btn btn-ghost-success waves-effect waves-light" onclick="modalrekom({{ $u->id_rekom }},{{ $u->parent_id }})">Edit</span>
-                                                                <span class="btn btn-ghost-danger waves-effect waves-light" onclick="hapusrekom({{ $u->id_rekom }})">hapus</span>
-                                                            </td>
+                                                            @if (Auth::user()['role_id'] >= 4 && Auth::user()['role_id'] <= 7)
+                                                                <td>
+                                                                    <span class="btn btn-ghost-success waves-effect waves-light" onclick="modalrekom({{ $u->id_rekom }},{{ $u->parent_id }})">Edit</span>
+                                                                    <span class="btn btn-ghost-danger waves-effect waves-light" onclick="hapusrekom({{ $u->id_rekom }})">hapus</span>
+                                                                </td>
+                                                            @endif
                                                         </tr>
                                                         @endforeach
                                                     </table>
@@ -70,7 +74,11 @@
                                                         @endforeach
                                                     </ul> --}}
                                                 </td>
-                                                <td><span class="btn btn-success waves-effect waves-light btn-sm" onclick="tambah({{$data->id}},{{ $g->id_rekom }})">Edit</span></td>
+                                                <td>
+                                                    @if (Auth::user()['role_id'] >= 4 && Auth::user()['role_id'] <= 7)
+                                                        <span class="btn btn-success waves-effect waves-light btn-sm" onclick="tambah({{$data->id}},{{ $g->id_rekom }})">Edit</span>
+                                                    @endif
+                                                </td>
                                             </tr>                                           
                                         @endforeach
                                     </tbody>
