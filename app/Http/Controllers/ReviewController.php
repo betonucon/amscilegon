@@ -77,7 +77,7 @@ class ReviewController extends Controller
                 if ($roles >= 4 && $roles <= 7) {
                     if ($el->status_lhp == null) {
                         $btn = '
-                    <span class="btn btn-ghost-warning waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Proses</span>';
+                        <span class="btn btn-ghost-warning waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Proses</span>';
                     } else  if ($el->status_lhp == 1) {
                         $btn = 'Disposisi Dalnis';
                     } else  if ($el->status_lhp == 2) {
@@ -89,8 +89,9 @@ class ReviewController extends Controller
                     }
                 } else if ($roles >= 8 && $roles <= 11) {
                     if ($el->status_lhp == 1) {
-                        $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Terima</span>
-                            <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="modal_refused(' . $row['id'] . ')">Tolak</span>';
+                        $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>
+                        <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Terima</span>
+                        <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="modal_refused(' . $row['id'] . ')">Tolak</span>';
                     } else  if ($el->status_lhp == 1) {
                         $btn = 'Disposisi Dalnis';
                     } else  if ($el->status_lhp == 2) {
@@ -102,8 +103,9 @@ class ReviewController extends Controller
                     }
                 } else if ($roles >= 12 && $roles <= 15) {
                     if ($el->status_lhp == 2) {
-                        $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Terima</span>
-                            <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="modal_refused(' . $row['id'] . ')">Tolak</span>';
+                        $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>
+                        <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Terima</span>
+                        <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="modal_refused(' . $row['id'] . ')">Tolak</span>';
                     } else  if ($el->status_lhp == 1) {
                         $btn = 'Disposisi Dalnis';
                     } else  if ($el->status_lhp == 2) {
@@ -115,8 +117,10 @@ class ReviewController extends Controller
                     }
                 }else if ($roles == 2){
                     if ($el->status_lhp == 3) {
-                        $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Terima</span>
-                            <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="modal_refused(' . $row['id'] . ')">Tolak</span>';
+                        $btn = '
+                        <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>
+                        <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Terima</span>
+                        <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="modal_refused(' . $row['id'] . ')">Tolak</span>';
                     } else  if ($el->status_lhp == 1) {
                         $btn = 'Disposisi Dalnis';
                     } else  if ($el->status_lhp == 2) {
