@@ -55,7 +55,9 @@
                                                         @foreach (group($g->grouping,$g->id_rekom) as $u)
                                                         <tr>
                                                             <td>
-                                                                {{ $u->uraian_rekomendasi }}--
+                                                                {{ $u->uraian_rekomendasi }}
+                                                            </td>
+                                                            <td>
                                                                 <span class="btn btn-ghost-success waves-effect waves-light" onclick="modalrekom({{ $u->id_rekom }},{{ $u->parent_id }})">Edit</span>
                                                                 <span class="btn btn-ghost-danger waves-effect waves-light" onclick="hapusrekom({{ $u->id_rekom }})">hapus</span>
                                                             </td>
