@@ -31,7 +31,9 @@
                                             <th>Penyebab</th>
                                             <th>Akibat</th>
                                             <th>Rekomendasi</th>
+                                            @if (Auth::user()['role_id'] >= 4 && Auth::user()['role_id'] <= 7)
                                             <th>Action</th>
+                                            @endif
                                         </tr>
                                     </thead>
                                     <tbody>
