@@ -27,16 +27,16 @@ class ReviewController extends Controller
         error_reporting(0);
 
         $roles =  Auth::user()['role_id'];
-        
-        if($roles >= 4 && $roles <= 7){
-            $data= ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('status','>=', 5)->where('status_lhp', '>=',0)->orWhere('status_lhp', null)->get();
-        }else if($roles >= 8 && $roles <= 11){
-            $data = ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('status','>=', 5)->where('status_lhp', 1)->get();
-        }else if($roles >= 12 && $roles <= 15){
-            $data = ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('status','>=', 5)->where('status_lhp', 2)->get();
-        }else{
-            $data = ProgramKerja::where('status', 5)->get();
-        }
+        $data= ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('status','>=', 5)->where('status_lhp', '>=',0)->get();
+        // if($roles >= 4 && $roles <= 7){
+        //     $data= ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('status','>=', 5)->where('status_lhp', '>=',0)->orWhere('status_lhp', null)->get();
+        // }else if($roles >= 8 && $roles <= 11){
+        //     $data = ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('status','>=', 5)->where('status_lhp', 1)->get();
+        // }else if($roles >= 12 && $roles <= 15){
+        //     $data = ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('status','>=', 5)->where('status_lhp', 2)->get();
+        // }else{
+        //     $data = ProgramKerja::where('status', 5)->get();
+        // }
 
         // if ($role == 3) {
         //     $data = ProgramKerja::where('file_sp', '!=', null)->where('status_lhp', 1)->orderBy('id', 'desc')->get();
@@ -79,11 +79,11 @@ class ReviewController extends Controller
                         $btn = '
                         <span class="btn btn-ghost-warning waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Proses</span>';
                     } else  if ($el->status_lhp == 1) {
-                        $btn = 'Disposisi Dalnis';
+                        $btn ='<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'Disposisi Dalnis';
                     } else  if ($el->status_lhp == 2) {
-                        $btn = 'Disposisi Irban';
+                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'Disposisi Irban';
                     } else  if ($el->status_lhp == 3) {
-                        $btn = 'Disposisi Inspektur';
+                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'Disposisi Inspektur';
                     } else {
                         $btn = 'selesai';
                     }
@@ -93,11 +93,11 @@ class ReviewController extends Controller
                         <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Terima</span>
                         <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="modal_refused(' . $row['id'] . ')">Tolak</span>';
                     } else  if ($el->status_lhp == 1) {
-                        $btn = 'Disposisi Dalnis';
+                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'Disposisi Dalnis';
                     } else  if ($el->status_lhp == 2) {
-                        $btn = 'Disposisi Irban';
+                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'Disposisi Irban';
                     } else  if ($el->status_lhp == 3) {
-                        $btn = 'Disposisi Inspektur';
+                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'Disposisi Inspektur';
                     } else {
                         $btn = 'selesai';
                     }
@@ -107,11 +107,11 @@ class ReviewController extends Controller
                         <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Terima</span>
                         <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="modal_refused(' . $row['id'] . ')">Tolak</span>';
                     } else  if ($el->status_lhp == 1) {
-                        $btn = 'Disposisi Dalnis';
+                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'Disposisi Dalnis';
                     } else  if ($el->status_lhp == 2) {
-                        $btn = 'Disposisi Irban';
+                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'Disposisi Irban';
                     } else  if ($el->status_lhp == 3) {
-                        $btn = 'Disposisi Inspektur';
+                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'Disposisi Inspektur';
                     } else {
                         $btn = 'selesai';
                     }
@@ -122,11 +122,11 @@ class ReviewController extends Controller
                         <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Terima</span>
                         <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="modal_refused(' . $row['id'] . ')">Tolak</span>';
                     } else  if ($el->status_lhp == 1) {
-                        $btn = 'Disposisi Dalnis';
+                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'Disposisi Dalnis';
                     } else  if ($el->status_lhp == 2) {
-                        $btn = 'Disposisi Irban';
+                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'Disposisi Irban';
                     } else  if ($el->status_lhp == 3) {
-                        $btn = 'Disposisi Inspektur';
+                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'Disposisi Inspektur';
                     } else {
                         $btn = 'selesai';
                     }
