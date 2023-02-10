@@ -76,11 +76,11 @@
                                                         @endforeach
                                                     </ul> --}}
                                                 </td>
+                                                @if (Auth::user()['role_id'] >= 4 && Auth::user()['role_id'] <= 7)
                                                 <td>
-                                                    @if (Auth::user()['role_id'] >= 4 && Auth::user()['role_id'] <= 7)
-                                                        <span class="btn btn-success waves-effect waves-light btn-sm" onclick="tambah({{$data->id}},{{ $g->id_rekom }})">Edit</span>
-                                                    @endif
+                                                    <span class="btn btn-success waves-effect waves-light btn-sm" onclick="tambah({{$data->id}},{{ $g->id_rekom }})">Edit</span>
                                                 </td>
+                                                @endif
                                             </tr>                                           
                                         @endforeach
                                     </tbody>
