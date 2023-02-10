@@ -36,7 +36,7 @@ class MonitoringController extends Controller
             $data = ProgramKerja::where('status_lhp', 4)->orderBy('id', 'desc')->where('grouping',Auth::user()->roles->sts)->where('status_tindak_lanjut', 2)->get();
         } else if ($roles >= 1 && $roles <= 3) {
             $data = ProgramKerja::where('status_lhp', 4)->orderBy('id', 'desc')->where('status_tindak_lanjut', 2)->get();
-        }else{
+        } else{
             $data = ProgramKerja::where('status_lhp', 4)->where('status_tindak_lanjut', 2)->orderBy('id', 'desc')->where('id_pkpt', $pkpt->id)->get();
         }
 
