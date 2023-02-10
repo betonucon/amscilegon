@@ -50,7 +50,7 @@
                                                     <span class="btn btn-ghost-success waves-effect waves-light mb-3" onclick="modalrekom({{ $g->id_rekom }},0)"><i class="mdi mdi-plus-circle-outline"></i></span>
                                                     <table class="display table  table-responsive">
                                                         <tr>
-                                                            <td>{{ $g->uraian_rekomendasi }}</td>
+                                                            <td colspan="2">{{ $g->uraian_rekomendasi }}</td>
                                                         </tr>
                                                         @foreach (group($g->grouping,$g->id_rekom) as $u)
                                                         <tr>
