@@ -89,7 +89,7 @@ class ReviewController extends Controller
                     } else  if ($el->status_lhp == 3) {
                         $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'Disposisi Inspektur';
                     } else {
-                        $btn = 'selesai';
+                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'selesai';
                     }
                 } else if ($roles >= 8 && $roles <= 11) {
                     if ($el->status_lhp == 1) {
@@ -103,7 +103,7 @@ class ReviewController extends Controller
                     } else  if ($el->status_lhp == 3) {
                         $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'Disposisi Inspektur';
                     } else {
-                        $btn = 'selesai';
+                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'selesai';
                     }
                 } else if ($roles >= 12 && $roles <= 15) {
                     if ($el->status_lhp == 2) {
@@ -117,7 +117,7 @@ class ReviewController extends Controller
                     } else  if ($el->status_lhp == 3) {
                         $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'Disposisi Inspektur';
                     } else {
-                        $btn = 'selesai';
+                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'selesai';
                     }
                 }else if ($roles == 2){
                     if ($el->status_lhp == 3) {
@@ -132,7 +132,7 @@ class ReviewController extends Controller
                     } else  if ($el->status_lhp == 3) {
                         $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'Disposisi Inspektur';
                     } else {
-                        $btn = 'selesai';
+                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'selesai';
                     }
                 }else{
                     if ($el->status_lhp == 1) {
@@ -142,7 +142,7 @@ class ReviewController extends Controller
                     } else  if ($el->status_lhp == 3) {
                         $btn = 'Disposisi Inspektur';
                     } else {
-                        $btn = 'selesai';
+                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'selesai';
                     }
                 }
 
