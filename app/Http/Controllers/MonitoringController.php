@@ -28,10 +28,16 @@ class MonitoringController extends Controller
         $role =  Auth::user()->role_id;
         $roles =  Auth::user()->roles->nama;
         $pkpt = Pkpt::where('opd', $roles)->first();
-        if ($role == 2) {
-            $data = ProgramKerja::where('status_lhp', 4)->orderBy('id', 'desc')->get();
-        } else {
-            $data = ProgramKerja::where('status_lhp', 4)->orderBy('id', 'desc')->where('id_pkpt', $pkpt->id)->get();
+        if ($roles >= 4 && $roles <= 7) {
+            $data = ProgramKerja::where('status_lhp', 4)->orderBy('id', 'desc')->where('grouping',Auth::user()->roles->sts)->where('status_tindak_lanjut', null)->get();
+        } else if ($roles >= 8 && $roles <= 11) {
+            $data = ProgramKerja::where('status_lhp', 4)->orderBy('id', 'desc')->where('grouping',Auth::user()->roles->sts)->where('status_tindak_lanjut', 1)->get();
+        } else if ($roles >= 12 && $roles <= 15) {
+            $data = ProgramKerja::where('status_lhp', 4)->orderBy('id', 'desc')->where('grouping',Auth::user()->roles->sts)->where('status_tindak_lanjut', 2)->get();
+        } else if ($roles >= 1 && $roles <= 3) {
+            $data = ProgramKerja::where('status_lhp', 4)->orderBy('id', 'desc')->where('status_tindak_lanjut', 2)->get();
+        }else{
+            $data = ProgramKerja::where('status_lhp', 4)->where('status_tindak_lanjut', 2)->orderBy('id', 'desc')->where('id_pkpt', $pkpt->id)->get();
         }
 
         return Datatables::of($data)
