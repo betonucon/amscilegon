@@ -48,7 +48,7 @@
                                                 <td>{{ $g->akibat }}</td>
                                                 <td>
                                                     <span class="btn btn-ghost-success waves-effect waves-light mb-3" onclick="modalrekom({{ $g->id_rekom }},0)"><i class="mdi mdi-plus-circle-outline"></i></span>
-                                                    <table class="display table table-bordered table-responsive">
+                                                    <table class="display table  table-responsive">
                                                         <tr>
                                                             <td>{{ $g->uraian_rekomendasi }}</td>
                                                         </tr>
