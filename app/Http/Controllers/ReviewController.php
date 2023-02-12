@@ -35,6 +35,8 @@ class ReviewController extends Controller
             $data = ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('status', '>=', 4)->whereNotNull('status_lhp')->get();
         } elseif ($roles >= 12 && $roles >= 15) {
             $data = ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('status', '>=', 4)->where('status_lhp', '>=', 2)->get();
+        } else{
+            $data='';
         }
 
         return Datatables::of($data)
