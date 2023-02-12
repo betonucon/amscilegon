@@ -9,9 +9,11 @@
         <div class="row pb-3">
             <div class="col-sm-12 col-md-6">
                 <span onclick="back()" class="btn btn-sm btn-danger waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Kembali</span>
-                @if ($data->status_lhp==null || $data->status_lhp==0)              
-                    <span onclick="tambah({{$data->id}},0)" class="btn btn-sm btn-primary waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Tambah Uraian</span>
-                    <span onclick="selesai({{$data->id}})" class="btn btn-sm btn-success waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Selesai</span>
+                @if ($data->status_lhp==null || $data->status_lhp==0)
+                    @if (Auth::user()['role_id']>=4 && Auth::user()['role_id']>=7 )
+                        <span onclick="tambah({{$data->id}},0)" class="btn btn-sm btn-primary waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Tambah Uraian</span>
+                        <span onclick="selesai({{$data->id}})" class="btn btn-sm btn-success waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Selesai</span>                       
+                    @endif              
                 @endif
             </div>
         </div>
