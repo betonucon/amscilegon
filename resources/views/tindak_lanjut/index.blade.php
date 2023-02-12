@@ -207,63 +207,8 @@
 
 <script>
         function tambah(id){
-            $.ajax({
-                url:"{{ url('pelaporan/tindak-lanjut/modal')}}",
-                type:"GET",
-                data:{id:id},
-                success:function(data){
-                    $('#tampil-create').html(data);
-                    $('#modalCreate').modal('show');
-                }
-            })
+            location.assign("{{url('pelaporan/tindak-lanjut/create?id=')}}" + id);
         }
-
-        $('#btn-create').on('click', () => {
-        var form=document.getElementById('form-create');
-            $.ajax({
-                type: 'POST',
-                url:"{{ url('pelaporan/tindak-lanjut/store')}}",
-                data: new FormData(form),
-                contentType: false,
-                cache: false,
-                processData:false,
-                dataType: 'json',
-                beforeSend: function () {
-                    $('#btn-create').attr('disabled', 'disabled');
-                    $('#btn-create').html('Sending..');
-                },
-                error: function (msg) {
-                        var data = msg.responseJSON;
-                        $.each(data.errors, function (key, value) {
-                            Swal.fire({
-                                title: 'Gagal',
-                                text: value,
-                                icon: 'error',
-                                confirmButtonText: 'Ok'
-                            }).then((result) => {
-                            if (result.isConfirmed) {
-                                $('#btn-create').removeAttr('disabled','false');
-                                $('#btn-create').html('Simpan');
-                            }
-                            })
-                        });
-                },
-                success:  function (msg) {
-                    if (msg.status == 'success') {
-                        Swal.fire({
-                            title: 'Berhasil',
-                            text: msg.message,
-                            icon: 'success',
-                            confirmButtonText: 'Ok'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                location.reload();
-                            }
-                        })
-                    }
-                }
-            });
-        });
 
         function buka_file(file){
             $('#modalshow').modal('show');

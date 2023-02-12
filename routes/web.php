@@ -172,8 +172,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::group(['prefix' => 'tindak-lanjut'], function () {
             Route::get('/', [MonitoringController::class, 'index']);
             Route::get('/get-data', [MonitoringController::class, 'getdata']);
-            Route::get('/modal', [MonitoringController::class, 'modal']);
-            Route::post('store', [MonitoringController::class, 'store']);
+            Route::get('/get-table', [MonitoringController::class, 'getTable']);
+            Route::get('create', [MonitoringController::class, 'create']);
+            Route::get('/modal-rekomendasi', [MonitoringController::class, 'modalrekom']);
+            Route::get('/hapus-rekomendasi', [MonitoringController::class, 'hapusrekom']);
             Route::get('modal-approved', [MonitoringController::class, 'modalApprove']);
             Route::get('modal-refused', [MonitoringController::class, 'modalRefused']);
             Route::get('approved', [MonitoringController::class, 'storeApprove']);

@@ -29,15 +29,13 @@ class MonitoringController extends Controller
         $roles =  Auth::user()->roles->nama;
         $pkpt = Pkpt::where('opd', $roles)->first();
         if ($roles >= 4 && $roles <= 7) {
-            $data = ProgramKerja::where('status_lhp', 4)->orderBy('id', 'desc')->where('grouping',Auth::user()->roles->sts)->where('status_tindak_lanjut', null)->get();
-        }else if ($roles >= 8 && $roles <= 11) {
-            $data = ProgramKerja::where('status_lhp', 4)->orderBy('id', 'desc')->where('grouping',Auth::user()->roles->sts)->where('status_tindak_lanjut', 1)->get();
-        }else if ($roles >= 12 && $roles <= 15) {
-            $data = ProgramKerja::where('status_lhp', 4)->orderBy('id', 'desc')->where('grouping',Auth::user()->roles->sts)->where('status_tindak_lanjut', 2)->get();
-        }else if ($roles >= 1 && $roles <= 3) {
+            $data = ProgramKerja::where('status_lhp', 4)->orderBy('id', 'desc')->where('grouping', Auth::user()->roles->sts)->where('status_tindak_lanjut', 1)->get();
+        } else if ($roles >= 8 && $roles <= 11) {
+            $data = ProgramKerja::where('status_lhp', 4)->orderBy('id', 'desc')->where('grouping', Auth::user()->roles->sts)->where('status_tindak_lanjut', 2)->get();
+        } else if ($roles >= 1 && $roles <= 3 || $roles >= 12 && $roles <= 15) {
             $data = ProgramKerja::where('status_lhp', 4)->orderBy('id', 'desc')->where('status_tindak_lanjut', 2)->get();
-        }else{
-            $data = ProgramKerja::where('status_lhp', 4)->where('status_tindak_lanjut', 2)->orderBy('id', 'desc')->where('id_pkpt', $pkpt->id)->get();
+        } else {
+            $data = ProgramKerja::where('status_lhp', 4)->orderBy('id', 'desc')->where('id_pkpt', $pkpt->id)->get();
         }
 
         return Datatables::of($data)
@@ -94,43 +92,91 @@ class MonitoringController extends Controller
             ->make(true);
     }
 
-    public function modal(Request $request)
+    public function getTable(Request $request)
     {
-        $data = ProgramKerja::where('id', $request->id)->first();
+        error_reporting(0);
+        $data = Lhp::where('id_program_kerja', $request->id_program_kerja)->orderBy('parent_id', 'Asc')->get();
 
-        return view('tindak_lanjut.modal', compact('data'));
+        return Datatables::of($data)
+            ->addColumn('file_lhp', function ($data) {
+                $fileLhp = '<span class="btn btn-icon-only btn-outline-warning btn-sm mt-2" onclick="buka_file(`' . $data['file_lhp'] . '`)"><center><img src="' . asset('public/img/pdf-file.png') . '" width="10px" height="10px"></center></span>';
+                return $fileLhp;
+            })
+            ->addColumn('uraian_temuan', function ($data) {
+                return  $data->uraian_temuan;
+            })
+            ->addColumn('uraian_penyebab', function ($data) {
+                return   $data->uraian_penyebab;
+            })
+            ->addColumn('uraian_rekomendasi', function ($data) {
+                $cek = Lhp::where('uraian_temuan', $data['uraian_temuan'])->where('uraian_penyebab', $data['uraian_penyebab'])->count();
+                if ($cek > 0) {
+                    $get = Lhp::where('uraian_temuan', $data['uraian_temuan'])->where('uraian_penyebab', $data['uraian_penyebab'])->get();
+                    foreach ($get as $g) {
+                        $btn = '-' . $g->uraian_rekomendasi;
+                    }
+                }
+                $btn = $data->uraian_rekomendasi . ' ' . '<span class="btn btn-ghost-success waves-effect waves-light" onclick="modalrekom(' . $data['id_rekom'] . ')"><i class="mdi mdi-plus-circle-outline"></i></span>';
+                return $btn;
+            })
+            ->addColumn('uraian_jawaban', function ($data) {
+                $cek = Lhp::where('uraian_rekomendasi', $data['uraian_rekomendasi'])->count();
+                if ($cek > 0) {
+                    $get = Lhp::where('uraian_rekomendasi', $data['uraian_rekomendasi'])->get();
+                    foreach ($get as $g) {
+                        $btn = '-' . $g->uraian_jawaban;
+                    }
+                }
+                $btn = $data->uraian_jawaban . ' ' . '<span class="btn btn-ghost-success waves-effect waves-light" onclick="modalrekom(' . $data['id_rekom'] . ')"><i class="mdi mdi-plus-circle-outline"></i></span>';
+                return $btn;
+            })
+
+            ->addColumn('action', function ($row) {
+                $btn = '
+                    <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modalLhp(' . $row['uraian_temuan'] . ')">Edit</span>';
+                return $btn;
+            })
+            ->rawColumns(['uraian_rekomendasi', 'action', 'file_lhp', 'nota_dinas', 'file_sp', 'id_pkpt'])
+            ->make(true);
     }
 
-    public function store(Request $request)
+    public function create(Request $request)
     {
-        $this->validate($request, [
-            'id_program_kerja' => 'required',
-            'uraian_tindak_lanjut' => 'required',
-            'file' => 'required|mimes:pdf|max:2048',
-        ]);
+        $headermenu = 'Pelaporan';
+        $menu = 'Reviu';
+        $id = $request->id;
+        $data = ProgramKerja::where('id', $request->id)->first();
+        $get = Lhp::where('id_program_kerja', $data->id)->whereNotNull('file_lhp')->get();
+        $count = Lhp::where('id_program_kerja', $data->id)->count();
+        $output = [];
+        $no = 1;
+        foreach ($get as $k) {
+            $output[] = [
+                $no++,
+                $k->file_lhp,
+                $k->uraian_temuan,
+                $k->uraian_penyebab,
+                $k->uraian_rekomendasi,
+                $k->id_rekom,
+                $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modalLhp(' . $k->id_rekom . ')">Edit</span>'
 
-        $data = [
-            'id_program_kerja' => $request->id_program_kerja,
-            'uraian_tindak_lanjut' => $request->uraian_tindak_lanjut,
-        ];
-
-        if ($files = $request->file('file')) {
-            $profileImage = date('YmdHis') . "." . $files->getClientOriginalExtension();
-            $files->move(public_path('/file_upload'), $profileImage);
-            $data['file'] = "$profileImage";
+            ];
         }
+        return view('tindak_lanjut.create', compact('headermenu', 'menu', 'data', 'output', 'count', 'get'));
+    }
 
-        TindakLanjut::create($data);
+    public function modalrekom(Request $request)
+    {
+        error_reporting(0);
+        $id_rekom = $request->parent_id;
+        $data = Lhp::where('id_rekom', $request->id_rekom)->first();
+        return view('tindak_lanjut.modalrekomendasi', compact('data', 'id_rekom'));
+    }
 
-        ProgramKerja::where('id', $request->id_program_kerja)
-            ->update([
-                'status_tindak_lanjut' => 1
-            ]);
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Data Berhasil Disimpan'
-        ]);
+    public function hapusrekom(Request $request)
+    {
+        error_reporting(0);
+        $data = Lhp::where('id_rekom', $request->id_rekom)->delete();
     }
 
     function modalApprove(Request $request)

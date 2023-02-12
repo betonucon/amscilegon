@@ -9,9 +9,10 @@
         <div class="row pb-3">
             <div class="col-sm-12 col-md-6">
                 <span onclick="back()" class="btn btn-sm btn-danger waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Kembali</span>
-                @if ($data->status_lhp==null || $data->status_lhp==0)              
-                    <span onclick="tambah({{$data->id}},0)" class="btn btn-sm btn-primary waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Tambah Uraian</span>
-                    <span onclick="selesai({{$data->id}})" class="btn btn-sm btn-success waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Selesai</span>
+                @if ($data->status_tindak_lanjut ==null || $data->status_tindak_lanjut ==0)
+                    @if (Auth::user()['role_id'] >= 17 && Auth::user()['role_id'] <= 20 )
+                        <span onclick="selesai({{$data->id}})" class="btn btn-sm btn-success waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Selesai</span>
+                    @endif
                 @endif
             </div>
         </div>
@@ -31,7 +32,8 @@
                                             <th>Penyebab</th>
                                             <th>Akibat</th>
                                             <th>Rekomendasi</th>
-                                            @if (Auth::user()['role_id'] >= 4 && Auth::user()['role_id'] <= 7)
+                                            <th>Jawaban</th>
+                                            @if (Auth::user()['role_id'] >= 17 && Auth::user()['role_id'] <= 20)
                                             <th>Action</th>
                                             @endif
                                         </tr>
@@ -70,18 +72,41 @@
                                                         </tr>
                                                         @endforeach
                                                     </table>
-                                                    {{-- <ul>
-                                                        @foreach (group($g->grouping,$g->id_rekom) as $u)
-                                                            <li>{{ $u->uraian_rekomendasi }}</li>
-                                                        @endforeach
-                                                    </ul> --}}
                                                 </td>
-                                                @if (Auth::user()['role_id'] >= 4 && Auth::user()['role_id'] <= 7)
+
                                                 <td>
-                                                    <span class="btn btn-success waves-effect waves-light btn-sm" onclick="tambah({{$data->id}},{{ $g->id_rekom }})">Edit</span>
+                                                    @if (Auth::user()['role_id'] >= 17 && Auth::user()['role_id'] <= 20)
+                                                        <span class="btn btn-ghost-success waves-effect waves-light mb-3" onclick="modalrekom({{ $g->id_rekom }},0)"><i class="mdi mdi-plus-circle-outline"></i></span>
+                                                    @endif
+                                                    <table class="display table  table-responsive">
+                                                        <tr>
+                                                            <td colspan="2">{{ $g->uraian_jawaban }}</td>
+                                                        </tr>
+                                                        @foreach (group($g->grouping,$g->id_rekom) as $u)
+                                                        <tr>
+                                                            <td>
+                                                                {{ $u->uraian_jawaban }}
+                                                            </td>
+                                                            @if (Auth::user()['role_id'] >= 17 && Auth::user()['role_id'] <= 20)
+                                                                <td>
+                                                                    <span class="btn btn-ghost-success waves-effect waves-light" onclick="modalrekom({{ $u->id_rekom }},{{ $u->parent_id }})">Edit</span>
+                                                                    <span class="btn btn-ghost-danger waves-effect waves-light" onclick="hapusrekom({{ $u->id_rekom }})">hapus</span>
+                                                                </td>
+                                                            @endif
+                                                        </tr>
+                                                        @endforeach
+                                                    </table>
+                                                </td>
+
+                                                @if (Auth::user()['role_id'] >= 17 && Auth::user()['role_id'] <= 20)
+                                                <td>
+                                                    @if (checkgroup($g->grouping,$g->id_rekom)==0)
+                                                        <span class="btn btn-success waves-effect waves-light btn-sm" onclick="tambah({{$data->id}},{{ $g->id_rekom }})">Edit</span>
+                                                        <span class="btn btn-danger waves-effect waves-light btn-sm" onclick="hapusrekom({{ $g->id_rekom }})">Hapus</span>
+                                                    @endif
                                                 </td>
                                                 @endif
-                                            </tr>                                           
+                                            </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -172,30 +197,24 @@
     }
 
     function back(){
-        window.location.href = "{{ url('pelaporan/review') }}";
+        window.location.href = "{{ url('pelaporan/tindak-lanjut') }}";
     }
 
     function hide(){
         $('#modalAdd').modal('hide');
     }
 
-    function tambah(id,id_rekom){
-			$('#btn-save').removeAttr('disabled','false');
-			$.ajax({
-				type: 'GET',
-				url: "{{url('pelaporan/review/modal')}}",
-				data: "id="+id+"&id_rekom="+id_rekom,
-				success: function(msg){
-					$('#tampil-form').html(msg);
-					$('#modalAdd').modal('show');
-				}
-			});
-	}
     function modalrekom(id_rekom,parent_id){
-			$('#btn-save').removeAttr('disabled','false');
+            if (parent_id==0) {
+                $('#btn-rekom').show();
+                $('#edit-rekom').hide();
+            } else {
+                $('#btn-rekom').hide();
+                $('#edit-rekom').show();
+            }
 			$.ajax({
 				type: 'GET',
-				url: "{{url('pelaporan/review/modal-rekomendasi')}}",
+				url: "{{url('pelaporan/tindak-lanjut/modal-rekomendasi')}}",
 				data: "id_rekom="+id_rekom+"&parent_id="+parent_id,
 				success: function(msg){
 					$('#tampil-rekom').html(msg);
@@ -207,7 +226,7 @@
     function hapusrekom(id_rekom){
 			$.ajax({
 				type: 'GET',
-				url: "{{url('pelaporan/review/hapus-rekomendasi')}}",
+				url: "{{url('pelaporan/tindak-lanjut/hapus-rekomendasi')}}",
 				data: "id_rekom="+id_rekom,
 				success: function(msg){
                     location.reload();
@@ -219,7 +238,7 @@
     var form=document.getElementById('form-data');
         $.ajax({
             type: 'POST',
-            url: "{{url('pelaporan/review/store')}}",
+            url: "{{url('pelaporan/tindak-lanjut/store')}}",
             data: new FormData(form),
             contentType: false,
             cache: false,
@@ -268,7 +287,7 @@
     var form=document.getElementById('form-rekom');
         $.ajax({
             type: 'POST',
-            url: "{{url('pelaporan/review/store-rekom')}}",
+            url: "{{url('pelaporan/tindak-lanjut/store-rekom')}}",
             data: new FormData(form),
             contentType: false,
             cache: false,
@@ -317,7 +336,7 @@
     var form=document.getElementById('form-rekom');
         $.ajax({
             type: 'POST',
-            url: "{{url('pelaporan/review/edit-rekom')}}",
+            url: "{{url('pelaporan/tindak-lanjut/edit-rekom')}}",
             data: new FormData(form),
             contentType: false,
             cache: false,
@@ -375,7 +394,7 @@
             if (result.isConfirmed) {
                 $.ajax({
                     type: 'GET',
-                    url: "{{url('pelaporan/review/selesai')}}",
+                    url: "{{url('pelaporan/tindak-lanjut/selesai')}}",
                     data: "id="+id,
                     success: function(msg){
                         if (msg.status == 'success') {
@@ -386,7 +405,7 @@
                                 confirmButtonText: 'Ok'
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    window.location.href = "{{url('pelaporan/review')}}";
+                                    window.location.href = "{{url('pelaporan/tindak-lanjut')}}";
                                 }
                             })
                         }
@@ -395,111 +414,7 @@
             }
         })
     }
-    
+
 
 </script>
-{{-- <script src="https://cdn.datatables.net/rowgroup/1.1.2/js/dataTables.rowGroup.min.js"></script> --}}
-{{-- <script type="text/javascript">
-    var tes = {!! json_encode($output) !!};
-
-    var model = tes;
-    var shiftDataTable;
-
-
-    console.log(model)
-
-   $(document).ready(function () {
-
-           DisplayShiftTableData(model);
-
-       });
-
-   function DisplayShiftTableData(model) {
-        shiftDataTable = $('#shiftTable').dataTable({
-            'data': [
-                ["Tiger Nixon","System Architect","Edinburgh","5421","2011/04/25","$320,800"],
-                ["Tiger Nixon","Additional information","","","",""],
-                ["Garrett Winters","Accountant","Tokyo","8422","2011/07/25","$170,750"],
-                ["Garrett Winters","Additional information","","","",""],
-                ["Ashton Cox","Junior Technical Author","San Francisco","1562","2009/01/12","$86,000"],
-                ["Ashton Cox","Additional information","","","",""],
-                ["Cedric Kelly","Senior Javascript Developer","Edinburgh","6224","2012/03/29","$433,060"],
-                ["Cedric Kelly","Additional information","","","",""],
-                ["Airi Satou","Accountant","Tokyo","5407","2008/11/28","$162,700"],
-                ["Airi Satou","Additional information","","","",""]
-            ],
-            'columnDefs': [
-                {
-                    'targets': [1, 2, 3, 4, 5],
-                    'orderable': false,
-                    'searchable': false
-                }
-            ],
-            'rowsGroup': [0],
-            'createdRow': function(row, data, dataIndex){
-                // Use empty value in the "Office" column
-                // as an indication that grouping with COLSPAN is needed
-                if(data[2] === ''){
-                    // Add COLSPAN attribute
-                    $('td:eq(1)', row).attr('colspan', 5);
-
-                    // Hide required number of columns
-                    // next to the cell with COLSPAN attribute
-                    $('td:eq(2)', row).css('display', 'none');
-                    $('td:eq(3)', row).css('display', 'none');
-                    $('td:eq(4)', row).css('display', 'none');
-                    $('td:eq(5)', row).css('display', 'none');
-                }
-            } 
-       });
-   }
-</script> --}}
-
-{{-- <script>
-    var handleDataTableFixedHeader = function() {
-        "use strict";
-        if ($('#data-table-fixed-header').length !== 0) {
-            var table=$('#data-table-fixed-header').DataTable({
-                lengthMenu: [20, 40, 60],
-                fixedHeader: {
-                    header: true,
-                    headerOffset: $('#header').height()
-                },
-                responsive: true,
-                ajax:"{{ url('pelaporan/review/get-table?id_program_kerja= '.$data->id.'')}}",
-                columns: [
-                    {data: 'id_rekom' },
-                    { data: 'file_lhp' },
-                    { data: 'uraian_temuan' },
-                    { data: 'uraian_penyebab' },
-                    { data: 'uraian_rekomendasi' },
-                    { data: 'action' },
-                ],
-                language: {
-                    paginate: {
-                        previous: '<< previous',
-                        next: 'Next>>'
-                    }
-                },
-                rowGroup: [3]
-            });
-        }
-        };
-
-        var TableManageFixedHeader = function () {
-            "use strict";
-            return {
-                //main function
-                init: function () {
-                    handleDataTableFixedHeader();
-                }
-            };
-        }();
-
-        $(document).ready(function() {
-			TableManageFixedHeader.init();
-
-		});
-</script> --}}
-
 @endpush
