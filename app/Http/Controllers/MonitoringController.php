@@ -179,6 +179,19 @@ class MonitoringController extends Controller
         $data = Lhp::where('id_rekom', $request->id_rekom)->delete();
     }
 
+    function selesai(Request $request)
+    {
+
+        ProgramKerja::where('id', $request->id)->update([
+            'status_tindak_lanjut' => 1,
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'success' => 'Data berhasil disimpan.'
+        ]);
+    }
+
     function modalApprove(Request $request)
     {
         $data = ProgramKerja::where('id', $request->id)->first();

@@ -51,9 +51,6 @@
                                                 <td>{{ $g->penyebab }}</td>
                                                 <td>{{ $g->akibat }}</td>
                                                 <td>
-                                                    @if (Auth::user()['role_id'] >= 4 && Auth::user()['role_id'] <= 7)
-                                                        <span class="btn btn-ghost-success waves-effect waves-light mb-3" onclick="modalrekom({{ $g->id_rekom }},0)"><i class="mdi mdi-plus-circle-outline"></i></span>
-                                                    @endif
                                                     <table class="display table  table-responsive">
                                                         <tr>
                                                             <td colspan="2">{{ $g->uraian_rekomendasi }}</td>
@@ -63,21 +60,12 @@
                                                             <td>
                                                                 {{ $u->uraian_rekomendasi }}
                                                             </td>
-                                                            @if (Auth::user()['role_id'] >= 4 && Auth::user()['role_id'] <= 7)
-                                                                <td>
-                                                                    <span class="btn btn-ghost-success waves-effect waves-light" onclick="modalrekom({{ $u->id_rekom }},{{ $u->parent_id }})">Edit</span>
-                                                                    <span class="btn btn-ghost-danger waves-effect waves-light" onclick="hapusrekom({{ $u->id_rekom }})">hapus</span>
-                                                                </td>
-                                                            @endif
                                                         </tr>
                                                         @endforeach
                                                     </table>
                                                 </td>
 
                                                 <td>
-                                                    @if (Auth::user()['role_id'] >= 17 && Auth::user()['role_id'] <= 20)
-                                                        <span class="btn btn-ghost-success waves-effect waves-light mb-3" onclick="modalrekom({{ $g->id_rekom }},0)"><i class="mdi mdi-plus-circle-outline"></i></span>
-                                                    @endif
                                                     <table class="display table  table-responsive">
                                                         <tr>
                                                             <td colspan="2">{{ $g->uraian_jawaban }}</td>
@@ -89,6 +77,7 @@
                                                             </td>
                                                             @if (Auth::user()['role_id'] >= 17 && Auth::user()['role_id'] <= 20)
                                                                 <td>
+                                                                    <span class="btn btn-ghost-primary waves-effect waves-light" onclick="modalrekom({{ $u->id_rekom }},{{ $u->parent_id }})">Tambah</span>
                                                                     <span class="btn btn-ghost-success waves-effect waves-light" onclick="modalrekom({{ $u->id_rekom }},{{ $u->parent_id }})">Edit</span>
                                                                     <span class="btn btn-ghost-danger waves-effect waves-light" onclick="hapusrekom({{ $u->id_rekom }})">hapus</span>
                                                                 </td>
@@ -275,7 +264,6 @@
                         if (result.isConfirmed) {
                             $('#modalAdd').modal('hide');
                             location.reload();
-                            // window.location.href = "{{url('pelaporan/review')}}";
                         }
                     })
                 }
