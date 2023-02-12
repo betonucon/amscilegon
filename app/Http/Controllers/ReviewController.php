@@ -32,7 +32,7 @@ class ReviewController extends Controller
         } else if ($roles >= 4 && $roles >= 7) {
             $data = ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('status', '>=', 4)->get();
         } else if ($roles >= 8 && $roles >= 11) {
-            $data = ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('status', '>=', 5)->whereNotNull('status_lhp')->get();
+            $data = ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('status', '>=', 4)->whereNotNull('status_lhp')->get();
         } elseif ($roles >= 12 && $roles >= 15) {
             $data = ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('status', '>=', 4)->where('status_lhp', '>=', 2)->get();
         }
