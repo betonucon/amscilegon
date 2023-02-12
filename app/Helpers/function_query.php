@@ -21,6 +21,12 @@ function group($group,$parent)
     return $data;
 }
 
+function checkgroup($group,$parent)
+{
+    $data = Lhp::where('grouping', $group)->where('parent_id', $parent)->count();
+    return $data;
+}
+
 function nomor_pkpt()
 {
 

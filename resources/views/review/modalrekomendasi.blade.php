@@ -34,13 +34,21 @@
                         <input type="text" readonly name="akibat" class="form-control" value="{{ $data->akibat }}">
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label class="form-label">Rekomendasi</label>
-                        <input type="text" name="uraian_rekomendasi" class="form-control" value="{{ $data->uraian_rekomendasi }}">
-                    </div>
-                </div>
-
+                @if ($data->parent_id == 0)
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Rekomendasi</label>
+                            <input type="text" name="uraian_rekomendasi" class="form-control">
+                        </div>
+                    </div>  
+                @else
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Rekomendasi</label>
+                            <input type="text" name="uraian_rekomendasi" class="form-control" value="{{ $data->uraian_rekomendasi }}">
+                        </div>
+                    </div>    
+                @endif
             </div>
         </div>
     </div>

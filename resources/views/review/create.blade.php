@@ -10,7 +10,7 @@
             <div class="col-sm-12 col-md-6">
                 <span onclick="back()" class="btn btn-sm btn-danger waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Kembali</span>
                 @if ($data->status_lhp==null || $data->status_lhp==0)
-                    @if (Auth::user()['role_id']>=4 && Auth::user()['role_id']>=7 )
+                    @if (Auth::user()['role_id'] >= 4 && Auth::user()['role_id'] <= 7 )
                         <span onclick="tambah({{$data->id}},0)" class="btn btn-sm btn-primary waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Tambah Uraian</span>
                         <span onclick="selesai({{$data->id}})" class="btn btn-sm btn-success waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Selesai</span>                       
                     @endif              
@@ -78,9 +78,12 @@
                                                         @endforeach
                                                     </ul> --}}
                                                 </td>
-                                                @if (Auth::user()['role_id'] >= 4 && Auth::user()['role_id'] <= 7)
+                                                @if (Auth::user()['role_id'] >= 4 && Auth::user()['role_id'] <= 7)                    
                                                 <td>
                                                     <span class="btn btn-success waves-effect waves-light btn-sm" onclick="tambah({{$data->id}},{{ $g->id_rekom }})">Edit</span>
+                                                    @if (checkgroup($g->grouping,$g->id_rekom)==0)
+                                                        <span class="btn btn-danger waves-effect waves-light btn-sm" onclick="hapusrekom({{ $g->id_rekom }})">Hapus</span>
+                                                    @endif
                                                 </td>
                                                 @endif
                                             </tr>                                           
@@ -194,7 +197,12 @@
 			});
 	}
     function modalrekom(id_rekom,parent_id){
-			$('#btn-save').removeAttr('disabled','false');
+            if (parent_id==0) {
+                $('#edit-rekom').hide();
+            } else {
+                $('#btn-rekom').hide();
+                $('#edit-rekom').show();
+            }
 			$.ajax({
 				type: 'GET',
 				url: "{{url('pelaporan/review/modal-rekomendasi')}}",
