@@ -80,8 +80,8 @@
                                                 </td>
                                                 @if (Auth::user()['role_id'] >= 4 && Auth::user()['role_id'] <= 7)                    
                                                 <td>
-                                                    <span class="btn btn-success waves-effect waves-light btn-sm" onclick="tambah({{$data->id}},{{ $g->id_rekom }})">Edit</span>
                                                     @if (checkgroup($g->grouping,$g->id_rekom)==0)
+                                                        <span class="btn btn-success waves-effect waves-light btn-sm" onclick="tambah({{$data->id}},{{ $g->id_rekom }})">Edit</span>
                                                         <span class="btn btn-danger waves-effect waves-light btn-sm" onclick="hapusrekom({{ $g->id_rekom }})">Hapus</span>
                                                     @endif
                                                 </td>
@@ -198,6 +198,7 @@
 	}
     function modalrekom(id_rekom,parent_id){
             if (parent_id==0) {
+                $('#btn-rekom').show();
                 $('#edit-rekom').hide();
             } else {
                 $('#btn-rekom').hide();
