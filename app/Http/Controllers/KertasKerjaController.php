@@ -92,6 +92,8 @@ class KertasKerjaController extends Controller
 
         if ($roles == 2 || $roles == 3) {
             $data = ProgramKerja::where('file_sp', '!=', null)->get();
+        } else if ($roles >= 8 && $roles <= 11) {
+            $data = ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('file_sp', '!=', null)->where('file_kkp', '!=', '')->get();
         } else {
             $data = ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('file_sp', '!=', null)->get();
         }
@@ -135,13 +137,17 @@ class KertasKerjaController extends Controller
 
                 return $notaDinas;
             })
+            ->addColumn('pesan_kkp', function ($data) {
+                return $data['pesan_kkp'];
+            })
             ->addColumn('action', function ($row) {
                 $roles =  Auth::user()['role_id'];
                 $status = $row['status'];
                 if ($roles >= 4 && $roles <= 7) {
                     if ($status == 3) {
-                        $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="edit(' . $row['id'] . ')">Edit</span>
-                        <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="hapus(' . $row['id'] . ')">Delete</span>';
+                        if ($row['file_kkp'] != null) {
+                            $btn = 'Disposisi Dalnis';
+                        }
                     } else {
                         $btn = 'Penyusunan LHP';
                     }
@@ -230,7 +236,7 @@ class KertasKerjaController extends Controller
         $data = ProgramKerja::where('id', $request->id)->first();
         if ($data->status == 3) {
             $data->update([
-                'pesan' => $request->pesan,
+                'pesan_kkp' => $request->pesan,
                 'status' => 4,
             ]);
         }
@@ -245,7 +251,8 @@ class KertasKerjaController extends Controller
         $data = ProgramKerja::where('id', $request->id)->first();
         if ($data->status == 3) {
             $data->update([
-                'pesan' => $request->pesan,
+                'pesan_kkp' => $request->pesan,
+                'file_kkp' => '',
                 'status' => 3,
             ]);
         }

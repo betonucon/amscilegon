@@ -49,6 +49,7 @@
                                                 <th >Nota Dinas</th>
                                                 <th >Surat Perintah</th>
                                                 <th >File KKP</th>
+                                                <th >Pesan</th>
                                                 <th width="5%" >Action</th>
                                             </tr>
                                         </thead>
@@ -212,6 +213,7 @@
                { data: 'nota_dinas' },
                { data: 'file_sp' },
                { data: 'file_kkp' },
+               { data: 'pesan_kkp' },
                { data: 'action' },
            ],
            language: {

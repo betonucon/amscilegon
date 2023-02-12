@@ -50,7 +50,6 @@
                                                 <th>Area Pengawasan</th>
                                                 <th>PKP</th>
                                                 <th>Nota Dinas</th>
-                                                <th>Status</th>
                                                 <th>Pesan</th>
                                                 <th>Action</th>
                                             </tr>
@@ -178,10 +177,8 @@
                         }
                     },
                     { data: 'area_pengawasannya' },
-                    // { data: 'jenis' },
                     { data: 'pkp' },
                     { data: 'nota_dinas' },
-                    { data: 'status' },
                     { data: 'pesan' },
                     { data: 'action' },
                 ],
