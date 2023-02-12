@@ -34,9 +34,6 @@ class ProgramKerjaController extends Controller
             ->addColumn('id', function ($data) {
                 return  $data['id'];
             })
-            // ->addColumn('jenis', function ($data) {
-            //     return $data['jenis'];
-            // })
             ->addColumn('area_pengawasan', function ($data) {
                 return $data['area_pengawasan'];
             })
@@ -134,7 +131,6 @@ class ProgramKerjaController extends Controller
                 if ($roles >= 4 && $roles <= 7) {
                     if ($status == 0) {
                         $btn = '
-                        <span class="btn btn-ghost-warning waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Edit</span>
                         <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="hapus(' . $row['id'] . ')">Delete</span>
                     ';
                     } else  if ($status == 0) {
@@ -259,7 +255,7 @@ class ProgramKerjaController extends Controller
         ]);
     }
 
-    public function modal(Request $request)
+    public function modalApproved(Request $request)
     {
         $data = ProgramKerja::where('id', $request->id)->first();
         return view('programkerja.modal', compact('data'));

@@ -115,7 +115,6 @@
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
 					<div class="modal-header">
-						{{-- <h5 class="modal-title" id="exampleModalLabelDefault">{{ $menu }}</h5> --}}
 						<button type="button" class="btn-close" data-bs-dismiss="modal"
 								aria-label="Close">
 						</button>
@@ -149,7 +148,7 @@
                header: true,
                headerOffset: $('#header').height()
            },
-           responsive: false,
+           responsive: true,
            ajax:"{{ url('perencanaan/surat-perintah/get-data')}}",
            columns: [
                { data: 'id', render: function (data, type, row, meta)

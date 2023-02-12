@@ -99,7 +99,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('tampil-table', [ProgramKerjaController::class, 'tampiltable']);
             Route::post('store', [ProgramKerjaController::class, 'store']);
             Route::get('destroy', [ProgramKerjaController::class, 'destroy']);
-            Route::get('modal', [ProgramKerjaController::class, 'modal']);
+            Route::get('modal', [ProgramKerjaController::class, 'modalApproved']);
             Route::get('modal-refused', [ProgramKerjaController::class, 'modalRefused']);
             Route::post('approved', [ProgramKerjaController::class, 'approved']);
             Route::post('refused', [ProgramKerjaController::class, 'refused']);

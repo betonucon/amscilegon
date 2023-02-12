@@ -27,31 +27,11 @@ class ReviewController extends Controller
         error_reporting(0);
 
         $roles =  Auth::user()['role_id'];
-        if($roles==2){
-            $data= ProgramKerja::where('status','>=', 5)->get();
-        }else{
-            $data= ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('status','>=', 5)->get();
+        if ($roles == 2 || $roles == 3) {
+            $data = ProgramKerja::where('status', '>=', 4)->get();
+        } else {
+            $data = ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('status', '>=', 4)->get();
         }
-        // if($roles >= 4 && $roles <= 7){
-        //     $data= ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('status','>=', 5)->where('status_lhp', '>=',0)->orWhere('status_lhp', null)->get();
-        // }else if($roles >= 8 && $roles <= 11){
-        //     $data = ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('status','>=', 5)->where('status_lhp', 1)->get();
-        // }else if($roles >= 12 && $roles <= 15){
-        //     $data = ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('status','>=', 5)->where('status_lhp', 2)->get();
-        // }else{
-        //     $data = ProgramKerja::where('status', 5)->get();
-        // }
-
-        // if ($role == 3) {
-        //     $data = ProgramKerja::where('file_sp', '!=', null)->where('status_lhp', 1)->orderBy('id', 'desc')->get();
-        // } else if ($role == 4) {
-        //     $data = ProgramKerja::where('file_sp', '!=', null)->where('status_lhp', 2)->orderBy('id', 'desc')->get();
-        // } else if ($role == 5) {
-        //     $data = ProgramKerja::where('file_sp', '!=', null)->where('status_lhp', 3)->orderBy('id', 'desc')->get();
-        // } else {
-        //     $data = ProgramKerja::where('file_sp', '!=', null)->orderBy('id', 'desc')->get();
-        // }
-
 
         return Datatables::of($data)
             ->addColumn('id_pkpt', function ($data) {
@@ -83,13 +63,13 @@ class ReviewController extends Controller
                         $btn = '
                         <span class="btn btn-ghost-warning waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Proses</span>';
                     } else  if ($el->status_lhp == 1) {
-                        $btn ='<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'Disposisi Dalnis';
+                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>' . '-' . 'Disposisi Dalnis';
                     } else  if ($el->status_lhp == 2) {
-                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'Disposisi Irban';
+                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>' . '-' . 'Disposisi Irban';
                     } else  if ($el->status_lhp == 3) {
-                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'Disposisi Inspektur';
+                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>' . '-' . 'Disposisi Inspektur';
                     } else {
-                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'selesai';
+                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>' . '-' . 'selesai';
                     }
                 } else if ($roles >= 8 && $roles <= 11) {
                     if ($el->status_lhp == 1) {
@@ -97,13 +77,13 @@ class ReviewController extends Controller
                         <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Terima</span>
                         <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="modal_refused(' . $row['id'] . ')">Tolak</span>';
                     } else  if ($el->status_lhp == 1) {
-                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'Disposisi Dalnis';
+                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>' . '-' . 'Disposisi Dalnis';
                     } else  if ($el->status_lhp == 2) {
-                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'Disposisi Irban';
+                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>' . '-' . 'Disposisi Irban';
                     } else  if ($el->status_lhp == 3) {
-                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'Disposisi Inspektur';
+                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>' . '-' . 'Disposisi Inspektur';
                     } else {
-                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'selesai';
+                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>' . '-' . 'selesai';
                     }
                 } else if ($roles >= 12 && $roles <= 15) {
                     if ($el->status_lhp == 2) {
@@ -111,30 +91,30 @@ class ReviewController extends Controller
                         <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Terima</span>
                         <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="modal_refused(' . $row['id'] . ')">Tolak</span>';
                     } else  if ($el->status_lhp == 1) {
-                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'Disposisi Dalnis';
+                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>' . '-' . 'Disposisi Dalnis';
                     } else  if ($el->status_lhp == 2) {
-                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'Disposisi Irban';
+                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>' . '-' . 'Disposisi Irban';
                     } else  if ($el->status_lhp == 3) {
-                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'Disposisi Inspektur';
+                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>' . '-' . 'Disposisi Inspektur';
                     } else {
-                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'selesai';
+                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>' . '-' . 'selesai';
                     }
-                }else if ($roles == 2){
+                } else if ($roles == 2) {
                     if ($el->status_lhp == 3) {
                         $btn = '
                         <span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>
                         <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Terima</span>
                         <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="modal_refused(' . $row['id'] . ')">Tolak</span>';
                     } else  if ($el->status_lhp == 1) {
-                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'Disposisi Dalnis';
+                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>' . '-' . 'Disposisi Dalnis';
                     } else  if ($el->status_lhp == 2) {
-                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'Disposisi Irban';
+                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>' . '-' . 'Disposisi Irban';
                     } else  if ($el->status_lhp == 3) {
-                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'Disposisi Inspektur';
+                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>' . '-' . 'Disposisi Inspektur';
                     } else {
-                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'selesai';
+                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>' . '-' . 'selesai';
                     }
-                }else{
+                } else {
                     if ($el->status_lhp == 1) {
                         $btn = 'Disposisi Dalnis';
                     } else  if ($el->status_lhp == 2) {
@@ -142,7 +122,7 @@ class ReviewController extends Controller
                     } else  if ($el->status_lhp == 3) {
                         $btn = 'Disposisi Inspektur';
                     } else {
-                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'selesai';
+                        $btn = '<span class="btn btn-ghost-primary waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>' . '-' . 'selesai';
                     }
                 }
 
@@ -169,14 +149,14 @@ class ReviewController extends Controller
                 return   $data->uraian_penyebab;
             })
             ->addColumn('uraian_rekomendasi', function ($data) {
-                $cek=Lhp::where('uraian_temuan', $data['uraian_temuan'])->where('uraian_penyebab',$data['uraian_penyebab'])->count();
+                $cek = Lhp::where('uraian_temuan', $data['uraian_temuan'])->where('uraian_penyebab', $data['uraian_penyebab'])->count();
                 if ($cek > 0) {
-                    $get=Lhp::where('uraian_temuan', $data['uraian_temuan'])->where('uraian_penyebab',$data['uraian_penyebab'])->get();
+                    $get = Lhp::where('uraian_temuan', $data['uraian_temuan'])->where('uraian_penyebab', $data['uraian_penyebab'])->get();
                     foreach ($get as $g) {
-                        $btn='-'.$g->uraian_rekomendasi;
+                        $btn = '-' . $g->uraian_rekomendasi;
                     }
                 }
-                $btn=$data->uraian_rekomendasi.' '.'<span class="btn btn-ghost-success waves-effect waves-light" onclick="modalrekom(' . $data['id_rekom'] . ')"><i class="mdi mdi-plus-circle-outline"></i></span>';
+                $btn = $data->uraian_rekomendasi . ' ' . '<span class="btn btn-ghost-success waves-effect waves-light" onclick="modalrekom(' . $data['id_rekom'] . ')"><i class="mdi mdi-plus-circle-outline"></i></span>';
                 return $btn;
             })
 
@@ -185,7 +165,7 @@ class ReviewController extends Controller
                     <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modalLhp(' . $row['uraian_temuan'] . ')">Edit</span>';
                 return $btn;
             })
-            ->rawColumns(['uraian_rekomendasi','action', 'file_lhp', 'nota_dinas', 'file_sp', 'id_pkpt'])
+            ->rawColumns(['uraian_rekomendasi', 'action', 'file_lhp', 'nota_dinas', 'file_sp', 'id_pkpt'])
             ->make(true);
     }
 
@@ -193,14 +173,14 @@ class ReviewController extends Controller
     {
         $headermenu = 'Pelaporan';
         $menu = 'Reviu';
-        $id=$request->id;
+        $id = $request->id;
         $data = ProgramKerja::where('id', $request->id)->first();
         $get = Lhp::where('id_program_kerja', $data->id)->whereNotNull('file_lhp')->get();
         $count = Lhp::where('id_program_kerja', $data->id)->count();
-        $output=[];
-        $no=1;
+        $output = [];
+        $no = 1;
         foreach ($get as $k) {
-            $output[]=[
+            $output[] = [
                 $no++,
                 $k->file_lhp,
                 $k->uraian_temuan,
@@ -211,7 +191,7 @@ class ReviewController extends Controller
 
             ];
         }
-        return view('review.create', compact('headermenu', 'menu', 'data','output','count','get'));
+        return view('review.create', compact('headermenu', 'menu', 'data', 'output', 'count', 'get'));
     }
 
     public function modal(Request $request)
@@ -220,22 +200,21 @@ class ReviewController extends Controller
 
         $program = ProgramKerja::where('id', $request->id)->first();
         $data = Lhp::where('id_rekom', $request->id_rekom)->first();
-        return view('review.modal', compact('data','program'));
+        return view('review.modal', compact('data', 'program'));
     }
 
     public function modalrekom(Request $request)
     {
         error_reporting(0);
-        $id_rekom=$request->parent_id;
+        $id_rekom = $request->parent_id;
         $data = Lhp::where('id_rekom', $request->id_rekom)->first();
-        return view('review.modalrekomendasi', compact('data','id_rekom'));
+        return view('review.modalrekomendasi', compact('data', 'id_rekom'));
     }
 
     public function hapusrekom(Request $request)
     {
         error_reporting(0);
         $data = Lhp::where('id_rekom', $request->id_rekom)->delete();
-
     }
 
     public function modalLhp(Request $request)
@@ -256,8 +235,8 @@ class ReviewController extends Controller
             'file_lhp' => 'required|mimes:pdf|max:2048',
         ]);
 
-        $role=Auth::user()['role_id'];
-        $roles=Role::where('id',$role)->first();
+        $role = Auth::user()['role_id'];
+        $roles = Role::where('id', $role)->first();
         $data = [
             'id_program_kerja' => $request->id_program_kerja,
             'kondisi' => $request->kondisi,
@@ -267,7 +246,7 @@ class ReviewController extends Controller
             'uraian_rekomendasi' => $request->uraian_rekomendasi,
             'status' => 1,
             'parent_id' => 0,
-            'grouping' =>$roles->sts,
+            'grouping' => $roles->sts,
         ];
 
         if ($request->hasFile('file_lhp')) {
@@ -296,8 +275,8 @@ class ReviewController extends Controller
             // 'file_lhp' => 'required|mimes:pdf|max:2048',
         ]);
 
-        $role=Auth::user()['role_id'];
-        $roles=Role::where('id',$role)->first();
+        $role = Auth::user()['role_id'];
+        $roles = Role::where('id', $role)->first();
 
         $data = [
             'id_program_kerja' => $request->id_program_kerja,
@@ -310,7 +289,7 @@ class ReviewController extends Controller
             'parent_id' => $request->id_rekom,
             'grouping' => $roles->sts,
         ];
-        
+
         Lhp::create($data);
 
 
@@ -331,8 +310,8 @@ class ReviewController extends Controller
             // 'file_lhp' => 'required|mimes:pdf|max:2048',
         ]);
 
-        $role=Auth::user()['role_id'];
-        $roles=Role::where('id',$role)->first();
+        $role = Auth::user()['role_id'];
+        $roles = Role::where('id', $role)->first();
 
         $data = [
             'id_program_kerja' => $request->id_program_kerja,
@@ -345,8 +324,8 @@ class ReviewController extends Controller
             'parent_id' => $request->parent_id,
             'grouping' => $roles->sts,
         ];
-        
-        Lhp::where('id_rekom',$request->id_rekom)->update($data);
+
+        Lhp::where('id_rekom', $request->id_rekom)->update($data);
 
 
         return response()->json([

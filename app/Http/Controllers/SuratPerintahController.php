@@ -42,7 +42,7 @@ class SuratPerintahController extends Controller
         if ($roles == 2 || $roles == 3) {
             $data = ProgramKerja::where('status', 3)->get();
         } else {
-            $data = ProgramKerja::where('grouping', Auth::user()->roles->sts)->get();
+            $data = ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('status', 3)->get();
         }
         return Datatables::of($data)
             ->addColumn('area_pengawasannya', function ($data) {
