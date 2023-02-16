@@ -2,6 +2,7 @@
 
 use App\Models\Lhp;
 use App\Models\Role;
+use App\Models\TindakLanjut;
 
 function NamaRole($role)
 {
@@ -24,6 +25,18 @@ function group($group,$parent)
 function checkgroup($group,$parent)
 {
     $data = Lhp::where('grouping', $group)->where('parent_id', $parent)->count();
+    return $data;
+}
+
+function rekomedasi($group,$id)
+{
+    $data = Lhp::where('grouping', $group)->where('parent_id', $id)->get();
+    return $data;
+}
+
+function childrekomedasi($group,$id)
+{
+    $data = TindakLanjut::where('grouping', $group)->where('parent_id', $id)->get();
     return $data;
 }
 

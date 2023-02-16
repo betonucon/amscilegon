@@ -50,19 +50,31 @@
                                                 <td>
                                                     <table class="display table  table-responsive">
                                                         <tr>
-                                                            <td colspan="2">{{ $g->uraian_rekomendasi }}</td>
+                                                            <td colspan="2">
+                                                                <p>{{ $g->uraian_rekomendasi }}</p>
+                                                                <ul>
+                                                                    @foreach (childrekomedasi($g->grouping,$g->id_rekom) as $a)
+                                                                        <li>{{ $a->uraian_jawaban }} <input type="checkbox"  id="parent_rekom" value="{{ $a->id_rekom }}"></li>
+                                                                    @endforeach
+                                                                </ul>  
+                                                            </td>
                                                         </tr>
                                                         @foreach (group($g->grouping,$g->id_rekom) as $u)
                                                         <tr>
                                                             <td>
-                                                                {{ $u->uraian_rekomendasi }}
+                                                               <p>{{ $u->uraian_rekomendasi }}</p>                                                                   
+                                                                <ul>
+                                                                    @foreach (childrekomedasi($u->grouping,$u->id_rekom) as $b)
+                                                                        <li>{{ $b->uraian_jawaban }} <input type="checkbox"  id="parent_rekom" value="{{ $b->id_rekom }}"> </li> 
+                                                                    @endforeach
+                                                                </ul> 
                                                             </td>
                                                         </tr>
                                                         @endforeach
                                                     </table>
                                                 </td>
 
-                                                <td>
+                                                {{-- <td>
                                                     <table class="display table  table-responsive">
                                                         <tr>
                                                             <td colspan="2">{{ $g->uraian_jawaban }}</td>
@@ -71,18 +83,18 @@
                                                         <tr>
                                                             <td>
                                                                 {{ $u->uraian_jawaban }}
-                                                            </td>
-                                                            @if (Auth::user()['role_id'] >= 17 && Auth::user()['role_id'] <= 20)
+                                                            </td>--}}
+                                                            @if (Auth::user()['role_id'] >= 17 && Auth::user()['role_id'] <= 20) 
                                                                 <td>
-                                                                    <span class="btn btn-ghost-primary waves-effect waves-light" onclick="modalrekom({{ $u->id_rekom }},{{ $u->parent_id }})">Tambah</span>
-                                                                    <span class="btn btn-ghost-success waves-effect waves-light" onclick="modalrekom({{ $u->id_rekom }},{{ $u->parent_id }})">Edit</span>
-                                                                    <span class="btn btn-ghost-danger waves-effect waves-light" onclick="hapusrekom({{ $u->id_rekom }})">hapus</span>
+                                                                    <span class="btn btn-ghost-primary waves-effect waves-light" onclick="modalrekom({{ $g->id_rekom }},0)">Tambah</span>
+                                                                    <span class="btn btn-ghost-success waves-effect waves-light" onclick="editrekom({{ $g->id_rekom }})">Edit</span>
+                                                                    <span class="btn btn-ghost-danger waves-effect waves-light" onclick="hapusrekom({{ $g->id_rekom }})">hapus</span>
                                                                 </td>
                                                             @endif
-                                                        </tr>
+                                                        {{-- </tr>
                                                         @endforeach
                                                     </table>
-                                                </td>
+                                                </td> --}}
 
                                                 @if (Auth::user()['role_id'] >= 17 && Auth::user()['role_id'] <= 20)
                                                 <td>
@@ -142,8 +154,8 @@
 					</div>
 					<div class="modal-footer">
 						<button  class="btn btn-white" onclick="hide()">Tutup</button>
-						<button id="btn-rekom" class="btn btn-success">Simpan</button>
-						<button id="edit-rekom" class="btn btn-primary">Update</button>
+						<button id="btn-tindak-lanjut" class="btn btn-success">Simpan</button>
+						<button id="edit-tindak-lanjut" class="btn btn-primary">Update</button>
 					</div>
 				</div>
 			</div>
@@ -192,24 +204,50 @@
     function hide(){
         $('#modalAdd').modal('hide');
     }
+    $('input[type="checkbox"]').on('change', function() {
+        $('input[type="checkbox"]').not(this).prop('checked', false);
+    });
+    
 
-    function modalrekom(id_rekom,parent_id){
-            if (parent_id==0) {
-                $('#btn-rekom').show();
-                $('#edit-rekom').hide();
+    function modalrekom(id_rekom,id){
+            if (id==0) {
+                $('#btn-tindak-lanjut').show();
+                $('#edit-tindak-lanjut').hide();
             } else {
-                $('#btn-rekom').hide();
-                $('#edit-rekom').show();
+                $('#btn-tindak-lanjut').hide();
+                $('#edit-tindak-lanjut').show();
             }
 			$.ajax({
 				type: 'GET',
 				url: "{{url('pelaporan/tindak-lanjut/modal-rekomendasi')}}",
-				data: "id_rekom="+id_rekom+"&parent_id="+parent_id,
+				data: "id_rekom="+id_rekom,
 				success: function(msg){
 					$('#tampil-rekom').html(msg);
 					$('#modalrekom').modal('show');
 				}
 			});
+	}
+
+    $('input[type="checkbox"]').hide()
+    function editrekom(id_rekom){
+        $('input[type="checkbox"]').show()
+        $('#btn-tindak-lanjut').hide();
+        $('#edit-tindak-lanjut').show();
+        var parent_rekom =$("#parent_rekom").val();
+        $('input[type="checkbox"]').on('change', function(e){
+            if(e.target.checked){
+                $.ajax({
+                    alert(parent_rekom)
+                    type: 'GET',
+                    url: "{{url('pelaporan/tindak-lanjut/modal-rekomendasi')}}",
+                    data: "id_tindak_lanjut="+parent_rekom,
+                    success: function(msg){
+                        $('#tampil-rekom').html(msg);
+                        $('#modalrekom').modal('show');
+                    }
+                }); 
+            }
+        });
 	}
 
     function hapusrekom(id_rekom){
@@ -271,11 +309,11 @@
         });
     });
 
-    $('#btn-rekom').on('click', () => {
+    $('#btn-tindak-lanjut').on('click', () => {
     var form=document.getElementById('form-rekom');
         $.ajax({
             type: 'POST',
-            url: "{{url('pelaporan/tindak-lanjut/store-rekom')}}",
+            url: "{{url('pelaporan/tindak-lanjut/simpan-tindak-lanjut')}}",
             data: new FormData(form),
             contentType: false,
             cache: false,

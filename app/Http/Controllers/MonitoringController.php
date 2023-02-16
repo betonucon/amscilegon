@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Lhp;
 use App\Models\Pkpt;
+use App\Models\Role;
+use App\Models\Status;
 use App\Models\M_Status_Lhp;
 use App\Models\ProgramKerja;
-use App\Models\Status;
 use App\Models\TindakLanjut;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Yajra\Datatables\Datatables;
+use Illuminate\Support\Facades\Auth;
 
 
 class MonitoringController extends Controller
@@ -119,8 +120,11 @@ class MonitoringController extends Controller
     {
         error_reporting(0);
         $id_rekom = $request->parent_id;
+        $id_tindak = $request->id_tindak_lanjut;
         $data = Lhp::where('id_rekom', $request->id_rekom)->first();
-        return view('tindak_lanjut.modalrekomendasi', compact('data', 'id_rekom'));
+        $rekom = TindakLanjut::where('id_tindak_lanjut', $request->id_tindak_lanjut)->first();
+
+        return view('tindak_lanjut.modalrekomendasi', compact('data', 'id_rekom','rekom'));
     }
 
     public function hapusrekom(Request $request)
@@ -176,6 +180,45 @@ class MonitoringController extends Controller
             'pesan_tindak_lanjut' => $request->pesan_tindak_lanjut,
             'status_tindak_lanjut' => 0,
         ]);
+
+        return response()->json([
+            'status' => 'success',
+            'success' => 'Data berhasil disimpan.'
+        ]);
+    }
+
+    public function carijawaban(Request $request)
+    {
+        $data= TindakLanjut::where('id_tindak_lanjut', $request->id_tindak_lanjut)->first();
+        echo $data->uraian_jawaban;
+    }
+
+    public function simpan(Request $request)
+    {
+        $this->validate($request, [
+            // 'id_program_kerja' => 'required',
+            // 'rekomendasi_id' => 'required',
+            'uraian_jawaban' => 'required',
+            // 'file_lhp' => 'required|mimes:pdf|max:2048',
+        ]);
+
+        $role = Auth::user()['role_id'];
+        $roles = Role::where('id', $role)->first();
+        $data = [
+            'id_program_kerja' => $request->id_program_kerja,
+            'uraian_jawaban' => $request->uraian_jawaban,
+            'parent_id' => $request->uraian_rekomendasi,
+            'grouping' => $request->grouping,
+        ];
+
+        if ($request->hasFile('file_lhp')) {
+            $file = $request->file('file_lhp');
+            $name = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('file_lhp'), $name);
+            $data['file_lhp'] = $name;
+        }
+
+        TindakLanjut::create($data);
 
         return response()->json([
             'status' => 'success',

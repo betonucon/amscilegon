@@ -9,7 +9,7 @@ class TindakLanjut extends Model
 {
     use HasFactory;
     protected $table = 'tindak_lanjut';
-    protected $guarded = ['id'];
+    protected $guarded = ['id_tindak_lanjut'];
 
     public $timestamps = false;
 }

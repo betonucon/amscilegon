@@ -7,6 +7,8 @@
     <input type="hidden" name="rekomendasi" value="{{ $data->rekomendasi }}" >
     <input type="hidden" name="akibat" value="{{ $data->akibat }}" >
     <input type="hidden" name="parent_id" value="{{ $data->parent_id }}" >
+    <input type="hidden" name="grouping" value="{{ $data->grouping }}" >
+    <input type="text" name="id_tindak_lanjut" value="{{ $id_tindak }}" >
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
@@ -35,36 +37,43 @@
                         <input type="text" readonly name="akibat" class="form-control" value="{{ $data->akibat }}">
                     </div>
                 </div>
-                @if ($data->parent_id == 0)
+                {{-- @if ($data->parent_id == 0)
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label class="form-label">Rekomendasi</label>
                             <input type="text" name="uraian_rekomendasi" class="form-control">
                         </div>
                     </div>
-                @else
+                @else --}}
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label class="form-label">Rekomendasi</label>
-                            <input type="text" name="uraian_rekomendasi" class="form-control" value="{{ $data->uraian_rekomendasi }}">
+                            <select name="uraian_rekomendasi" class="form-control" id="uraian_rekomendasi" onchange="carijawaban(this.value)">
+                                <option value="">Pilih Rekomedasi</option>
+                                <option value="{{ $data->id_rekom }}">{{ $data->uraian_rekomendasi }}</option>
+                                @foreach (rekomedasi($data->grouping,$data->id_rekom) as $d)
+                                    <option value="{{ $d->id_rekom }}">{{ $d->uraian_rekomendasi }}</option>
+                                @endforeach
+                            </select>
+                            {{-- <input type="text" name="uraian_rekomendasi" class="form-control" value="{{ $data->uraian_rekomendasi }}"> --}}
                         </div>
                     </div>
-                @endif
-                @if ($data->parent_id == 0)
+                {{-- @endif --}}
+            {{-- @if ($data->parent_id == 0)
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label">Jawaban</label>
                         <input type="text" name="uraian_jawaban" class="form-control">
                     </div>
                 </div>
-            @else
+            @else --}}
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label">Jawaban</label>
-                        <input type="text" name="uraian_jawaban" class="form-control" value="{{ $data->uraian_jawaban }}">
+                        <input type="text" name="uraian_jawaban" id="uraian_jawaban" class="form-control" value="{{ $data->uraian_jawaban }}">
                     </div>
                 </div>
-            @endif
+            {{-- @endif --}}
             </div>
         </div>
     </div>

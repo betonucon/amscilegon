@@ -180,6 +180,8 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('modal-refused', [MonitoringController::class, 'modalRefused']);
             Route::get('approved', [MonitoringController::class, 'storeApprove']);
             Route::get('refused', [MonitoringController::class, 'storeRefused']);
+            Route::get('cari-jawaban', [MonitoringController::class, 'carijawaban']);
+            Route::post('simpan-tindak-lanjut', [MonitoringController::class, 'simpan']);
         });
     });
 });
