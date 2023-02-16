@@ -65,7 +65,6 @@ class MonitoringController extends Controller
             })
             ->addColumn('action', function ($row) {
                 $roles =  Auth::user()->role_id;
-
                 if ($roles == 2) {
                     if ($row['status_tindak_lanjut'] == 2) {
                         $btn = 'Selesai';
@@ -92,54 +91,6 @@ class MonitoringController extends Controller
             ->make(true);
     }
 
-    public function getTable(Request $request)
-    {
-        error_reporting(0);
-        $data = Lhp::where('id_program_kerja', $request->id_program_kerja)->orderBy('parent_id', 'Asc')->get();
-
-        return Datatables::of($data)
-            ->addColumn('file_lhp', function ($data) {
-                $fileLhp = '<span class="btn btn-icon-only btn-outline-warning btn-sm mt-2" onclick="buka_file(`' . $data['file_lhp'] . '`)"><center><img src="' . asset('public/img/pdf-file.png') . '" width="10px" height="10px"></center></span>';
-                return $fileLhp;
-            })
-            ->addColumn('uraian_temuan', function ($data) {
-                return  $data->uraian_temuan;
-            })
-            ->addColumn('uraian_penyebab', function ($data) {
-                return   $data->uraian_penyebab;
-            })
-            ->addColumn('uraian_rekomendasi', function ($data) {
-                $cek = Lhp::where('uraian_temuan', $data['uraian_temuan'])->where('uraian_penyebab', $data['uraian_penyebab'])->count();
-                if ($cek > 0) {
-                    $get = Lhp::where('uraian_temuan', $data['uraian_temuan'])->where('uraian_penyebab', $data['uraian_penyebab'])->get();
-                    foreach ($get as $g) {
-                        $btn = '-' . $g->uraian_rekomendasi;
-                    }
-                }
-                $btn = $data->uraian_rekomendasi . ' ' . '<span class="btn btn-ghost-success waves-effect waves-light" onclick="modalrekom(' . $data['id_rekom'] . ')"><i class="mdi mdi-plus-circle-outline"></i></span>';
-                return $btn;
-            })
-            ->addColumn('uraian_jawaban', function ($data) {
-                $cek = Lhp::where('uraian_rekomendasi', $data['uraian_rekomendasi'])->count();
-                if ($cek > 0) {
-                    $get = Lhp::where('uraian_rekomendasi', $data['uraian_rekomendasi'])->get();
-                    foreach ($get as $g) {
-                        $btn = '-' . $g->uraian_jawaban;
-                    }
-                }
-                $btn = $data->uraian_jawaban . ' ' . '<span class="btn btn-ghost-success waves-effect waves-light" onclick="modalrekom(' . $data['id_rekom'] . ')"><i class="mdi mdi-plus-circle-outline"></i></span>';
-                return $btn;
-            })
-
-            ->addColumn('action', function ($row) {
-                $btn = '
-                    <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modalLhp(' . $row['uraian_temuan'] . ')">Edit</span>';
-                return $btn;
-            })
-            ->rawColumns(['uraian_rekomendasi', 'action', 'file_lhp', 'nota_dinas', 'file_sp', 'id_pkpt'])
-            ->make(true);
-    }
-
     public function create(Request $request)
     {
         $headermenu = 'Pelaporan';
@@ -159,7 +110,6 @@ class MonitoringController extends Controller
                 $k->uraian_rekomendasi,
                 $k->id_rekom,
                 $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modalLhp(' . $k->id_rekom . ')">Edit</span>'
-
             ];
         }
         return view('tindak_lanjut.create', compact('headermenu', 'menu', 'data', 'output', 'count', 'get'));

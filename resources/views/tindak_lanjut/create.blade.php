@@ -33,9 +33,6 @@
                                             <th>Akibat</th>
                                             <th>Rekomendasi</th>
                                             <th>Jawaban</th>
-                                            @if (Auth::user()['role_id'] >= 17 && Auth::user()['role_id'] <= 20)
-                                            <th>Action</th>
-                                            @endif
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -127,6 +124,7 @@
 				</div>
 			</div>
 		</div>
+
         <div class="modal fade" id="modalrekom" role="dialog" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
@@ -150,21 +148,23 @@
 				</div>
 			</div>
 		</div>
-            <div class="modal fade" id="modalshow" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close">
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                                <div id="tampil-pdf"></div>
-                        </div>
+
+        <div class="modal fade" id="modalshow" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close">
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                            <div id="tampil-pdf"></div>
                     </div>
                 </div>
             </div>
-            </div>
+        </div>
+
+        </div>
         </div>
     </div>
 </div>
@@ -312,7 +312,6 @@
                         if (result.isConfirmed) {
                             $('#modalAdd').modal('hide');
                             location.reload();
-                            // window.location.href = "{{url('pelaporan/review')}}";
                         }
                     })
                 }
