@@ -26,7 +26,7 @@ class MonitoringController extends Controller
     public function getdata(Request $request)
     {
         error_reporting(0);
-        $opd =  Auth::user()->nama;
+        $opd =  Auth::user()->name;
         $roles =  Auth::user()->role_id;
         $pkpt = Pkpt::where('opd', $opd)->first();
         if ($roles >= 4 && $roles <=7) {
