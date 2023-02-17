@@ -69,6 +69,7 @@ class MonitoringController extends Controller
                 if ($roles >= 4 && $roles<=7) {
                     if ($row['status_tindak_lanjut'] == 1) {
                         $btn = '
+                        <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>
                         <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Terima</span>
                         <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="modal_refused(' . $row['id'] . ')">Tolak</span>
                     ';
@@ -82,6 +83,7 @@ class MonitoringController extends Controller
                         $btn = 'Disposisi Ketua Team';
                     }elseif ($row['status_tindak_lanjut'] == 2) {
                         $btn = '
+                        <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>
                         <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Terima</span>
                         <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="modal_refused(' . $row['id'] . ')">Tolak</span>
                     ';
@@ -93,9 +95,9 @@ class MonitoringController extends Controller
                         $btn =
                             '<span class="btn btn-ghost-warning waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Proses</span>';
                     } elseif ($row['status_tindak_lanjut'] == 1) {
-                        $btn = 'Disposisi Ketua Team';
+                        $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span> - Disposisi Ketua Team';
                     } elseif ($row['status_tindak_lanjut'] == 2) {
-                        $btn = 'Disposisi Dalnis';
+                        $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span> - Disposisi Dalnis';
                     } else {
                         $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'Selesai';
                     }
