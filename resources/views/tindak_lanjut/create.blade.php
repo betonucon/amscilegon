@@ -10,7 +10,7 @@
             <div class="col-sm-12 col-md-6">
                 <span onclick="back()" class="btn btn-sm btn-danger waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Kembali</span>
                 @if ($data->status_tindak_lanjut ==null || $data->status_tindak_lanjut ==0)
-                    @if (Auth::user()['role_id'] >= 17 && Auth::user()['role_id'] <= 20 )
+                    @if (Auth::user()['role_id'] > 15 )
                         <span onclick="selesai({{$data->id}})" class="btn btn-sm btn-success waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Selesai</span>
                     @endif
                 @endif
@@ -33,7 +33,7 @@
                                             <th>Akibat</th>
                                             <th>Rekomendasi</th>
                                             @if ($data->status_tindak_lanjut ==3)
-                                                @if (Auth::user()['role_id'] >= 17 && Auth::user()['role_id'] <= 20 )
+                                                @if (Auth::user()['role_id'] > 15 )
                                                     <th>Jawaban</th>
                                                 @endif
                                             @endif
@@ -88,7 +88,7 @@
                                                             <td>
                                                                 {{ $u->uraian_jawaban }}
                                                             </td>--}}
-                                                            @if (Auth::user()['role_id'] >= 17 && Auth::user()['role_id'] <= 20) 
+                                                            @if (Auth::user()['role_id'] > 15) 
                                                                 <td>
                                                                     <span class="btn btn-ghost-primary waves-effect waves-light" onclick="modalrekom({{ $g->id_rekom }},0)">Tambah</span>
                                                                     <span class="btn btn-ghost-success waves-effect waves-light" onclick="editrekom()">Edit</span>
