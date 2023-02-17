@@ -52,14 +52,14 @@ class MonitoringController extends Controller
                 $pkpt = Pkpt::where('id', $data->id_pkpt)->first();
                 return $pkpt['opd'];
             })
-            ->addColumn('pkp', function ($data) {
-                $pkp = '<span class="btn btn-icon-only btn-outline-warning btn-sm mt-2" onclick="buka_file(`' . $data['pkp'] . '`)"><center><img src="' . asset('public/img/pdf-file.png') . '" width="10px" height="10px"></center></span>';
-                return $pkp;
-            })
-            ->addColumn('nota_dinas', function ($data) {
-                $notaDinas = '<span class="btn btn-icon-only btn-outline-warning btn-sm mt-2" onclick="buka_file(`' . $data['nota_dinas'] . '`)"><center><img src="' . asset('public/img/pdf-file.png') . '" width="10px" height="10px"></center></span>';
-                return $notaDinas;
-            })
+            // ->addColumn('pkp', function ($data) {
+            //     $pkp = '<span class="btn btn-icon-only btn-outline-warning btn-sm mt-2" onclick="buka_file(`' . $data['pkp'] . '`)"><center><img src="' . asset('public/img/pdf-file.png') . '" width="10px" height="10px"></center></span>';
+            //     return $pkp;
+            // })
+            // ->addColumn('nota_dinas', function ($data) {
+            //     $notaDinas = '<span class="btn btn-icon-only btn-outline-warning btn-sm mt-2" onclick="buka_file(`' . $data['nota_dinas'] . '`)"><center><img src="' . asset('public/img/pdf-file.png') . '" width="10px" height="10px"></center></span>';
+            //     return $notaDinas;
+            // })
             ->addColumn('file_sp', function ($data) {
                 $notaDinas = '<span class="btn btn-icon-only btn-outline-warning btn-sm mt-2" onclick="buka_file(`' . $data['file_sp'] . '`)"><center><img src="' . asset('public/img/pdf-file.png') . '" width="10px" height="10px"></center></span>';
                 return $notaDinas;

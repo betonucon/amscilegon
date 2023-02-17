@@ -43,8 +43,8 @@
                                                 <th >Jenis Pengawasan</th>
                                                 <th >Area Pengawasan</th>
                                                 <th >OPD</th>
-                                                <th >PKP</th>
-                                                <th >Nota Dinas</th>
+                                                {{-- <th >PKP</th>
+                                                <th >Nota Dinas</th> --}}
                                                 <th >Surat Perintah</th>
                                                 <th width="5%" >Action</th>
                                             </tr>
@@ -173,8 +173,8 @@
                { data: 'id_pkpt' },
                { data: 'jenis' },
                { data: 'opd' },
-               { data: 'pkp' },
-               { data: 'nota_dinas' },
+            //    { data: 'pkp' },
+            //    { data: 'nota_dinas' },
                { data: 'file_sp' },
                { data: 'action' },
                 ],

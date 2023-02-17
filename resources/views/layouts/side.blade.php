@@ -4,12 +4,6 @@
         <div id="two-column-menu">
         </div>
         <ul class="navbar-nav" id="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link menu-link" href="{{ url('/Dashboard') }}">
-                    <i class="ri-home-3-line"></i> <span data-key="t-widgets">Dashboard</span>
-                </a>
-            </li>
-
             @if (Auth::user()->role_id == 1)
             <li class="nav-item">
                 <a class="nav-link menu-link" href="#masterdata" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="masterdata">
@@ -33,7 +27,12 @@
                 </div>
             </li>
             @endif
-
+            @if (Auth::user()->role_id >= 1 && Auth::user()->role_id <= 15 )
+            <li class="nav-item">
+                <a class="nav-link menu-link" href="{{ url('/Dashboard') }}">
+                    <i class="ri-home-3-line"></i> <span data-key="t-widgets">Dashboard</span>
+                </a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link menu-link" href="#perencanaan" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="perencanaan">
                     <i class="ri-calendar-event-line"></i> <span data-key="t-landing">Perencanaan</span>
@@ -83,6 +82,7 @@
                     </ul>
                 </div>
             </li>
+            @endif
             <li class="nav-item">
                 <a class="nav-link menu-link" href="#Tindak_lanjut" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="Tindak_lanjut">
                     <i class="ri-rocket-line"></i> <span data-key="t-landing">Tindak Lanjut</span>
@@ -94,7 +94,8 @@
                         </li>
                     </ul>
                 </div>
-            </li>
+            </li>               
+
         </ul>
     </div>
     <!-- Sidebar -->
