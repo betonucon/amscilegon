@@ -40,8 +40,8 @@
                                         <thead>
                                             <tr>
                                                 <th width="1%" scope="col">No</th>
-                                                <th >Jenis Pengawasan</th>
                                                 <th >Area Pengawasan</th>
+                                                <th >Jenis Pengawasan</th>
                                                 <th >PKP</th>
                                                 <th >Nota Dinas</th>
                                                 <th >Surat Perintah</th>
