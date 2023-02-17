@@ -174,6 +174,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/get-data', [MonitoringController::class, 'getdata']);
             Route::get('create', [MonitoringController::class, 'create']);
             Route::get('/modal-rekomendasi', [MonitoringController::class, 'modalrekom']);
+            Route::get('/modal-edit-rekomendasi', [MonitoringController::class, 'modaleditrekom']);
             Route::get('/hapus-rekomendasi', [MonitoringController::class, 'hapusrekom']);
             Route::get('selesai', [MonitoringController::class, 'selesai']);
             Route::get('modal-approved', [MonitoringController::class, 'modalApprove']);

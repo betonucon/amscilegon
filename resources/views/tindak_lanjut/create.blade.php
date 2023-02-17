@@ -32,7 +32,11 @@
                                             <th>Penyebab</th>
                                             <th>Akibat</th>
                                             <th>Rekomendasi</th>
-                                            <th>Jawaban</th>
+                                            @if ($data->status_tindak_lanjut ==3)
+                                                @if (Auth::user()['role_id'] >= 17 && Auth::user()['role_id'] <= 20 )
+                                                    <th>Jawaban</th>
+                                                @endif
+                                            @endif
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -54,7 +58,7 @@
                                                                 <p>{{ $g->uraian_rekomendasi }}</p>
                                                                 <ul>
                                                                     @foreach (childrekomedasi($g->grouping,$g->id_rekom) as $a)
-                                                                        <li>{{ $a->uraian_jawaban }} <input type="checkbox"  id="parent_rekom" value="{{ $a->id_rekom }}"></li>
+                                                                        <li style="list-style: none"><input type="checkbox"  id="parent_rekom" value="{{ $a->id_tindak_lanjut }}"> {{ $a->uraian_jawaban }}</li>
                                                                     @endforeach
                                                                 </ul>  
                                                             </td>
@@ -65,7 +69,7 @@
                                                                <p>{{ $u->uraian_rekomendasi }}</p>                                                                   
                                                                 <ul>
                                                                     @foreach (childrekomedasi($u->grouping,$u->id_rekom) as $b)
-                                                                        <li>{{ $b->uraian_jawaban }} <input type="checkbox"  id="parent_rekom" value="{{ $b->id_rekom }}"> </li> 
+                                                                        <li style="list-style: none"><input type="checkbox"  id="parent_rekom" value="{{ $b->id_tindak_lanjut }}"> {{ $b->uraian_jawaban }}</li> 
                                                                     @endforeach
                                                                 </ul> 
                                                             </td>
@@ -87,7 +91,7 @@
                                                             @if (Auth::user()['role_id'] >= 17 && Auth::user()['role_id'] <= 20) 
                                                                 <td>
                                                                     <span class="btn btn-ghost-primary waves-effect waves-light" onclick="modalrekom({{ $g->id_rekom }},0)">Tambah</span>
-                                                                    <span class="btn btn-ghost-success waves-effect waves-light" onclick="editrekom({{ $g->id_rekom }})">Edit</span>
+                                                                    <span class="btn btn-ghost-success waves-effect waves-light" onclick="editrekom()">Edit</span>
                                                                     <span class="btn btn-ghost-danger waves-effect waves-light" onclick="hapusrekom({{ $g->id_rekom }})">hapus</span>
                                                                 </td>
                                                             @endif
@@ -96,14 +100,14 @@
                                                     </table>
                                                 </td> --}}
 
-                                                @if (Auth::user()['role_id'] >= 17 && Auth::user()['role_id'] <= 20)
+                                                {{-- @if (Auth::user()['role_id'] >= 17 && Auth::user()['role_id'] <= 20)
                                                 <td>
                                                     @if (checkgroup($g->grouping,$g->id_rekom)==0)
                                                         <span class="btn btn-success waves-effect waves-light btn-sm" onclick="tambah({{$data->id}},{{ $g->id_rekom }})">Edit</span>
                                                         <span class="btn btn-danger waves-effect waves-light btn-sm" onclick="hapusrekom({{ $g->id_rekom }})">Hapus</span>
                                                     @endif
                                                 </td>
-                                                @endif
+                                                @endif --}}
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -155,12 +159,11 @@
 					<div class="modal-footer">
 						<button  class="btn btn-white" onclick="hide()">Tutup</button>
 						<button id="btn-tindak-lanjut" class="btn btn-success">Simpan</button>
-						<button id="edit-tindak-lanjut" class="btn btn-primary">Update</button>
+						{{-- <button id="btn-tindak-lanjut" class="btn btn-primary">Update</button> --}}
 					</div>
 				</div>
 			</div>
 		</div>
-
         <div class="modal fade" id="modalshow" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -210,13 +213,6 @@
     
 
     function modalrekom(id_rekom,id){
-            if (id==0) {
-                $('#btn-tindak-lanjut').show();
-                $('#edit-tindak-lanjut').hide();
-            } else {
-                $('#btn-tindak-lanjut').hide();
-                $('#edit-tindak-lanjut').show();
-            }
 			$.ajax({
 				type: 'GET',
 				url: "{{url('pelaporan/tindak-lanjut/modal-rekomendasi')}}",
@@ -228,37 +224,31 @@
 			});
 	}
 
-    $('input[type="checkbox"]').hide()
-    function editrekom(id_rekom){
-        $('input[type="checkbox"]').show()
-        $('#btn-tindak-lanjut').hide();
-        $('#edit-tindak-lanjut').show();
-        var parent_rekom =$("#parent_rekom").val();
-        $('input[type="checkbox"]').on('change', function(e){
-            if(e.target.checked){
-                $.ajax({
-                    alert(parent_rekom)
-                    type: 'GET',
-                    url: "{{url('pelaporan/tindak-lanjut/modal-rekomendasi')}}",
-                    data: "id_tindak_lanjut="+parent_rekom,
-                    success: function(msg){
-                        $('#tampil-rekom').html(msg);
-                        $('#modalrekom').modal('show');
-                    }
-                }); 
+    // $('input[type="checkbox"]').hide()
+    
+    function editrekom(){ 
+        var checkedValue = document.querySelector('#parent_rekom:checked').value;     
+        $.ajax({
+            type: 'GET',
+            url: "{{url('pelaporan/tindak-lanjut/modal-edit-rekomendasi')}}",
+            data: "id_tindak_lanjut="+checkedValue,
+            success: function(msg){
+                $('#tampil-rekom').html(msg);
+                $('#modalrekom').modal('show');
             }
-        });
+        }); 
 	}
 
-    function hapusrekom(id_rekom){
-			$.ajax({
-				type: 'GET',
-				url: "{{url('pelaporan/tindak-lanjut/hapus-rekomendasi')}}",
-				data: "id_rekom="+id_rekom,
-				success: function(msg){
-                    location.reload();
-				}
-			});
+    function hapusrekom(){
+        var checkedValue = document.querySelector('#parent_rekom:checked').value;  
+        $.ajax({
+            type: 'GET',
+            url: "{{url('pelaporan/tindak-lanjut/hapus-rekomendasi')}}",
+            data: "id_tindak_lanjut="+checkedValue,
+            success: function(msg){
+                location.reload();
+            }
+        });
 	}
 
     $('#btn-save').on('click', () => {

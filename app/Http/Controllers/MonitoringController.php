@@ -26,16 +26,16 @@ class MonitoringController extends Controller
     public function getdata(Request $request)
     {
         error_reporting(0);
-        $role =  Auth::user()->role_id;
-        $roles =  Auth::user()->roles->nama;
-        $pkpt = Pkpt::where('opd', $roles)->first();
-        if ($roles >= 4 && $roles <= 7) {
-            $data = ProgramKerja::where('status_lhp', 4)->orderBy('id', 'desc')->where('grouping', Auth::user()->roles->sts)->where('status_tindak_lanjut', 1)->get();
-        } else if ($roles >= 8 && $roles <= 11) {
-            $data = ProgramKerja::where('status_lhp', 4)->orderBy('id', 'desc')->where('grouping', Auth::user()->roles->sts)->where('status_tindak_lanjut', 2)->get();
-        } else if ($roles >= 1 && $roles <= 3 || $roles >= 12 && $roles <= 15) {
+        $opd =  Auth::user()->nama;
+        $roles =  Auth::user()->role_id;
+        $pkpt = Pkpt::where('opd', $opd)->first();
+        if ($roles >= 4 && $roles <=7) {
+            $data = ProgramKerja::where('status_lhp', 4)->orderBy('id', 'desc')->where('grouping', Auth::user()->roles->sts)->where('status_tindak_lanjut','>=',1)->get();
+        }elseif ($roles >= 8 && $roles <= 11) {
+            $data = ProgramKerja::where('status_lhp', 4)->orderBy('id', 'desc')->where('grouping', Auth::user()->roles->sts)->where('status_tindak_lanjut','>=', 2)->get();
+        }elseif ($roles >= 12 && $roles <= 15) {
             $data = ProgramKerja::where('status_lhp', 4)->orderBy('id', 'desc')->where('status_tindak_lanjut', 2)->get();
-        } else {
+        }else {
             $data = ProgramKerja::where('status_lhp', 4)->orderBy('id', 'desc')->where('id_pkpt', $pkpt->id)->get();
         }
 
@@ -66,23 +66,38 @@ class MonitoringController extends Controller
             })
             ->addColumn('action', function ($row) {
                 $roles =  Auth::user()->role_id;
-                if ($roles == 2) {
-                    if ($row['status_tindak_lanjut'] == 2) {
-                        $btn = 'Selesai';
-                    } else {
+                if ($roles >= 4 && $roles<=7) {
+                    if ($row['status_tindak_lanjut'] == 1) {
                         $btn = '
                         <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Terima</span>
                         <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="modal_refused(' . $row['id'] . ')">Tolak</span>
                     ';
+                    }elseif ($row['status_tindak_lanjut'] == 2) {
+                        $btn = 'Disposisi Dalnis';
+                    }else{
+                        $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'Selesai';
+                    }
+                } elseif ($roles >= 8 && $roles<=11) {
+                    if ($row['status_tindak_lanjut'] == 1) {
+                        $btn = 'Disposisi Ketua Team';
+                    }elseif ($row['status_tindak_lanjut'] == 2) {
+                        $btn = '
+                        <span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="modal_approved(' . $row['id'] . ')">Terima</span>
+                        <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="modal_refused(' . $row['id'] . ')">Tolak</span>
+                    ';
+                    }else{
+                        $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'Selesai';
                     }
                 } else {
                     if ($row['status_tindak_lanjut'] == null) {
                         $btn =
                             '<span class="btn btn-ghost-warning waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Proses</span>';
-                    } else   if ($row['status_tindak_lanjut'] == 1) {
-                        $btn = 'Disposisi Inspektur';
+                    } elseif ($row['status_tindak_lanjut'] == 1) {
+                        $btn = 'Disposisi Ketua Team';
+                    } elseif ($row['status_tindak_lanjut'] == 2) {
+                        $btn = 'Disposisi Dalnis';
                     } else {
-                        $btn = 'Selesai';
+                        $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="tambah(' . $row['id'] . ')">Detail</span>'.'-'.'Selesai';
                     }
                 }
 
@@ -126,11 +141,21 @@ class MonitoringController extends Controller
 
         return view('tindak_lanjut.modalrekomendasi', compact('data', 'id_rekom','rekom'));
     }
+    
+    public function modaleditrekom(Request $request)
+    {
+        error_reporting(0);
+        $parent_id = $request->parent_id;
+        $id_tindak = $request->id_tindak_lanjut;
+        $data = TindakLanjut::where('id_tindak_lanjut', $request->id_tindak_lanjut)->first();
+        $lhp = Lhp::where('id_rekom', $data->parent_id)->first();
+        return view('tindak_lanjut.modaleditrekomendasi', compact('data', 'id_tindak','parent_id','lhp'));
+    }
 
     public function hapusrekom(Request $request)
     {
         error_reporting(0);
-        $data = Lhp::where('id_rekom', $request->id_rekom)->delete();
+        $data = TindakLanjut::where('id_tindak_lanjut', $request->id_tindak_lanjut)->delete();
     }
 
     function selesai(Request $request)
@@ -161,10 +186,17 @@ class MonitoringController extends Controller
     function storeApprove(Request $request)
     {
         $data = ProgramKerja::where('id', $request->id)->first();
-        $data->update([
-            'pesan_tindak_lanjut' => $request->pesan_tindak_lanjut,
-            'status_tindak_lanjut' => 2,
-        ]);
+        if ($data->status_tindak_lanjut == 1) {
+            $data->update([
+                'pesan_tindak_lanjut' => $request->pesan_tindak_lanjut,
+                'status_tindak_lanjut' => 2,
+            ]);
+        } else if ($data->status_tindak_lanjut == 2) {
+            $data->update([
+                'pesan_tindak_lanjut' => $request->pesan_lhp,
+                'status_tindak_lanjut' => 3,
+            ]);
+        }
 
 
         return response()->json([
@@ -217,8 +249,11 @@ class MonitoringController extends Controller
             $file->move(public_path('file_lhp'), $name);
             $data['file_lhp'] = $name;
         }
-
-        TindakLanjut::create($data);
+        if ($request->id_tindak_lanjut > 0) {
+            TindakLanjut::where('id_tindak_lanjut',$request->id_tindak_lanjut)->update($data);
+        }else{
+            TindakLanjut::create($data);
+        }
 
         return response()->json([
             'status' => 'success',
