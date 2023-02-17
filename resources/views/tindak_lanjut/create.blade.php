@@ -32,7 +32,7 @@
                                             <th>Penyebab</th>
                                             <th>Akibat</th>
                                             <th>Rekomendasi</th>
-                                            @if ($data->status_tindak_lanjut ==3)
+                                            @if ($data->status_tindak_lanjut == null)
                                                 @if (Auth::user()['role_id'] > 15 )
                                                     <th>Jawaban</th>
                                                 @endif
