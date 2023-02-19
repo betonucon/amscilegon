@@ -12,4 +12,9 @@ class TindakLanjut extends Model
     protected $guarded = ['id_tindak_lanjut'];
 
     public $timestamps = false;
+
+    public function lhp()
+    {
+        return $this->belongsTo('App\Models\Lhp', 'id_rekom', 'parent_id');
+    }
 }

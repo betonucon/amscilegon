@@ -109,6 +109,89 @@ class MonitoringController extends Controller
             ->make(true);
     }
 
+    public function datacreate(Request $request)
+    {
+        error_reporting(0);
+        $get = ProgramKerja::where('id', $request->id)->first();
+        $data = Lhp::where('id_program_kerja', $get->id)->whereNotNull('file_lhp')->get();
+        return Datatables::of($data)
+            ->addColumn('id', function ($data) {
+                return '';
+            })
+            ->addColumn('file_lhp', function ($data) {
+                $pdf = '<span class="btn btn-icon-only btn-outline-warning btn-sm mt-2" onclick="buka_file(`' . $data['file_lhp'] . '`)"><center><img src="' . asset('public/img/pdf-file.png') . '" width="10px" height="10px"></center></span>';
+                return $pdf;
+            })
+            ->addColumn('kondisi', function ($data) {
+                return $data['kondisi'];
+            })
+            ->addColumn('kriteria', function ($data) {
+                return $data['kriteria'];
+            })
+            ->addColumn('penyebab', function ($data) {
+                return $data['penyebab'];
+            })
+            ->addColumn('akibat', function ($data) {
+                return $data['akibat'];
+            })
+            ->addColumn('jawaban', function ($data) {
+                $tindak=TindakLanjut::where('grouping', $data->grouping)->where('parent_id', $data->id_rekom)->get();
+                $table='<ul>';
+                foreach ($tindak as $l) {
+                    $table.='<li>'.$l['uraian_jawaban'].'</li>';
+                }
+                $table.='<ul>';
+                return $table;
+            })
+            ->addColumn('rekom', function ($data) {
+                // $tindak=TindakLanjut::where('grouping', $data->grouping)->where('parent_id', $data->id_rekom)->get();
+                $lhp=Lhp::where('grouping', $data->grouping)->where('parent_id', $data->id_rekom)->get();
+                // $table=$data['uraian_rekomendasi'];
+                // foreach ($tindak as $t) {
+                //     $table.='<li>'.$t['uraian_jawaban'].'</li>';
+                // }
+                // $table.='<td>'.$data['uraian_rekomendasi'].'</td>';
+                $table='';
+                foreach ($lhp as $l) {
+                    $table.=$l['uraian_rekomendasi'];
+                }
+                // $table.='</tr>';
+                return $table;
+            })
+
+            ->addColumn('parent_rekom', function ($data) {
+                // $tindak=TindakLanjut::where('grouping', $data->grouping)->where('parent_id', $data->id_rekom)->get();
+                $lhp=Lhp::where('grouping', $data->grouping)->where('parent_id', $data->id_rekom)->get();
+                $table='';
+                // foreach ($tindak as $t) {
+                //     $table.='<li>'.$t['uraian_jawaban'].'</li>';
+                // }
+                // $table.='<td>'.$data['uraian_rekomendasi'].'</td>';
+                foreach ($lhp as $l) {
+                    $table.='<tr><td>'.$l['uraian_rekomendasi'].'</td></tr>';
+                }
+                $table.='';
+                return $table;
+            })
+
+            // ->addColumn('parent_rekom', function ($data) {
+            //     // $group=TindakLanjut::where('grouping', $data->grouping)->where('parent_id', $data->id_rekom)->get();
+            //     $child=Lhp::where('grouping', $data->grouping)->where('parent_id', $data->id_rekom)->get();
+            //     foreach ($child as $key) {
+            //         $table='<td>'.$key['uraian_rekomendasi'].'</td><td><tr><ul>';
+            //         $table.='<li>'.$key['uraian_jawaban'].'</li>';
+            //     }
+            //     return $table;
+            // })
+
+
+
+
+            ->rawColumns(['file_lhp', 'rekomedasi','jawaban','parent_rekom'])
+            ->make(true);
+    }
+    
+
     public function create(Request $request)
     {
         $headermenu = 'Pelaporan';
@@ -138,10 +221,10 @@ class MonitoringController extends Controller
         error_reporting(0);
         $id_rekom = $request->parent_id;
         $id_tindak = $request->id_tindak_lanjut;
-        $data = Lhp::where('id_rekom', $request->id_rekom)->first();
-        $rekom = TindakLanjut::where('id_tindak_lanjut', $request->id_tindak_lanjut)->first();
+        $lhp = Lhp::where('id_rekom', $request->id_rekom)->first();
+        $data = TindakLanjut::where('parent_id', $request->id_rekom)->first();
 
-        return view('tindak_lanjut.modalrekomendasi', compact('data', 'id_rekom','rekom'));
+        return view('tindak_lanjut.modalrekomendasi', compact('data', 'id_rekom','lhp'));
     }
     
     public function modaleditrekom(Request $request)

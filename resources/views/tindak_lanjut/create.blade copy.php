@@ -11,7 +11,7 @@
                 <span onclick="back()" class="btn btn-sm btn-danger waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Kembali</span>
                 @if ($data->status_tindak_lanjut ==null || $data->status_tindak_lanjut ==0)
                     @if (Auth::user()['role_id'] > 15 )
-                        <span onclick="selesai({{$data->id}})" class="btn btn-sm btn-success waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Kirim</span>
+                        <span onclick="selesai({{$data->id}})" class="btn btn-sm btn-success waves-effect waves-light "><i class="mdi mdi-plus-circle-outline"></i> Selesai</span>
                     @endif
                 @endif
             </div>
@@ -22,25 +22,95 @@
                     <div id="example_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
                         <div class="row">
                             <div class="col-sm-12 table-responsive">
-                                <table id="data-table-fixed-header" class="display table table-bordered table-responsive dt-responsive nowrap table-striped align-middle dataTable no-footer dtr-inline collapsed" style="width: 100%;" >
+                                <table id="shiftTable" class="display table table-bordered table-responsive dt-responsive nowrap table-striped align-middle dataTable no-footer dtr-inline collapsed" style="width: 100%;" >
                                     <thead>
                                         <tr>
                                             <th width="1%" scope="col">No</th>
-                                            <th></th>
                                             <th>File LHP</th>
                                             <th>Kondisi</th>
                                             <th>Kriteria</th>
                                             <th>Penyebab</th>
                                             <th>Akibat</th>
-                                            {{-- <th class="dtr-details">Rekomendasi</th> --}}
-                                            {{-- @if ($data->status_tindak_lanjut == null)
+                                            <th>Rekomendasi</th>
+                                            @if ($data->status_tindak_lanjut == null)
                                                 @if (Auth::user()['role_id'] > 15 )
                                                     <th>Jawaban</th>
                                                 @endif
-                                            @endif --}}
+                                            @endif
                                         </tr>
                                     </thead>
-                                    <tbody></tbody>
+                                    <tbody>
+                                        @php
+                                            $no=1;
+                                        @endphp
+                                        @foreach ($get as $g)
+                                            <tr>
+                                                <td>{{ $no++ }}</td>
+                                                <td><span class="btn btn-icon-only btn-outline-warning btn-sm mt-2" onclick="buka_file(`{{ $g->file_lhp }}`)"><center><img src="{{ asset('public/img/pdf-file.png') }}" width="10px" height="10px"></center></span></td>
+                                                <td>{{ $g->kondisi }}</td>
+                                                <td>{{ $g->kriteria }}</td>
+                                                <td>{{ $g->penyebab }}</td>
+                                                <td>{{ $g->akibat }}</td>
+                                                <td>
+                                                    <table class="display table  table-responsive">
+                                                        <tr>
+                                                            <td colspan="2">
+                                                                <p>{{ $g->uraian_rekomendasi }}</p>
+                                                                <ul>
+                                                                    @foreach (childrekomedasi($g->grouping,$g->id_rekom) as $a)
+                                                                        <li style="list-style: none"><input type="checkbox"  id="parent_rekom" value="{{ $a->id_tindak_lanjut }}"> {{ $a->uraian_jawaban }}</li>
+                                                                    @endforeach
+                                                                </ul>  
+                                                            </td>
+                                                        </tr>
+                                                        @foreach (group($g->grouping,$g->id_rekom) as $u)
+                                                        <tr>
+                                                            <td>
+                                                               <p>{{ $u->uraian_rekomendasi }}</p>                                                                   
+                                                                <ul>
+                                                                    @foreach (childrekomedasi($u->grouping,$u->id_rekom) as $b)
+                                                                        <li style="list-style: none"><input type="checkbox"  id="parent_rekom" value="{{ $b->id_tindak_lanjut }}"> {{ $b->uraian_jawaban }}</li> 
+                                                                    @endforeach
+                                                                </ul> 
+                                                            </td>
+                                                        </tr>
+                                                        @endforeach
+                                                    </table>
+                                                </td>
+
+                                                {{-- <td>
+                                                    <table class="display table  table-responsive">
+                                                        <tr>
+                                                            <td colspan="2">{{ $g->uraian_jawaban }}</td>
+                                                        </tr>
+                                                        @foreach (group($g->grouping,$g->id_rekom) as $u)
+                                                        <tr>
+                                                            <td>
+                                                                {{ $u->uraian_jawaban }}
+                                                            </td>--}}
+                                                            @if (Auth::user()['role_id'] > 15) 
+                                                                <td>
+                                                                    <span class="btn btn-ghost-primary waves-effect waves-light" onclick="modalrekom({{ $g->id_rekom }},0)">Tambah</span>
+                                                                    <span class="btn btn-ghost-success waves-effect waves-light" onclick="editrekom()">Edit</span>
+                                                                    <span class="btn btn-ghost-danger waves-effect waves-light" onclick="hapusrekom({{ $g->id_rekom }})">hapus</span>
+                                                                </td>
+                                                            @endif
+                                                        {{-- </tr>
+                                                        @endforeach
+                                                    </table>
+                                                </td> --}}
+
+                                                {{-- @if (Auth::user()['role_id'] >= 17 && Auth::user()['role_id'] <= 20)
+                                                <td>
+                                                    @if (checkgroup($g->grouping,$g->id_rekom)==0)
+                                                        <span class="btn btn-success waves-effect waves-light btn-sm" onclick="tambah({{$data->id}},{{ $g->id_rekom }})">Edit</span>
+                                                        <span class="btn btn-danger waves-effect waves-light btn-sm" onclick="hapusrekom({{ $g->id_rekom }})">Hapus</span>
+                                                    @endif
+                                                </td>
+                                                @endif --}}
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -117,108 +187,8 @@
 @endsection
 
 @push('ajax')
-<script>$('#uraian_rekomendasi').css('pointer-events','none');</script>
+
 <script>
-    // function child()
-    function format(d) {
-    // `d` is the original data object for the row
-        return (
-            '<table style="overflow: scroll;" class="display table table-bordered table-responsive dt-responsive nowrap table-striped align-middle dataTable no-footer dtr-inline collapsed">' +
-                '<tr>' +
-                    'Detail Rekomendasi :' +
-                '</tr>' +
-                '<tr>' +
-                    '<td><span class="btn btn-sm btn-ghost-primary waves-effect waves-light" onclick="modalrekom('+d.id_rekom+')">Tambah</span></td>' +
-                '</tr>' +
-                '<tr>' +
-                    '<th>Uraian Rekomendasi' +
-                    '<th>Uraian Jawaban' +
-                '</tr>' +
-                '<tr>' +
-                    '<td>'+d.uraian_rekomendasi+'</td>' +
-                    '<td>'+d.jawaban+'</td>' +                    
-                '</tr>' +
-                // d.rekom+
-                '<tr>' +
-                    '<td>'+d.parent_rekom+'</td>' +
-                    // '<td>'+d.jawaban+'</td>' +                    
-                '</tr>' +
-            '</table>'
-        );
-    }
-
-    var handleDataTableFixedHeader = function() {
-    "use strict";
-    if ($('#data-table-fixed-header').length !== 0) {
-            var table=$('#data-table-fixed-header').DataTable({
-                    lengthMenu: [20, 40, 60],
-                    fixedHeader: {
-                        header: true,
-                        headerOffset: $('#header').height()
-                    },
-                    responsive: true,
-                    ajax:"{{ url('pelaporan/tindak-lanjut/get-create?id=1')}}",
-                    columns: [
-                        { data: 'id', render: function (data, type, row, meta)
-                    {
-                        return meta.row + meta.settings._iDisplayStart + 1;
-                    }
-                },
-                {
-                    className: 'dt-control',
-                    orderable: false,
-                    data: null,
-                    defaultContent: '',
-                },
-                { data: 'file_lhp' },
-                { data: 'kondisi' },
-                { data: 'kriteria' },
-                { data: 'penyebab' },
-                { data: 'akibat' },
-                // { data: 'rekomedasi' },
-                //    { data: 'action' },
-                    ],
-                    language: {
-                        paginate: {
-                            previous: '<< previous',
-                            next: 'Next>>'
-                        }
-                    }
-            });
-            $('#data-table-fixed-header tbody').on('click', 'td.dt-control', function () {
-                var tr = $(this).closest('tr');
-                var row = table.row(tr);
-        
-                if (row.child.isShown()) {
-                    // This row is already open - close it
-                    row.child.hide();
-                    tr.removeClass('shown');
-                } else {
-                    // Open this row
-                    row.child(format(row.data())).show();
-                    tr.addClass('shown');
-                }
-            });
-        }
-    };
-
-    var TableManageFixedHeader = function () {
-        "use strict";
-        return {
-            //main function
-            init: function () {
-                handleDataTableFixedHeader();
-            }
-        };
-    }();
-
-    $(document).ready(function() {
-        TableManageFixedHeader.init();
-    });
-
-
-</script>
- <script>
     function buka_file(file){
         $('#modalshow').modal('show');
         var files=file.split(".");
@@ -242,7 +212,7 @@
     });
     
 
-    function modalrekom(id_rekom){
+    function modalrekom(id_rekom,id){
 			$.ajax({
 				type: 'GET',
 				url: "{{url('pelaporan/tindak-lanjut/modal-rekomendasi')}}",
@@ -256,12 +226,12 @@
 
     // $('input[type="checkbox"]').hide()
     
-    function editrekom(id_tindak_lanjut){ 
-        // var checkedValue = document.querySelector('#parent_rekom:checked').value;     
+    function editrekom(){ 
+        var checkedValue = document.querySelector('#parent_rekom:checked').value;     
         $.ajax({
             type: 'GET',
             url: "{{url('pelaporan/tindak-lanjut/modal-edit-rekomendasi')}}",
-            data: "id_tindak_lanjut="+id_tindak_lanjut ,
+            data: "id_tindak_lanjut="+checkedValue,
             success: function(msg){
                 $('#tampil-rekom').html(msg);
                 $('#modalrekom').modal('show');
