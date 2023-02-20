@@ -28,11 +28,20 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    // protected $redirectTo = RouteServiceProvider::HOME;
+    public function redirectTo()
+    {
+        $role = Auth::user()->role_id;
+        if ($role <= 15) {
+            return '/Dashboard';
+        } else {
+            return '/pelaporan/tindak-lanjut';
+        }
+    }
     protected function credentials(\Illuminate\Http\Request $request)
     {
-        return ['username'=>$request->get('email'),'password'=>$request->get('password')];
-        
+        return ['username' => $request->get('email'), 'password' => $request->get('password')];
+
         return $request->only($this->username(), 'password');
     }
 
@@ -46,7 +55,8 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    public function logout(Request $request){
+    public function logout(Request $request)
+    {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();

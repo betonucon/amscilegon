@@ -87,14 +87,14 @@
                 <a class="nav-link menu-link" href="#Tindak_lanjut" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="Tindak_lanjut">
                     <i class="ri-rocket-line"></i> <span data-key="t-landing">Tindak Lanjut</span>
                 </a>
-                <div class="collapse menu-dropdown" id="Tindak_lanjut">
+                <div class="collapse menu-dropdown {{ (request()->is('pelaporan*')) ? 'show' : '' }}" id="Tindak_lanjut">
                     <ul class="nav nav-sm flex-column">
                         <li class="nav-item">
-                            <a href="{{ url('pelaporan/tindak-lanjut') }}" class="nav-link" data-key="t-one-page"> Tindak Lanjut Hasil Pemeriksaan</a>
+                            <a href="{{ url('pelaporan/tindak-lanjut') }}" class="nav-link  {{ (request()->is('pelaporan/tindak-lanjut')) ? 'active' : '' }}" data-key="t-one-page"> Tindak Lanjut Hasil Pemeriksaan</a>
                         </li>
                     </ul>
                 </div>
-            </li>               
+            </li>
         </ul>
     </div>
     <!-- Sidebar -->
