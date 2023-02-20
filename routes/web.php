@@ -197,6 +197,8 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('modal-refused', [MonitoringController::class, 'modalRefused']);
             Route::post('approved', [MonitoringController::class, 'storeApprove']);
             Route::post('refused', [MonitoringController::class, 'storeRefused']);
+
+            Route::get('/cetak', [MonitoringController::class, 'cetak']);
         });
     });
 });

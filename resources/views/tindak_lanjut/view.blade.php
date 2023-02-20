@@ -5,10 +5,8 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-
                 <span onclick="history.back()" class="btn btn-sm btn-info mb-3">Kembali</span>
-                <span onclick="history.back()" class="btn btn-sm btn-danger mb-3">Download</span>
-
+                <span onclick="cetak()" class="btn btn-sm btn-danger mb-3">Download</span>
                 <div class="card">
                     <div class="card-body">
                         <table id="data-table-fixed-header" class="table table-bordered">
@@ -125,8 +123,11 @@
 </script>
 
 <script>
-    function rekomendasi(id){
+     function rekomendasi(id){
         location.assign("{{url('pelaporan/tindak-lanjut/view-rekomendasi?id=')}}" + id);
+    }
+    function cetak(){
+        location.assign("{{url('pelaporan/tindak-lanjut/cetak')}}");
     }
 
 </script>

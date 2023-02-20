@@ -74,7 +74,7 @@
                 <a class="nav-link menu-link" href="#Pelaporan" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="Pelaporan">
                     <i class="ri-slideshow-line"></i> <span data-key="t-landing">Pelaporan</span>
                 </a>
-                <div class="collapse menu-dropdown  {{ (request()->is('pelaporan*')) ? 'show' : '' }}" id="Pelaporan">
+                <div class="collapse menu-dropdown  {{ (request()->is('pelaporan/review')) ? 'show' : '' }}" id="Pelaporan">
                     <ul class="nav nav-sm flex-column">
                         <li class="nav-item">
                             <a href="{{ url('pelaporan/review') }}" class="nav-link {{ (request()->is('pelaporan/review')) ? 'active' : '' }}" data-key="t-one-page"> LHP</a>
@@ -87,7 +87,7 @@
                 <a class="nav-link menu-link" href="#Tindak_lanjut" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="Tindak_lanjut">
                     <i class="ri-rocket-line"></i> <span data-key="t-landing">Tindak Lanjut</span>
                 </a>
-                <div class="collapse menu-dropdown {{ (request()->is('pelaporan*')) ? 'show' : '' }}" id="Tindak_lanjut">
+                <div class="collapse menu-dropdown {{ (request()->is('pelaporan/tindak-lanjut')) ? 'show' : '' }}" id="Tindak_lanjut">
                     <ul class="nav nav-sm flex-column">
                         <li class="nav-item">
                             <a href="{{ url('pelaporan/tindak-lanjut') }}" class="nav-link  {{ (request()->is('pelaporan/tindak-lanjut')) ? 'active' : '' }}" data-key="t-one-page"> Tindak Lanjut Hasil Pemeriksaan</a>
