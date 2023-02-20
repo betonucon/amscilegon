@@ -7,7 +7,6 @@
             <div class="col-md-12">
 
                 <span onclick="history.back()" class="btn btn-sm btn-info mb-3">Kembali</span>
-                <span onclick="history.back()" class="btn btn-sm btn-danger mb-3">Download</span>
 
                 <div class="card">
                     <div class="card-body">
