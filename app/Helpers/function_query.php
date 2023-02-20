@@ -40,12 +40,6 @@ function childrekomedasi($group,$id)
     return $data;
 }
 
-function countrekomedasi($group,$id)
-{
-    $data = TindakLanjut::where('grouping', $group)->where('parent_id', $id)->count();
-    return $data;
-}
-
 function nomor_pkpt()
 {
 

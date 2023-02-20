@@ -155,35 +155,48 @@ Route::group(['middleware' => 'auth'], function () {
         Route::group(['prefix' => 'review'], function () {
             Route::get('/', [ReviewController::class, 'index']);
             Route::get('/get-data', [ReviewController::class, 'getdata']);
-            Route::get('/get-table', [ReviewController::class, 'getTable']);
             Route::get('create', [ReviewController::class, 'create']);
-            Route::get('/modal', [ReviewController::class, 'modal']);
-            Route::get('/modal-rekomendasi', [ReviewController::class, 'modalrekom']);
-            Route::get('/hapus-rekomendasi', [ReviewController::class, 'hapusrekom']);
-            Route::post('/store', [ReviewController::class, 'store']);
-            Route::post('/store-rekom', [ReviewController::class, 'storeRekom']);
-            Route::post('/edit-rekom', [ReviewController::class, 'editRekom']);
+            Route::get('/get-table', [ReviewController::class, 'getTable']);
+            Route::get('/modal-tambah-uraian', [ReviewController::class, 'modalTambahUraian']);
+            Route::get('/modal-edit-uraian', [ReviewController::class, 'modalEditUraian']);
+            Route::post('/store-uraian', [ReviewController::class, 'storeUraian']);
+            Route::get('/destory-uraian', [ReviewController::class, 'destroyUraian']);
+
+            Route::get('create-rekomendasi', [ReviewController::class, 'createRekomendasi']);
+            Route::get('/get-table-rekomendasi', [ReviewController::class, 'getRekomendasi']);
+            Route::get('/modal-tambah-rekomendasi', [ReviewController::class, 'modalTambahRekomendasi']);
+            Route::get('/modal-edit-rekomendasi', [ReviewController::class, 'modalEditRekomendasi']);
+            Route::post('/store-rekomendasi', [ReviewController::class, 'storeRekomendasi']);
+            Route::get('/destory-rekomendasi', [ReviewController::class, 'destroyRekomendasi']);
+
+            Route::get('modal-upload', [ReviewController::class, 'modalUpload']);
+            Route::post('upload', [ReviewController::class, 'upload']);
+
+            Route::get('/kirim', [ReviewController::class, 'kirim']);
+            Route::get('/view', [ReviewController::class, 'view']);
+            Route::get('/view-rekomendasi', [ReviewController::class, 'viewRekomendasi']);
+
             Route::get('modal-approved', [ReviewController::class, 'modalApprove']);
-            Route::get('selesai', [ReviewController::class, 'selesai']);
             Route::get('modal-refused', [ReviewController::class, 'modalRefused']);
-            Route::get('approved', [ReviewController::class, 'storeApprove']);
-            Route::get('refused', [ReviewController::class, 'storeRefused']);
+            Route::post('refused', [ReviewController::class, 'storeRefused']);
+            Route::post('approved', [ReviewController::class, 'storeApprove']);
         });
         Route::group(['prefix' => 'tindak-lanjut'], function () {
             Route::get('/', [MonitoringController::class, 'index']);
             Route::get('/get-data', [MonitoringController::class, 'getdata']);
-            Route::get('create', [MonitoringController::class, 'create']);
-            Route::get('get-create', [MonitoringController::class, 'datacreate']);
-            Route::get('/modal-rekomendasi', [MonitoringController::class, 'modalrekom']);
-            Route::get('/modal-edit-rekomendasi', [MonitoringController::class, 'modaleditrekom']);
-            Route::get('/hapus-rekomendasi', [MonitoringController::class, 'hapusrekom']);
-            Route::get('selesai', [MonitoringController::class, 'selesai']);
+            Route::get('/view-uraian', [MonitoringController::class, 'viewUraian']);
+            Route::get('/get-table', [MonitoringController::class, 'getTable']);
+            Route::get('/view-rekomendasi', [MonitoringController::class, 'viewRekomendasi']);
+            Route::get('/get-rekomendasi', [MonitoringController::class, 'getRekomendasi']);
+
+            Route::get('/modal-jawaban', [MonitoringController::class, 'modalJawaban']);
+            Route::post('/store-jawaban', [MonitoringController::class, 'storeJawaban']);
+
+            Route::get('/kirim', [MonitoringController::class, 'kirim']);
             Route::get('modal-approved', [MonitoringController::class, 'modalApprove']);
             Route::get('modal-refused', [MonitoringController::class, 'modalRefused']);
-            Route::get('approved', [MonitoringController::class, 'storeApprove']);
-            Route::get('refused', [MonitoringController::class, 'storeRefused']);
-            Route::get('cari-jawaban', [MonitoringController::class, 'carijawaban']);
-            Route::post('simpan-tindak-lanjut', [MonitoringController::class, 'simpan']);
+            Route::post('approved', [MonitoringController::class, 'storeApprove']);
+            Route::post('refused', [MonitoringController::class, 'storeRefused']);
         });
     });
 });

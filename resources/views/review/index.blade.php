@@ -42,9 +42,13 @@
                                                 <th width="1%" scope="col">No</th>
                                                 <th >Area Pengawasan</th>
                                                 <th >Jenis Pengawasan</th>
+                                                <th >OPD</th>
                                                 <th >PKP</th>
                                                 <th >Nota Dinas</th>
                                                 <th >Surat Perintah</th>
+                                                <th >LHP</th>
+                                                <th >Pesan</th>
+                                                <th >Status</th>
                                                 <th width="5%" >Action</th>
                                             </tr>
                                         </thead>
@@ -57,12 +61,70 @@
 			</div>
 		</div>
 
+         <!-- Modal Upload File -->
+        <div class="modal fade" id="modal-upload" role="dialog" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-label="Close">
+						</button>
+					</div>
+					<div class="modal-body">
+						<form id="form-upload" enctype="multipart/form-data">
+							@csrf
+							<div id="tampil-upload"></div>
+						</form>
+					</div>
+                    <div class="modal-footer">
+						<button id="btn-upload"  class="btn btn-success">Simpan</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
         <!-- Modal Show File -->
         <div class="modal fade" id="modalshow" role="dialog" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
 					<div class="modal-header">
-						{{-- <h5 class="modal-title" id="exampleModalLabelDefault">{{ $menu }}</h5> --}}
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-label="Close">
+						</button>
+					</div>
+					<div class="modal-body">
+							<div id="tampil-pdf"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+        <div class="modal fade" id="modalAdd" role="dialog" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-label="Close">
+						</button>
+					</div>
+					<div class="modal-body">
+						<div id="error-notif"></div>
+						<form id="form-data" enctype="multipart/form-data">
+							@csrf
+							<div id="tampil-form"></div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button id="btn-save"  class="btn btn-success">Simpan</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+        <div class="modal fade" id="modal-refused" role="dialog" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
 						<button type="button" class="btn-close" data-bs-dismiss="modal"
 								aria-label="Close">
 						</button>
@@ -71,58 +133,16 @@
 						<div id="error-notif"></div>
 						<form id="form-refused" enctype="multipart/form-data">
 							@csrf
-							<div id="tampil-pdf"></div>
+							<div id="tampil-refused"></div>
 						</form>
+					</div>
+                    <div class="modal-footer">
+						<button id="btn-refused"  class="btn btn-success">Simpan</button>
 					</div>
 				</div>
 			</div>
 		</div>
 
-        <!-- Modal Approve -->
-        <div class="modal fade" id="modalApprove" role="dialog" aria-hidden="true">
-			<div class="modal-dialog modal-lg">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="btn-close" data-bs-dismiss="modal"
-								aria-label="Close">
-						</button>
-					</div>
-					<div class="modal-body">
-						<div id="error-notif"></div>
-						<form id="form-approve" enctype="multipart/form-data">
-							@csrf
-							<div id="tampil-approve"></div>
-						</form>
-                        <div class="modal-footer">
-                            <span id="btn-approve"  class="btn btn-success">Simpan</span>
-                        </div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-         <!-- Modal Refused -->
-         <div class="modal fade" id="modalRefuse" role="dialog" aria-hidden="true">
-			<div class="modal-dialog modal-lg">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="btn-close" data-bs-dismiss="modal"
-								aria-label="Close">
-						</button>
-					</div>
-					<div class="modal-body">
-						<div id="error-notif"></div>
-						<form id="form-refuse" enctype="multipart/form-data">
-							@csrf
-							<div id="tampil-refuse"></div>
-						</form>
-                        <div class="modal-footer">
-                            <span id="btn-refuse"  class="btn btn-success">Simpan</span>
-                        </div>
-					</div>
-				</div>
-			</div>
-		</div>
 
 	</div>
 </div>
@@ -148,9 +168,13 @@
                },
                { data: 'id_pkpt' },
                { data: 'jenis' },
+               { data: 'opd' },
                { data: 'pkp' },
                { data: 'nota_dinas' },
                { data: 'file_sp' },
+               { data: 'file_lhp' },
+               { data: 'pesan_lhp' },
+               { data: 'disposisi' },
                { data: 'action' },
                 ],
                 language: {
@@ -178,12 +202,28 @@
 		});
 
 
-	</script>
-
+</script>
 
 <script>
-         function tambah(id){
+        function view(id){
+            location.assign("{{url('pelaporan/review/view?id=')}}" + id);
+        }
+
+        function proses(id){
             location.assign("{{url('pelaporan/review/create?id=')}}" + id);
+        }
+
+        function upload(id){
+            $('#btn-upload').removeAttr('disabled','false');
+            $.ajax({
+                type: 'GET',
+                url: "{{url('pelaporan/review/modal-upload')}}",
+                data: "id="+id,
+                success: function(msg){
+                    $('#tampil-upload').html(msg);
+                    $('#modal-upload').modal('show');
+                }
+            });
         }
 
         function buka_file(file){
@@ -198,82 +238,172 @@
         }
 
 
-        function modal_approved(id){
-            $('#btn-approve').removeAttr('disabled','false');
+        $('#btn-upload').click(function(){
+            $('#btn-upload').attr('disabled','true');
+            var form=document.getElementById('form-upload');
             $.ajax({
-                type: 'GET',
-                url: "{{url('pelaporan/review/modal-approved')}}",
-                data: "id="+id,
-                success: function(msg){
-                    $('#tampil-approve').html(msg);
-                    $('#modalApprove').modal('show');
-                }
-            });
-        }
-
-        function modal_refused(id){
-            $('#btn-refuse').removeAttr('disabled','false');
-            $.ajax({
-                type: 'GET',
-                url: "{{url('pelaporan/review/modal-refused')}}",
-                data: "id="+id,
-                success: function(msg){
-                    $('#tampil-refuse').html(msg);
-                    $('#modalRefuse').modal('show');
-                }
-            });
-        }
-
-
-        $('#btn-approve').click(function(){
-            $('#btn-approve').attr('disabled','true');
-            var data = $('#form-approve').serialize();
-            $.ajax({
-                type: 'GET',
-                url: "{{url('pelaporan/review/approved')}}",
-                data: data,
-                success: function(msg){
-                    if(msg.status=='success'){
-                        Swal.fire({ title: 'Success!', text: 'Data Berhasil Disimpan', icon: 'success', confirmButtonText: 'OK', allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false, stopKeydownPropagation: false, }).then((result) => {
-                            if (result.value) {
-                                location.reload();
-                                $('#modalApprove').modal('hide');
+                type: 'POST',
+                url: "{{url('pelaporan/review/upload')}}",
+                data: new FormData(form),
+                contentType: false,
+                cache: false,
+                processData:false,
+                dataType: 'json',
+                error: function (msg) {
+                    var data = msg.responseJSON;
+                    $.each(data.errors, function (key, value) {
+                        Swal.fire({
+                            title: 'Gagal',
+                            text: value,
+                            icon: 'error',
+                            confirmButtonText: 'Ok'
+                        }).then((result) => {
+                        if (result.isConfirmed) {
+                            $('#btn-upload').removeAttr('disabled','false');
+                            $('#btn-upload').html('Simpan');
+                        }
+                    })
+                    });
+                },
+                success:  function (msg) {
+                    if (msg.status == 'success') {
+                        Swal.fire({
+                            title: 'Berhasil',
+                            text: msg.message,
+                            icon: 'success',
+                            confirmButtonText: 'Ok'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                location.reload()
                             }
-                        });
-                    }else{
-                        $('#modalApprove').modal('hide');
-                        $('#data-table-fixed-header').DataTable().ajax.reload();
-                        swal("Success!", "Data Berhasil Disimpan", "success");
+                        })
                     }
                 }
             });
         });
 
-        $('#btn-refuse').click(function(){
-            $('#btn-refuse').attr('disabled','true');
-            var data = $('#form-refuse').serialize();
-            $.ajax({
-                type: 'GET',
-                url: "{{url('pelaporan/review/refused')}}",
-                data: data,
-                success: function(msg){
-                    if(msg.status=='success'){
-                        Swal.fire({ title: 'Success!', text: 'Data Berhasil Disimpan', icon: 'success', confirmButtonText: 'OK', allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false, stopKeydownPropagation: false, }).then((result) => {
-                            if (result.value) {
-                                location.reload();
-                                $('#modalRefuse').modal('hide');
-                            }
-                        });
-                    }else{
-                        $('#modalRefuse').modal('hide');
-                        $('#data-table-fixed-header').DataTable().ajax.reload();
-                        swal("Success!", "Data Berhasil Disimpan", "success");
-                    }
-                }
-            });
+    function terima(id){
+        $('#btn-save').removeAttr('disabled','false');
+        $.ajax({
+            type: 'GET',
+            url: "{{url('pelaporan/review/modal-approved')}}",
+            data: "id="+id,
+            success: function(msg){
+                $('#tampil-form').html(msg);
+                $('#modalAdd').modal('show');
+            }
         });
+    }
+
+    function tolak(id){
+        $('#btn-refused').removeAttr('disabled','false');
+        $.ajax({
+            type: 'GET',
+            url: "{{url('pelaporan/review/modal-refused')}}",
+            data: "id="+id,
+            success: function(msg){
+                $('#tampil-refused').html(msg);
+                $('#modal-refused').modal('show');
+            }
+        });
+    }
+
+    $('#btn-save').on('click', () => {
+    var form=document.getElementById('form-data');
+        $.ajax({
+            type: 'POST',
+            url: "{{url('pelaporan/review/approved')}}",
+            data: new FormData(form),
+            contentType: false,
+            cache: false,
+            processData:false,
+            dataType: 'json',
+            beforeSend: function () {
+                $('#btn-save').attr('disabled', 'disabled');
+                $('#btn-save').html('Sending..');
+            },
+            error: function (msg) {
+                    var data = msg.responseJSON;
+                    $.each(data.errors, function (key, value) {
+                        Swal.fire({
+                            title: 'Gagal',
+                            text: value,
+                            icon: 'error',
+                            confirmButtonText: 'Ok'
+                        }).then((result) => {
+                        if (result.isConfirmed) {
+                            $('#btn-save').removeAttr('disabled','false');
+                            $('#btn-save').html('Simpan');
+                        }
+                    })
+                    });
+            },
+            success:  function (msg) {
+                if (msg.status == 'success') {
+                    Swal.fire({
+                        title: 'Berhasil',
+                        text: msg.message,
+                        icon: 'success',
+                        confirmButtonText: 'Ok'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            location.reload()
+                        }
+                    })
+                }
+            }
+        });
+    });
+
+    $('#btn-refused').on('click', () => {
+    var form=document.getElementById('form-refused');
+        $.ajax({
+            type: 'POST',
+            url: "{{url('pelaporan/review/refused')}}",
+            data: new FormData(form),
+            contentType: false,
+            cache: false,
+            processData:false,
+            dataType: 'json',
+            beforeSend: function () {
+                $('#btn-refused').attr('disabled', 'disabled');
+                $('#btn-refused').html('Sending..');
+            },
+            error: function (msg) {
+                    var data = msg.responseJSON;
+                    $.each(data.errors, function (key, value) {
+                        Swal.fire({
+                            title: 'Gagal',
+                            text: value,
+                            icon: 'error',
+                            confirmButtonText: 'Ok'
+                        }).then((result) => {
+                        if (result.isConfirmed) {
+                            $('#btn-refused').removeAttr('disabled','false');
+                            $('#btn-refused').html('Simpan');
+                        }
+                    })
+                    });
+            },
+            success:  function (msg) {
+                if (msg.status == 'success') {
+                    Swal.fire({
+                        title: 'Berhasil',
+                        text: msg.message,
+                        icon: 'success',
+                        confirmButtonText: 'Ok'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            location.reload()
+                        }
+                    })
+                }
+            }
+        });
+    });
 
 
 
-    </script>
+</script>
+
 @endpush

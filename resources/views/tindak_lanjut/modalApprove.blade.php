@@ -2,5 +2,5 @@
 
 <div class="mb-3">
     <label>Pesan</label>
-    <input type="text" class="form-control" name="pesan_tindak_lanjut">
+    <input type="text" class="form-control" name="pesan">
 </div>

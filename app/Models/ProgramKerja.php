@@ -16,5 +16,4 @@ class ProgramKerja extends Model
     {
         return $this->belongsTo('App\Models\Pkpt', 'id_pkpt', 'id');
     }
-
 }

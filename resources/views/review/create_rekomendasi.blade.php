@@ -9,8 +9,7 @@
                 <div class="row pb-3">
                     <div class="col-sm-12 col-md-6">
                         <span onclick="history.back()" class="btn btn-sm btn-info">Kembali</span>
-                        <span onclick="tambahUraian({{$data->id}})" class="btn btn-sm btn-primary">Tambah Uraian</span>
-                        <span onclick="kirim({{$data->id}})" class="btn btn-sm btn-success">Kirim</span>
+                        <span onclick="tambahRekomendasi({{$data->id}})" class="btn btn-sm btn-primary">Tambah Rekomendasi</span>
                     </div>
                 </div>
 
@@ -20,10 +19,7 @@
                             <thead>
                                 <tr>
                                     <th width="1%" scope="col">No</th>
-                                    <th>Kondisi</th>
-                                    <th>Kriteria</th>
-                                    <th>Penyebab</th>
-                                    <th>Akibat</th>
+                                    <th>Rekomendasi</th>
                                     <th width="20%" scope="col">Action</th>
                                 </tr>
                             </thead>
@@ -36,7 +32,7 @@
     </div>
 </div>
 
-    <div class="modal fade" id="modal-tambah-uraian-show" role="dialog" aria-hidden="true">
+    <div class="modal fade" id="modal-tambah-rekomendasi-show" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -45,19 +41,19 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="form-tambah-uraian" enctype="multipart/form-data">
+                    <form id="form-tambah-rekomendasi" enctype="multipart/form-data">
                         @csrf
-                        <div id="tampil-tambah-uraian"></div>
+                        <div id="tampil-tambah-rekomendasi"></div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button id="btn-tambah-uraian"  class="btn btn-success">Simpan</button>
+                    <button id="btn-tambah-rekomendasi"  class="btn btn-success">Simpan</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="modal-edit-uraian-show" role="dialog" aria-hidden="true">
+    <div class="modal fade" id="modal-edit-rekomendasi-show" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -66,13 +62,13 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="form-edit-uraian" enctype="multipart/form-data">
+                    <form id="form-edit-rekomendasi" enctype="multipart/form-data">
                         @csrf
-                        <div id="tampil-edit-uraian"></div>
+                        <div id="tampil-edit-rekomendasi"></div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button id="btn-edit-uraian"  class="btn btn-success">Simpan</button>
+                    <button id="btn-edit-rekomendasi"  class="btn btn-success">Simpan</button>
                 </div>
             </div>
         </div>
@@ -82,72 +78,43 @@
 @push('ajax')
 
 <script>
-    function kirim(id){
-        Swal.fire({
-            title: 'Peringatan',
-            text: "Data yang sudah dikirim tidak bisa di edit atau hapus",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    type: 'GET',
-                    url: "{{url('pelaporan/review/kirim')}}",
-                    data: "id=" + id,
-                    success: function(msg){
-                        history.back()
-                    }
-                });
-            }
-        });
-    }
-</script>
-
-<script>
-    function rekomendasi(id){
-        location.assign("{{url('pelaporan/review/create-rekomendasi?id=')}}" + id);
-    }
-
-    function tambahUraian(id){
+    function tambahRekomendasi(id){
         $.ajax({
             type: 'GET',
-            url: "{{url('pelaporan/review/modal-tambah-uraian')}}",
+            url: "{{url('pelaporan/review/modal-tambah-rekomendasi')}}",
             data:"id="+id,
             success: function(msg){
-                $('#tampil-tambah-uraian').html(msg);
-                $('#modal-tambah-uraian-show').modal('show');
+                $('#tampil-tambah-rekomendasi').html(msg);
+                $('#modal-tambah-rekomendasi-show').modal('show');
             }
         });
     }
 
-    function editUraian(id){
+    function editRekomendasi(id){
         $.ajax({
             type: 'GET',
-            url: "{{url('pelaporan/review/modal-edit-uraian')}}",
+            url: "{{url('pelaporan/review/modal-edit-rekomendasi')}}",
             data:"id="+id,
             success: function(msg){
-                $('#tampil-edit-uraian').html(msg);
-                $('#modal-edit-uraian-show').modal('show');
+                $('#tampil-edit-rekomendasi').html(msg);
+                $('#modal-edit-rekomendasi-show').modal('show');
             }
         });
     }
 
-    $('#btn-tambah-uraian').on('click', () => {
-        var form=document.getElementById('form-tambah-uraian');
+    $('#btn-tambah-rekomendasi').on('click', () => {
+        var form=document.getElementById('form-tambah-rekomendasi');
             $.ajax({
                 type: 'POST',
-                url: "{{url('pelaporan/review/store-uraian')}}",
+                url: "{{url('pelaporan/review/store-rekomendasi')}}",
                 data: new FormData(form),
                 contentType: false,
                 cache: false,
                 processData:false,
                 dataType: 'json',
                 beforeSend: function () {
-                    $('#btn-tambah-uraian').attr('disabled', 'disabled');
-                    $('#btn-tambah-uraian').html('Sending..');
+                    $('#btn-tambah-rekomendasi').attr('disabled', 'disabled');
+                    $('#btn-tambah-rekomendasi').html('Sending..');
                 },
                 error: function (msg) {
                     var data = msg.responseJSON;
@@ -159,8 +126,8 @@
                             confirmButtonText: 'Ok'
                         }).then((result) => {
                         if (result.isConfirmed) {
-                            $('#btn-tambah-uraian').removeAttr('disabled','false');
-                            $('#btn-tambah-uraian').html('Simpan');
+                            $('#btn-tambah-rekomendasi').removeAttr('disabled','false');
+                            $('#btn-tambah-rekomendasi').html('Simpan');
                         }
                     })
                     });
@@ -182,19 +149,19 @@
             });
     });
 
-    $('#btn-edit-uraian').on('click', () => {
-        var form=document.getElementById('form-edit-uraian');
+    $('#btn-edit-rekomendasi').on('click', () => {
+        var form=document.getElementById('form-edit-rekomendasi');
             $.ajax({
                 type: 'POST',
-                url: "{{url('pelaporan/review/store-uraian')}}",
+                url: "{{url('pelaporan/review/store-rekomendasi')}}",
                 data: new FormData(form),
                 contentType: false,
                 cache: false,
                 processData:false,
                 dataType: 'json',
                 beforeSend: function () {
-                    $('#btn-edit-uraian').attr('disabled', 'disabled');
-                    $('#btn-edit-uraian').html('Sending..');
+                    $('#btn-edit-rekomendasi').attr('disabled', 'disabled');
+                    $('#btn-edit-rekomendasi').html('Sending..');
                 },
                 error: function (msg) {
                     var data = msg.responseJSON;
@@ -206,8 +173,8 @@
                             confirmButtonText: 'Ok'
                         }).then((result) => {
                         if (result.isConfirmed) {
-                            $('#btn-edit-uraian').removeAttr('disabled','false');
-                            $('#btn-edit-uraian').html('Simpan');
+                            $('#btn-edit-rekomendasi').removeAttr('disabled','false');
+                            $('#btn-edit-rekomendasi').html('Simpan');
                         }
                     })
                     });
@@ -242,10 +209,23 @@
             if (result.isConfirmed) {
                 $.ajax({
                     type: 'GET',
-                    url: "{{url('pelaporan/review/destory-uraian')}}",
+                    url: "{{url('pelaporan/review/destory-rekomendasi')}}",
                     data: "id=" + id,
                     success: function(msg){
-                        location.reload();
+                        if(msg.status=='success'){
+                            Swal.fire(
+                                'Deleted!',
+                                'Your file has been deleted.',
+                                'success'
+                            )
+                            location.reload();
+                        }else{
+                            Swal.fire(
+                                'Failed!',
+                                'Your file failed to delete.',
+                                'error'
+                            )
+                        }
                     }
                 });
             }
@@ -264,17 +244,14 @@
                     headerOffset: $('#header').height()
                 },
                 responsive: true,
-                ajax:"{{ url('pelaporan/review/get-table?id_program_kerja=')}}+{{$data->id}}",
+                ajax:"{{ url('pelaporan/review/get-table-rekomendasi?id_lhp=')}}+{{$data->id}}",
                 columns: [
                 { data: 'id', render: function (data, type, row, meta)
                     {
                         return meta.row + meta.settings._iDisplayStart + 1;
                     }
                 },
-                { data: 'kondisi' },
-                { data: 'kriteria' },
-                { data: 'penyebab' },
-                { data: 'akibat' },
+                { data: 'rekomendasi' },
                 { data: 'action' },
                 ],
                 language: {

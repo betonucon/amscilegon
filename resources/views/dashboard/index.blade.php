@@ -4,32 +4,45 @@
 
 <div class="page-content">
 	<div class="container-fluid">
-        {{-- <div class="card">
-            <div class="card-body">
+        <div class="row mb-3">
+            <div class="col-md-2">
+                <label>Tahun</label>
+                <?php
+                    $now=date("Y");
+                    echo "<select name=th class=form-control id=select2>
+                    <option selected> --PILIH TAHUN-- </option>";
+                    for($thn=2022; $thn<=$now; $thn++){
+                    echo "<option value=$thn>$thn</option>";}
+                    echo "</select>";
+                ?>
+            </div>
+            <div class="col-md-8">
+                <label>Tahun</label>
                 <div class="row">
-                    <div class="col-md-6 h-50">
-                        <canvas id="myChart"></canvas>
-                     </div>
-                    <div class="col-md-6">
-                        <canvas id="myChart"></canvas>
-                     </div>
+                    <div class="col-md-3">
+                    <select class="form-control" id="select3" name="">
+                        <option selected>-- PILIH OPD --</option>
+                        @foreach ($pkpt as $item)
+                        <option value="">{{$item->opd}}<option>
+                        @endforeach
+                    </select>
+                </div>
+                    <div class="col-md-3">
+                <span class="btn btn-sm btn-primary">Filter</span>
+            </div>
                 </div>
             </div>
-        </div> --}}
+        </div>
     <div class="row">
       <div class="col-md-6">
         <div class="card">
           <div class="card-header">
             <h4 class="card-title mb-0">Basic Bar Chart</h4>
-          </div><!-- end card header -->          
+          </div>
           <div class="card-body">
-              {{-- <div class="row">
-                <div class="col-md-6"> --}}
-                  <div>
+                  <div id="realtime">
                       <canvas id="myChart" width="300" height="300"></canvas>
                   </div>
-                {{-- </div>
-              </div> --}}
           </div>
         </div>
       </div>
@@ -39,15 +52,13 @@
             <h4 class="card-title mb-0">Basic Bar Chart</h4>
           </div>
           <div class="card-body">
-            {{-- <div class="col-md-6"> --}}
               <div id="bar_chart" class="apex-charts" >
                   <canvas id="donat" width="300" height="300"></canvas>
               </div>
-            {{-- </div> --}}
           </div>
         </div>
       </div>
-    </div>    
+    </div>
   </div>
 </div>
 
@@ -55,12 +66,18 @@
 
 @push('ajax')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
   const d = new Date();
   let year = d.getFullYear();
+  $(document).ready(function() {
+    $('#select2').select2();
+    $('#select3').select2();
+  });
+
 
     $.getJSON("{{ url('/dashboard-json') }}", function(result){
-      // $.each(result, function(i, field){
         console.log(result.xValues)
         new Chart("myChart", {
           type: "bar",
@@ -70,9 +87,9 @@
               backgroundColor: result.barColors,
               data: result.yValues,
               barPercentage: 0.5,
-              barThickness: 6,
-              maxBarThickness: 8,
-              minBarLength: 2,
+                barThickness: 6,
+                maxBarThickness: 8,
+                minBarLength: 2,
             }]
           },
           options: {
@@ -83,7 +100,6 @@
             }
           }
         });
-        // });
         new Chart("donat", {
           type: 'pie',
           data: {
@@ -91,7 +107,7 @@
             datasets: [{
               backgroundColor: result.donutColors,
               data: result.donut
-              
+
             }]
           },
           options: {
@@ -102,7 +118,7 @@
             }
           }
         });
-    
+
       });
     </script>
 @endpush
