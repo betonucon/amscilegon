@@ -6,7 +6,7 @@ use App\Models\Lhp;
 use App\Models\Pkpt;
 use App\Models\ProgramKerja;
 use App\Models\RekomendasiModel;
-use Barryvdh\DomPDF\PDF;
+use PDF;
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Auth;
@@ -337,8 +337,8 @@ class MonitoringController extends Controller
     public function cetak(Request $request)
     {
         $data = Lhp::all();
-
-        $pdf = PDF::loadview('tindak_lanjut.cetak', ['data' => $data]);
-        return $pdf->stream('laporan-pegawai-pdf');
+        $rekom = RekomendasiModel::all();
+        $pdf = PDF::loadview('tindak_lanjut.cetak', compact('data', 'rekom'))->setPaper('A4', 'landscape');;
+        return $pdf->stream();
     }
 }
