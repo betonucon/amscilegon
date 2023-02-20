@@ -19,6 +19,8 @@
 				<th>Kriteria</th>
 				<th>Penyebab</th>
 				<th>Akibat</th>
+                <th>Rekomedendasi</th>
+                <th>Jawaban</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -29,6 +31,8 @@
 				<td>{{$el->kriteria}}</td>
 				<td>{{$el->penyebab}}</td>
 				<td>{{$el->akibat}}</td>
+				<td>{{$el->rekomendasi}}</td>
+				<td>{{$el->jawaban}}</td>
 			</tr>
 			@endforeach
 		</tbody>

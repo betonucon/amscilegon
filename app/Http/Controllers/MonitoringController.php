@@ -336,9 +336,9 @@ class MonitoringController extends Controller
 
     public function cetak(Request $request)
     {
-        $data = Lhp::all();
-        $rekom = RekomendasiModel::all();
-        $pdf = PDF::loadview('tindak_lanjut.cetak', compact('data', 'rekom'))->setPaper('A4', 'landscape');;
+        $data = Lhp::leftJoin('uraian_rekomendasi', 'uraian_rekomendasi.id_lhp', '=', 'lhp.id')->get();
+        // return response()->json($data);
+        $pdf = PDF::loadview('tindak_lanjut.cetak', compact('data'))->setPaper('A4', 'landscape');;
         return $pdf->stream();
     }
 }

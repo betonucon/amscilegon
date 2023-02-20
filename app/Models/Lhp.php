@@ -12,4 +12,9 @@ class Lhp extends Model
     protected $guarded = ['id'];
 
     public $timestamps = false;
+
+    public function rekom()
+    {
+        $this->belongsTo('App\Models\RekomendasiModel', 'id_lhp', 'id');
+    }
 }
