@@ -327,6 +327,12 @@ class ReviewController extends Controller
             ];
 
             RekomendasiModel::create($data);
+            $get = RekomendasiModel::where('id_lhp', $request->id_lhp)->get();
+            foreach ($get as $no => $o) {
+                $updt = RekomendasiModel::where('id', $o->id)->update([
+                    'urut' => ($no + 1),
+                ]);
+            }
 
             return response()->json([
                 'status' => 'success',

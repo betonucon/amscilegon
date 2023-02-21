@@ -26,11 +26,22 @@
 		<tbody>
 			@foreach($data as $e=>$el)
 			<tr>
-				<td>{{ $e+1 }}</td>
+                @if($el->urut==1)
+                <td>{{ $e+1 }}</td>
 				<td>{{$el->kondisi}}</td>
 				<td>{{$el->kriteria}}</td>
 				<td>{{$el->penyebab}}</td>
 				<td>{{$el->akibat}}</td>
+
+                @else
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+
+                @endif
+
 				<td>{{$el->rekomendasi}}</td>
 				<td>{{$el->jawaban}}</td>
 			</tr>

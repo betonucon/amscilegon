@@ -6,6 +6,7 @@ use App\Models\Lhp;
 use App\Models\Pkpt;
 use App\Models\ProgramKerja;
 use App\Models\RekomendasiModel;
+use App\Models\Viewrekomendasi;
 use PDF;
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
@@ -233,6 +234,7 @@ class MonitoringController extends Controller
             $a =  RekomendasiModel::where('id', $request->id)->first();
             $a->update($data);
 
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Data berhasil disimpan.'
@@ -336,8 +338,7 @@ class MonitoringController extends Controller
 
     public function cetak(Request $request)
     {
-        $data = Lhp::leftJoin('uraian_rekomendasi', 'uraian_rekomendasi.id_lhp', '=', 'lhp.id')->get();
-        // return response()->json($data);
+        $data = Viewrekomendasi::orderBy('id', 'Asc')->get();
         $pdf = PDF::loadview('tindak_lanjut.cetak', compact('data'))->setPaper('A4', 'landscape');;
         return $pdf->stream();
     }
