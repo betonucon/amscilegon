@@ -20,6 +20,7 @@
 				<th>Akibat</th>
                 <th>Rekomedendasi</th>
                 <th>Jawaban</th>
+
 			</tr>
 		</thead>
 		<tbody>
