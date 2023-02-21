@@ -43,8 +43,8 @@
 
                 @endif
 
-				<td>{{$e+1}}{{$el->rekomendasi}}</td>
-				<td>{{$e+1}}{{$el->jawaban}}</td>
+				<td>{{$e+1}}. {{$el->rekomendasi}}</td>
+				<td>{{$e+1}}. {{$el->jawaban}}</td>
 			</tr>
 			@endforeach
 		</tbody>
