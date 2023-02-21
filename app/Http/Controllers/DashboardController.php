@@ -19,18 +19,34 @@ class DashboardController extends Controller
         return view('dashboard.index', compact('menu', 'pkpt'));
     }
 
-    public function json()
+    public function json(Request $request)
     {
-        $all = RekomendasiModel::count();
-        $sesuai = RekomendasiModel::where('status', 3)->count();
-        $belumSesuai  = RekomendasiModel::where('status', 1)->count();
-        $a = RekomendasiModel::where('status', null)->count();
-        $pkpt = PKPT::count();
-        $programkerja = ProgramKerja::count();
-        $kertaskerja = ProgramKerja::where('file_kkp', '!=', null)->count();
-        $calc = ($sesuai / $all) * 100;
-        $calc2 = ($belumSesuai / $all) * 100;
-        $calc3 = ($a / $all) * 100;
+        $opd = Pkpt::where('opd', $request->opd)->first();
+
+        if ($request->opd == "" || $request->tahun == "") {
+            $all = RekomendasiModel::count();
+            $sesuai = RekomendasiModel::where('status', 3)->count();
+            $belumSesuai  = RekomendasiModel::where('status', 1)->count();
+            $a = RekomendasiModel::where('status', null)->count();
+            $pkpt = PKPT::count();
+            $programkerja = ProgramKerja::count();
+            $kertaskerja = ProgramKerja::where('file_kkp', '!=', null)->count();
+            $calc = ($sesuai / $all) * 100;
+            $calc2 = ($belumSesuai / $all) * 100;
+            $calc3 = ($a / $all) * 100;
+        } else {
+            $all = RekomendasiModel::count();
+            $sesuai = RekomendasiModel::where('status', 3)->count();
+            $belumSesuai  = RekomendasiModel::where('status', 1)->count();
+            $a = RekomendasiModel::where('status', null)->count();
+            $pkpt = PKPT::where('opd', $request->opd)->where('tahun', $request->tahun)->count();
+            $programkerja = ProgramKerja::where('id_pkpt', $opd->id)->count();
+            $kertaskerja = ProgramKerja::where('id_pkpt', $opd->id)->where('file_kkp', '!=', null)->count();
+            $calc = ($sesuai / $all) * 100;
+            $calc2 = ($belumSesuai / $all) * 100;
+            $calc3 = ($a / $all) * 100;
+        }
+
         $data = [
             "xValues" => ['Jumlah Rekomendasi', "Sesuai", "Belum Sesuai", "Belum ditindak lanjuti"],
             "donut" => [

@@ -6,10 +6,9 @@
 	<div class="container-fluid">
         <div class="row mb-3">
             <div class="col-md-2">
-                <label>Tahun</label>
                 <?php
                     $now=date("Y");
-                    echo "<select name=th class=form-control id=select2>
+                    echo "<select class=form-control  id=tahun name=tahun>
                     <option selected> --PILIH TAHUN-- </option>";
                     for($thn=2022; $thn<=$now; $thn++){
                     echo "<option value=$thn>$thn</option>";}
@@ -17,18 +16,17 @@
                 ?>
             </div>
             <div class="col-md-8">
-                <label>Tahun</label>
                 <div class="row">
                     <div class="col-md-3">
-                    <select class="form-control" id="select3" name="">
-                        <option selected>-- PILIH OPD --</option>
+                    <select class="form-control opdxx" id="select3" name="opd">
+                        <option >-- PILIH OPD --</option>
                         @foreach ($pkpt as $item)
-                        <option value="">{{$item->opd}}<option>
+                        <option value="{{$item->opd}}">{{$item->opd}}<option>
                         @endforeach
                     </select>
                 </div>
                     <div class="col-md-3">
-                <span class="btn btn-sm btn-primary">Filter</span>
+                <span onclick="filter()" class="btn btn-sm btn-primary">Filter</span>
             </div>
                 </div>
             </div>
@@ -76,8 +74,7 @@
     $('#select3').select2();
   });
 
-
-    $.getJSON("{{ url('/dashboard-json') }}", function(result){
+  $.getJSON("{{ url('/dashboard-json') }}", function(result){
         console.log(result.xValues)
         new Chart("myChart", {
           type: "bar",
@@ -120,6 +117,56 @@
         });
 
       });
+
+  function filter(){
+    var opd = $('.opdxx').val();
+    var tahun = $('#tahun').val();
+    $.getJSON("{{ url('/dashboard-json?opd=') }}"+opd+ "&tahun="+tahun , function(result){
+        console.log(result.xValues)
+        new Chart("myChart", {
+          type: "bar",
+          data: {
+            labels: result.xValues,
+            datasets: [{
+              backgroundColor: result.barColors,
+              data: result.yValues,
+              barPercentage: 0.5,
+                barThickness: 6,
+                maxBarThickness: 8,
+                minBarLength: 2,
+            }]
+          },
+          options: {
+            legend: {display: false},
+            title: {
+              display: true,
+              text: 'Tahun '+tahun
+            }
+          }
+        });
+        new Chart("donat", {
+          type: 'pie',
+          data: {
+            labels: result.labels,
+            datasets: [{
+              backgroundColor: result.donutColors,
+              data: result.donut
+
+            }]
+          },
+          options: {
+            legend: {display: false},
+            title: {
+              display: true,
+              text: 'Tahun '+tahun
+            }
+          }
+        });
+
+      });
+  }
+
+
     </script>
 @endpush
 
