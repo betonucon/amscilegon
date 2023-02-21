@@ -43,8 +43,8 @@
 
                 @endif
 
-				<td>{{$el->urut}}". " {{$el->rekomendasi}}</td>
-				<td>{{$el->urut}}". " {{$el->jawaban}}</td>
+				<td>{{$el->urut}} {{$el->rekomendasi}}</td>
+				<td>{{$el->urut}} {{$el->jawaban}}</td>
 			</tr>
 			@endforeach
 		</tbody>
