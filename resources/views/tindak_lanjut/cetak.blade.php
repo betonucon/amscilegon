@@ -14,6 +14,7 @@
 	<table class='table table-bordered'>
 		<thead>
 			<tr>
+                <th>No</th>
 				<th>Kondisi</th>
 				<th>Kriteria</th>
 				<th>Penyebab</th>
@@ -27,12 +28,14 @@
 			@foreach($data as $e=>$el)
 			<tr>
                 @if($el->urut==1)
+                <td>{{$el->id}}</td>
 				<td>{{$el->kondisi}}</td>
 				<td>{{$el->kriteria}}</td>
 				<td>{{$el->penyebab}}</td>
 				<td>{{$el->akibat}}</td>
 
                 @else
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
