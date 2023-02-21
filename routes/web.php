@@ -17,7 +17,7 @@ use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\MonitoringController;
 use App\Http\Controllers\PemeriksaanController;
 use App\Http\Controllers\EvaluasiController;
-
+use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +29,16 @@ use App\Http\Controllers\EvaluasiController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/cache', function () {
+    Artisan::call('config:cache');
+    echo "Cache Clear All";
+});
+
+Route::get('/optimize', function () {
+    Artisan::call('optimize');
+    echo "Optimize Clear";
+});
 
 Route::post('/logout', [LoginController::class, 'logout']);
 Route::group(['middleware' => ['auth']], function () {
