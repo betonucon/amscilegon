@@ -148,7 +148,12 @@ class ReviewController extends Controller
                     $btn = '
                         <span class="btn btn-info btn-sm" onclick="view(' . $row['id'] . ')">Lihat Uraian</span>
                         ';
+                } else if ($roles == 1) {
+                    $btn = '
+                            <span class="btn btn-info btn-sm" onclick="view(' . $row['id'] . ')">Lihat Uraian</span>
+                            ';
                 }
+
 
 
                 return $btn;
