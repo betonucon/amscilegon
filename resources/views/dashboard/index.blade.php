@@ -120,6 +120,7 @@
     var tahun = $('.tahunxx').val();
     $.getJSON("{{ url('/dashboard-json?opd=') }}"+opd+ "&tahun="+tahun , function(result){
         console.log(result.xValues)
+        location.reload();
         new Chart("myChart", {
           type: "bar",
           data: {
