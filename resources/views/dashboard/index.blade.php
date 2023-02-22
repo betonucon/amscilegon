@@ -44,7 +44,7 @@
       <div class="col-md-6">
         <div class="card">
           <div class="card-header">
-            <h4 class="card-title mb-0">PKPT, Surat Perintah dan LHP</h4>
+            <h4 class="card-title mb-0">Data Realisasi PKPT</h4>
           </div>
           <div class="card-body">
               <div id="bar_chart" class="apex-charts" >
