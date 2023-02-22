@@ -39,7 +39,9 @@ class SuratPerintahController extends Controller
     {
         error_reporting(0);
         $roles =  Auth::user()->role_id;
-        if ($roles == 2 || $roles == 3) {
+        if ($roles == 1) {
+            $data = ProgramKerja::all();
+        } elseif ($roles == 2 || $roles == 3) {
             $data = ProgramKerja::where('status', 3)->get();
         } else {
             $data = ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('status', 3)->get();

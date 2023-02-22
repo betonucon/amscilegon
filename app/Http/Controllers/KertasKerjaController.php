@@ -92,6 +92,8 @@ class KertasKerjaController extends Controller
 
         if ($roles == 2 || $roles == 3) {
             $data = ProgramKerja::where('file_sp', '!=', null)->get();
+        } else if ($roles == 1) {
+            $data = ProgramKerja::where('file_sp', '!=', null)->get();
         } else if ($roles >= 8 && $roles <= 11) {
             $data = ProgramKerja::where('grouping', Auth::user()->roles->sts)->where('file_sp', '!=', null)->where('file_kkp', '!=', '')->get();
         } else {
