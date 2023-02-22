@@ -6,14 +6,11 @@
 	<div class="container-fluid">
         <div class="row mb-3">
             <div class="col-md-2">
-                <?php
-                    $now=date("Y");
-                    echo "<select class=form-control  id=tahun name=tahun>
-                    <option selected> --PILIH TAHUN-- </option>";
-                    for($thn=2022; $thn<=$now; $thn++){
-                    echo "<option value=$thn>$thn</option>";}
-                    echo "</select>";
-                ?>
+               <select class="form-control tahunxx" name="tahun" id="select2">
+                @for($i=date('Y',strtotime('-1 year'));$i<=date('Y'); $i++)
+                    <option @if ($i==date('Y')) selected @endif value="{{ $i }}">{{ $i }}</option>
+                @endfor
+               </select>
             </div>
             <div class="col-md-8">
                 <div class="row">
@@ -120,7 +117,7 @@
 
   function filter(){
     var opd = $('.opdxx').val();
-    var tahun = $('#tahun').val();
+    var tahun = $('.tahunxx').val();
     $.getJSON("{{ url('/dashboard-json?opd=') }}"+opd+ "&tahun="+tahun , function(result){
         console.log(result.xValues)
         new Chart("myChart", {
