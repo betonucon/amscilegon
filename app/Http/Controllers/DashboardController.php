@@ -29,8 +29,8 @@ class DashboardController extends Controller
             $belumSesuai  = RekomendasiModel::where('status', 1)->count();
             $a = RekomendasiModel::where('status', null)->count();
             $pkpt = PKPT::count();
-            $programkerja = ProgramKerja::count();
-            $kertaskerja = ProgramKerja::where('file_kkp', '!=', null)->count();
+            $programkerja = ProgramKerja::where('status', 4)->count();
+            $kertaskerja = ProgramKerja::where('file_sp', '!=', null)->count();
             $calc = ($sesuai / $all) * 100;
             $calc2 = ($belumSesuai / $all) * 100;
             $calc3 = ($a / $all) * 100;
@@ -77,8 +77,8 @@ class DashboardController extends Controller
             ],
             "labels" => [
                 'PKPT',
-                'Program Kerja',
-                'Kertas Kerja',
+                'Surat Perintah',
+                'LHP',
 
             ]
 
