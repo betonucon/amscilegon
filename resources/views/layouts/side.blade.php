@@ -95,11 +95,13 @@
                     </ul>
                 </div>
             </li>
-            <li class="nav-item">
-                <a class="nav-link menu-link" href="{{ url('/manual-book/preview') }}">
-                    <i class="ri-book-2-fill"></i> <span data-key="t-widgets">Manual Book</span>
-                </a>
-            </li>
+            @if (Auth::user()->role_id >= 1 && Auth::user()->role_id <= 15 )
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="{{ url('/manual-book/preview') }}">
+                        <i class="ri-book-2-fill"></i> <span data-key="t-widgets">Manual Book</span>
+                    </a>
+                </li>
+            @endif
         </ul>
     </div>
     <!-- Sidebar -->
