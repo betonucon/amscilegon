@@ -17,6 +17,7 @@ use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\MonitoringController;
 use App\Http\Controllers\PemeriksaanController;
 use App\Http\Controllers\EvaluasiController;
+use App\Http\Controllers\ManualbookController;
 use Illuminate\Support\Facades\Artisan;
 
 /*
@@ -212,5 +213,11 @@ Route::group(['middleware' => 'auth'], function () {
         });
     });
 });
-
+Route::group(['middleware' => 'auth'], function () {
+    Route::prefix('manual-book')->group(function () {
+        Route::group(['prefix' => 'preview'], function () {
+            Route::get('/', [ManualbookController::class, 'index']);
+        });
+    });
+});
 Auth::routes();

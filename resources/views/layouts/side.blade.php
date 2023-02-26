@@ -30,7 +30,7 @@
             @if (Auth::user()->role_id >= 1 && Auth::user()->role_id <= 15 )
             <li class="nav-item">
                 <a class="nav-link menu-link" href="{{ url('/Dashboard') }}">
-                    <i class="ri-home-3-line"></i> <span data-key="t-widgets">Dashboard</span>
+                    <i class="ri-bar-chart-2-line"></i> <span data-key="t-widgets">Dashboard</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -94,6 +94,11 @@
                         </li>
                     </ul>
                 </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link menu-link" href="{{ url('/manual-book/preview') }}">
+                    <i class="ri-book-2-fill"></i> <span data-key="t-widgets">Manual Book</span>
+                </a>
             </li>
         </ul>
     </div>
