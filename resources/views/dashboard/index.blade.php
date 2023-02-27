@@ -71,49 +71,49 @@
     $('#select3').select2();
   });
 
-  $.getJSON("{{ url('/dashboard-json') }}", function(result){
-        console.log(result.xValues)
-        new Chart("myChart", {
-          type: "bar",
-          data: {
-            labels: result.xValues,
-            datasets: [{
-              backgroundColor: result.barColors,
-              data: result.yValues,
-              barPercentage: 0.5,
-                barThickness: 6,
-                maxBarThickness: 8,
-                minBarLength: 2,
-            }]
-          },
-          options: {
-            legend: {display: false},
-            title: {
-              display: true,
-              text: 'Tahun '+year
-            }
-          }
-        });
-        new Chart("donat", {
-          type: 'pie',
-          data: {
-            labels: result.labels,
-            datasets: [{
-              backgroundColor: result.donutColors,
-              data: result.donut
+//   $.getJSON("{{ url('/dashboard-json') }}", function(result){
+//         console.log(result.xValues)
+//         new Chart("myChart", {
+//           type: "bar",
+//           data: {
+//             labels: result.xValues,
+//             datasets: [{
+//               backgroundColor: result.barColors,
+//               data: result.yValues,
+//               barPercentage: 0.5,
+//                 barThickness: 6,
+//                 maxBarThickness: 8,
+//                 minBarLength: 2,
+//             }]
+//           },
+//           options: {
+//             legend: {display: false},
+//             title: {
+//               display: true,
+//               text: 'Tahun '+year
+//             }
+//           }
+//         });
+//         new Chart("donat", {
+//           type: 'pie',
+//           data: {
+//             labels: result.labels,
+//             datasets: [{
+//               backgroundColor: result.donutColors,
+//               data: result.donut
 
-            }]
-          },
-          options: {
-            legend: {display: false},
-            title: {
-              display: true,
-              text: 'Tahun '+year
-            }
-          }
-        });
+//             }]
+//           },
+//           options: {
+//             legend: {display: false},
+//             title: {
+//               display: true,
+//               text: 'Tahun '+year
+//             }
+//           }
+//         });
 
-      });
+//       });
 
   function filter(){
     var opd = $('.opdxx').val();
