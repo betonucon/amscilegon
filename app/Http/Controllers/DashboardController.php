@@ -25,7 +25,7 @@ class DashboardController extends Controller
         $tahun = Pkpt::where('tahun', $request->tahun)->first();
 
         if ($request->opd == "" || $request->tahun == "") {
-            $all = RekomendasiModel::count();
+            $all = Lhp::count();
             $sesuai = RekomendasiModel::where('status', 3)->count();
             $belumSesuai  = RekomendasiModel::where('status', 1)->count();
             $a = RekomendasiModel::where('status', null)->count();
@@ -36,7 +36,7 @@ class DashboardController extends Controller
             $calc2 = ($belumSesuai / $all) * 100;
             $calc3 = ($a / $all) * 100;
         } else {
-            $all = RekomendasiModel::join('lhp', 'uraian_rekomendasi.id_lhp', '=', 'lhp.id')->join('program_kerja', 'lhp.id_program_kerja', '=', 'program_kerja.id')->where('program_kerja.id_pkpt', $opd->id)->count();
+            $all = Lhp::join('program_kerja', 'lhp.id_program_kerja', '=', 'program_kerja.id')->where('program_kerja.id_pkpt', $opd->id)->count();
 
             $sesuai = RekomendasiModel::join('lhp', 'uraian_rekomendasi.id_lhp', '=', 'lhp.id')->join('program_kerja', 'lhp.id_program_kerja', '=', 'program_kerja.id')->where('program_kerja.id_pkpt', $opd->id)->where('uraian_rekomendasi.status', 3)->count();
 
