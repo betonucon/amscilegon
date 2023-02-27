@@ -47,15 +47,15 @@ class DashboardController extends Controller
             $pkpt = PKPT::where('opd', $request->opd)->where('tahun', $request->tahun)->count();
             $programkerja = ProgramKerja::where('id_pkpt', $opd->id)->count();
             $kertaskerja = ProgramKerja::where('id_pkpt', $opd->id)->where('file_kkp', '!=', null)->count();
-            if ($all == 0) {
-                $calc = $sesuai;
-                $calc2 = $belumSesuai;
-                $calc3 = $a;
-            } else {
-                $calc = ($sesuai / $all) * 100;
-                $calc2 = ($belumSesuai / $all) * 100;
-                $calc3 = ($a / $all) * 100;
-            }
+            // if ($all == 0) {
+            $calc = $sesuai;
+            $calc2 = $belumSesuai;
+            $calc3 = $a;
+            // } else {
+            //     $calc = ($sesuai / $all) * 100;
+            //     $calc2 = ($belumSesuai / $all) * 100;
+            //     $calc3 = ($a / $all) * 100;
+            // }
         }
 
         $data = [
