@@ -38,7 +38,7 @@ class DashboardController extends Controller
         } else {
             $all = RekomendasiModel::join('lhp', 'uraian_rekomendasi.id_lhp', '=', 'lhp.id')->join('program_kerja', 'lhp.id_program_kerja', '=', 'program_kerja.id')->where('program_kerja.id_pkpt', $opd->id)->count();
 
-            $sesuai = RekomendasiModel::join('lhp', 'uraian_rekomendasi.id_lhp', '=', 'lhp.id')->join('program_kerja', 'lhp.id_program_kerja', '=', 'program_kerja.id')->where('program_kerja.id_pkpt', $opd->id)->where('uraian_rekomendasi.status', 3)->where('id_pkpt', $tahun->id)->count();
+            $sesuai = RekomendasiModel::join('lhp', 'uraian_rekomendasi.id_lhp', '=', 'lhp.id')->join('program_kerja', 'lhp.id_program_kerja', '=', 'program_kerja.id')->where('program_kerja.id_pkpt', $opd->id)->where('uraian_rekomendasi.status', 3)->count();
 
             $belumSesuai  = RekomendasiModel::join('lhp', 'uraian_rekomendasi.id_lhp', '=', 'lhp.id')->join('program_kerja', 'lhp.id_program_kerja', '=', 'program_kerja.id')->where('program_kerja.id_pkpt', $opd->id)->where('uraian_rekomendasi.status', 1)->count();
 
