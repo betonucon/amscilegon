@@ -21,13 +21,9 @@ class DashboardController extends Controller
 
     public function json(Request $request)
     {
-        error_reporting(0);
-
         $opd = Pkpt::where('opd', $request->opd)->first();
-        $check = Pkpt::where('opd', $request->opd)->count();
-        $tahun = Pkpt::where('tahun', $request->tahun)->first();
 
-        if ($request->opd == "") {
+        if ($request->opd == "" || $request->tahun == "") {
             $all = RekomendasiModel::count();
             $sesuai = RekomendasiModel::where('status', 3)->count();
             $belumSesuai  = RekomendasiModel::where('status', 1)->count();
@@ -35,40 +31,24 @@ class DashboardController extends Controller
             $pkpt = PKPT::count();
             $programkerja = ProgramKerja::where('status', 4)->count();
             $kertaskerja = ProgramKerja::where('file_sp', '!=', null)->count();
-            // if ($all == 0) {
-                $calc = $sesuai;
-                $calc2 = $belumSesuai;
-                $calc3 = $a;
-            // } else {
-            //     $calc = ($sesuai / $all) * 100;
-            //     $calc2 = ($belumSesuai / $all) * 100;
-            //     $calc3 = ($a / $all) * 100;
-            // }
+            $calc = $sesuai;
+            $calc2 = $belumSesuai;
+            $calc3 = $a;
         } else {
-            // if ($check >0) {
-                $all = RekomendasiModel::join('lhp', 'uraian_rekomendasi.id_lhp', '=', 'lhp.id')->join('program_kerja', 'lhp.id_program_kerja', '=', 'program_kerja.id')->where('program_kerja.id_pkpt', $opd->id)->count();
-                $sesuai = RekomendasiModel::join('lhp', 'uraian_rekomendasi.id_lhp', '=', 'lhp.id')->join('program_kerja', 'lhp.id_program_kerja', '=', 'program_kerja.id')->where('program_kerja.id_pkpt', $opd->id)->where('uraian_rekomendasi.status', 3)->count();
-    
-                $belumSesuai  = RekomendasiModel::join('lhp', 'uraian_rekomendasi.id_lhp', '=', 'lhp.id')->join('program_kerja', 'lhp.id_program_kerja', '=', 'program_kerja.id')->where('program_kerja.id_pkpt', $opd->id)->where('uraian_rekomendasi.status', 1)->count();
-    
-                $a = RekomendasiModel::join('lhp', 'uraian_rekomendasi.id_lhp', '=', 'lhp.id')->join('program_kerja', 'lhp.id_program_kerja', '=', 'program_kerja.id')->where('program_kerja.id_pkpt', $opd->id)->where('uraian_rekomendasi.status', null)->count();
-    
-                $pkpt = PKPT::where('opd', $request->opd)->where('tahun', $request->tahun)->count();
-                $programkerja = ProgramKerja::where('id_pkpt', $opd->id)->count();
-                $kertaskerja = ProgramKerja::where('id_pkpt', $opd->id)->where('file_kkp', '!=', null)->count();
-                $calc = $sesuai;
-                $calc2 = $belumSesuai;
-                $calc3 = $a;
-            // }else{
-            //     $all = 0;
-            //     $pkpt = 0;
-            //     $programkerja = 0;
-            //     $kertaskerja = 0;
-            //     $calc = 0;
-            //     $calc2 = 0;
-            //     $calc3 = 0;
+            $all = RekomendasiModel::join('lhp', 'uraian_rekomendasi.id_lhp', '=', 'lhp.id')->join('program_kerja', 'lhp.id_program_kerja', '=', 'program_kerja.id')->join('pkpt', 'program_kerja.id_pkpt', '=', 'pkpt.id')->where('pkpt.opd', $request->opd)->where('pkpt.tahun', $request->tahun)->count();
 
-            // }
+            $sesuai = RekomendasiModel::join('lhp', 'uraian_rekomendasi.id_lhp', '=', 'lhp.id')->join('program_kerja', 'lhp.id_program_kerja', '=', 'program_kerja.id')->join('pkpt', 'program_kerja.id_pkpt', '=', 'pkpt.id')->where('pkpt.opd', $request->opd)->where('pkpt.tahun', $request->tahun)->where('uraian_rekomendasi.status', 3)->count();
+
+            $belumSesuai  = RekomendasiModel::join('lhp', 'uraian_rekomendasi.id_lhp', '=', 'lhp.id')->join('program_kerja', 'lhp.id_program_kerja', '=', 'program_kerja.id')->join('pkpt', 'program_kerja.id_pkpt', '=', 'pkpt.id')->where('pkpt.opd', $request->opd)->where('pkpt.tahun', $request->tahun)->where('uraian_rekomendasi.status', 1)->count();
+
+            $a = RekomendasiModel::join('lhp', 'uraian_rekomendasi.id_lhp', '=', 'lhp.id')->join('program_kerja', 'lhp.id_program_kerja', '=', 'program_kerja.id')->join('pkpt', 'program_kerja.id_pkpt', '=', 'pkpt.id')->where('pkpt.opd', $request->opd)->where('pkpt.tahun', $request->tahun)->where('uraian_rekomendasi.status', null)->count();
+
+            $pkpt = PKPT::where('opd', $request->opd)->where('tahun', $request->tahun)->count();
+            $programkerja = ProgramKerja::where('id_pkpt', $opd->id)->count();
+            $kertaskerja = ProgramKerja::where('id_pkpt', $opd->id)->where('file_kkp', '!=', null)->count();
+            $calc = $sesuai;
+            $calc2 = $belumSesuai;
+            $calc3 = $a;
         }
 
         $data = [

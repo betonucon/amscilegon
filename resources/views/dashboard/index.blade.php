@@ -17,7 +17,6 @@
                     <div class="col-md-3">
                     <select class="form-control opdxx" id="select3" name="opd">
                         <option >-- PILIH OPD --</option>
-                        <option value="" >All</option>
                         @foreach ($pkpt as $item)
                         <option value="{{$item->opd}}">{{$item->opd}}<option>
                         @endforeach
@@ -119,8 +118,7 @@
   function filter(){
     var opd = $('.opdxx').val();
     var tahun = $('.tahunxx').val();
-    $.getJSON("{{ url('/dashboard-json?opd=') }}"+opd, function(result){
-        console.log(result.xValues)
+    $.getJSON("{{ url('/dashboard-json?opd=') }}"+opd+ "&tahun="+tahun , function(result){
         new Chart("myChart", {
           type: "bar",
           data: {
