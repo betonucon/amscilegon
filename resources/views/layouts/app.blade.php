@@ -57,7 +57,10 @@
 			color:#fff;
 			font-size:20px;
 		}
-
+        .not:hover{
+            color: lightblue;
+            cursor: pointer;
+        }
     </style>
 
 </head>
@@ -201,11 +204,12 @@
 
                     <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle shadow-none" id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class='bx bx-bell fs-22'></i>
-                        <span class="position-absolute topbar-badge fs-10 translate-middle badge rounded-pill bg-danger">3<span class="visually-hidden">unread messages</span></span>
+                        @if (notification()>0)
+                            <span class="position-absolute topbar-badge fs-10 translate-middle badge rounded-pill bg-danger">{{ notification() }}<span class="visually-hidden">unread messages</span></span>
+                        @endif
                     </button>
 
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0" aria-labelledby="page-header-notifications-dropdown">
-
                         <div class="dropdown-head bg-primary bg-pattern rounded-top">
                             <div class="p-3">
                                 <div class="row align-items-center">
@@ -213,12 +217,50 @@
                                         <h6 class="m-0 fs-16 fw-semibold text-white"> Notifications </h6>
                                     </div>
                                     <div class="col-auto dropdown-tabs">
-                                        <span class="badge badge-soft-light fs-13"> 4 New</span>
+                                        <span class="badge badge-soft-light fs-13"> New</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
+                        <div class="card">
+                            <div class="card-body">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Pesan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php $no=1; ?>
+                                        @foreach (ProgramKerja() as $p)
+                                            <tr>
+                                                <td>{{ $no++ }}</td>
+                                                <td onclick="location.assign('{{ url('perencanaan/program-kerja-pengawasan') }}')" class="not">Program Kerja Pengawasan - <span>{{ $p->pesan }}</span></td>
+                                            </tr>
+                                        @endforeach
+                                        @foreach (kkp() as $kkp)
+                                            <tr>
+                                                <td>{{ $no++ }}</td>
+                                                <td onclick="location.assign('{{ url('perencanaan/program-kerja-pengawasan') }}')" class="not">Kertas Kerja Pemeriksaan - <span>{{ $kkp->pesan_kkp }}</span></td>
+                                            </tr>
+                                        @endforeach
+                                        @foreach (lhp() as $lhp)
+                                            <tr>
+                                                <td>{{ $no++ }}</td>
+                                                <td onclick="location.assign('{{ url('perencanaan/program-kerja-pengawasan') }}')" class="not">Kertas Kerja Pemeriksaan - <span>{{ $kkp->pesan_lhp }}</span></td>
+                                            </tr>
+                                        @endforeach
+                                        @foreach (tl() as $t)
+                                            <tr>
+                                                <td>{{ $no++ }}</td>
+                                                <td onclick="location.assign('{{ url('perencanaan/program-kerja-pengawasan') }}')" class="not">Kertas Kerja Pemeriksaan - <span>{{ $t->pesan }}</span></td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>                                   
+                        </div>
                     </div>
                 </div>
 
