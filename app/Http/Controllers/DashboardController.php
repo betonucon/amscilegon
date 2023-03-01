@@ -25,24 +25,24 @@ class DashboardController extends Controller
         $tahun = Pkpt::where('tahun', $request->tahun)->first();
 
         if ($request->opd == "" || $request->tahun == "") {
-            $all = Lhp::count();
+            $all = RekomendasiModel::count();
             $sesuai = RekomendasiModel::where('status', 3)->count();
             $belumSesuai  = RekomendasiModel::where('status', 1)->count();
             $a = RekomendasiModel::where('status', null)->count();
             $pkpt = PKPT::count();
             $programkerja = ProgramKerja::where('status', 4)->count();
             $kertaskerja = ProgramKerja::where('file_sp', '!=', null)->count();
-            if ($all == 0) {
+            // if ($all == 0) {
                 $calc = $sesuai;
                 $calc2 = $belumSesuai;
                 $calc3 = $a;
-            } else {
-                $calc = ($sesuai / $all) * 100;
-                $calc2 = ($belumSesuai / $all) * 100;
-                $calc3 = ($a / $all) * 100;
-            }
+            // } else {
+            //     $calc = ($sesuai / $all) * 100;
+            //     $calc2 = ($belumSesuai / $all) * 100;
+            //     $calc3 = ($a / $all) * 100;
+            // }
         } else {
-            $all = Lhp::join('program_kerja', 'lhp.id_program_kerja', '=', 'program_kerja.id')->where('program_kerja.id_pkpt', $opd->id)->count();
+            $all = RekomendasiModel::join('program_kerja', 'lhp.id_program_kerja', '=', 'program_kerja.id')->where('program_kerja.id_pkpt', $opd->id)->count();
 
             $sesuai = RekomendasiModel::join('lhp', 'uraian_rekomendasi.id_lhp', '=', 'lhp.id')->join('program_kerja', 'lhp.id_program_kerja', '=', 'program_kerja.id')->where('program_kerja.id_pkpt', $opd->id)->where('uraian_rekomendasi.status', 3)->count();
 
@@ -53,15 +53,15 @@ class DashboardController extends Controller
             $pkpt = PKPT::where('opd', $request->opd)->where('tahun', $request->tahun)->count();
             $programkerja = ProgramKerja::where('id_pkpt', $opd->id)->count();
             $kertaskerja = ProgramKerja::where('id_pkpt', $opd->id)->where('file_kkp', '!=', null)->count();
-            if ($all == 0) {
+            // if ($all == 0) {
                 $calc = $sesuai;
                 $calc2 = $belumSesuai;
                 $calc3 = $a;
-            } else {
-                $calc = ($sesuai / $all) * 100;
-                $calc2 = ($belumSesuai / $all) * 100;
-                $calc3 = ($a / $all) * 100;
-            }
+            // } else {
+            //     $calc = ($sesuai / $all) * 100;
+            //     $calc2 = ($belumSesuai / $all) * 100;
+            //     $calc3 = ($a / $all) * 100;
+            // }
         }
 
         $data = [

@@ -9,7 +9,7 @@ class Viewrekomendasi extends Model
 {
     use HasFactory;
 
-    protected $table = 'view_rekomendasi';
+    protected $table = 'view_pdf';
     protected $guarded = ['id'];
     public $timestamps = false;
 }

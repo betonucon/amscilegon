@@ -142,12 +142,21 @@ class MonitoringController extends Controller
                 $roles =  Auth::user()->role_id;
                 if ($roles >= 16 && $roles <= 100) {
                     if ($row->status == null) {
-                        $btn = '
-                        <center>
-                        <span class="btn btn-success btn-sm" onclick="jawaban(' . $row->id . ')">Jawaban</span>
-                        <span class="btn btn-primary btn-sm" onclick="kirim(' . $row->id . ')">Kirim</span>
-                        </center>
-                        ';
+                        if($row->jawaban==null || $row->file_jawaban==null){
+                            $btn = '
+                            <center>
+                                <span class="btn btn-success btn-sm" onclick="jawaban(' . $row->id . ')">Jawaban</span>
+                            </center>
+                            ';
+                        }else{
+                            $btn = '
+                            <center>
+                                <span class="btn btn-success btn-sm" onclick="jawaban(' . $row->id . ')">Jawaban</span>
+                                <span class="btn btn-primary btn-sm" onclick="kirim(' . $row->id . ')">Kirim</span>
+                            </center>
+                            ';
+
+                        }
                     } else  if ($row->status == 1) {
                         $btn = 'Disposisi Ketua Tim';
                     } else  if ($row->status == 2) {

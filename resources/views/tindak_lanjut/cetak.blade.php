@@ -21,6 +21,8 @@
 				<th>Akibat</th>
                 <th>Rekomedendasi</th>
                 <th>Jawaban</th>
+                <th>Status</th>
+
 
 			</tr>
 		</thead>
@@ -34,17 +36,29 @@
 				<td>{{$el->penyebab}}</td>
 				<td>{{$el->akibat}}</td>
 
+				
+
                 @else
                 <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
+                
 
                 @endif
 
 				<td>{{$el->urut}} {{$el->rekomendasi}}</td>
 				<td>{{$el->urut}} {{$el->jawaban}}</td>
+				@if ($el->status==0|| $el->status==null) 
+				<td>Belum di TL</td>	
+			@elseif($el->status==1)
+				<td>Belum Sesuai</td>	
+			@elseif($el->status==2)
+				<td>Belum Sesuai</td>
+			@elseif($el->status==3)
+				<td>Sesuai</td>
+			@endif
 			</tr>
 			@endforeach
 		</tbody>
