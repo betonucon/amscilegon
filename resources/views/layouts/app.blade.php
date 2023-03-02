@@ -242,24 +242,24 @@
                                         @foreach (kkp() as $kkp)
                                             <tr>
                                                 <td>{{ $no++ }}</td>
-                                                <td onclick="location.assign('{{ url('perencanaan/program-kerja-pengawasan') }}')" class="not">Kertas Kerja Pemeriksaan - <span>{{ $kkp->pesan_kkp }}</span></td>
+                                                <td onclick="location.assign('{{ url('pelaksanaan/kertas-kerja-pemeriksaan') }}')" class="not">Kertas Kerja Pemeriksaan - <span>{{ $kkp->pesan_kkp }}</span></td>
                                             </tr>
                                         @endforeach
                                         @foreach (lhp() as $lhp)
                                             <tr>
                                                 <td>{{ $no++ }}</td>
-                                                <td onclick="location.assign('{{ url('perencanaan/program-kerja-pengawasan') }}')" class="not">Kertas Kerja Pemeriksaan - <span>{{ $kkp->pesan_lhp }}</span></td>
+                                                <td onclick="location.assign('{{ url('pelaporan/review') }}')" class="not">LHP - <span>{{ $kkp->pesan_lhp }}</span></td>
                                             </tr>
                                         @endforeach
                                         @foreach (tl() as $t)
                                             <tr>
                                                 <td>{{ $no++ }}</td>
-                                                <td onclick="location.assign('{{ url('perencanaan/program-kerja-pengawasan') }}')" class="not">Kertas Kerja Pemeriksaan - <span>{{ $t->pesan }}</span></td>
+                                                <td onclick="location.assign('{{ url('pelaporan/tindak-lanjut') }}')" class="not">Tindak Lanjut - <span>{{ $t->pesan }}</span></td>
                                             </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
-                            </div>                                   
+                            </div>
                         </div>
                     </div>
                 </div>
