@@ -31,8 +31,8 @@ function notification()
             return $data;
         }
     } elseif (Auth::user()['role_id'] == 2) {
-        $dalnis = ProgramKerja::where('grouping', $user)->where('status', 2)->count();
-        $dalnis1 = ProgramKerja::where('grouping', $user)->where('status_lhp', 3)->count();
+        $dalnis = ProgramKerja::where('status', 2)->count();
+        $dalnis1 = ProgramKerja::where('status_lhp', 3)->count();
         $data = $dalnis + $dalnis1;
         return $data;
     }
