@@ -14,10 +14,10 @@ function notification()
     $user = Auth::user()->Roles->sts;
     if (Auth::user()['role_id'] >= 8 && Auth::user()['role_id'] <= 11) {
         $dalnis = ProgramKerja::where('grouping', $user)->where('status', 0)->count();
-        $dalnis = ProgramKerja::where('grouping', $user)->where('status', 3)->count();
+        $dalnis0 = ProgramKerja::where('grouping', $user)->where('status', 3)->count();
         $dalnis1 = ProgramKerja::where('grouping', $user)->where('status_lhp', 1)->count();
         $dalnis2 = Lhp::where('grouping', $user)->where('status', 2)->count();
-        $data = $dalnis + $dalnis1 + $dalnis2;
+        $data = $dalnis + $dalnis1 + $dalnis2 + $dalnis0;
         return $data;
     } elseif (Auth::user()['role_id'] >= 12 && Auth::user()['role_id'] <= 15) {
         $dalnis = ProgramKerja::where('grouping', $user)->where('status', 1)->count();
@@ -63,6 +63,9 @@ function kkp()
     $user = Auth::user()->Roles->sts;
     if (Auth::user()['role_id'] >= 4 && Auth::user()['role_id'] <= 7) {
         $dalnis = ProgramKerja::where('grouping', $user)->where('status', 4)->get();
+        return $dalnis;
+    } else     if (Auth::user()['role_id'] >= 8 && Auth::user()['role_id'] <= 11) {
+        $dalnis = ProgramKerja::where('grouping', $user)->where('status', 3)->get();
         return $dalnis;
     }
 }
