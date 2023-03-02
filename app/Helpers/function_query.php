@@ -14,6 +14,7 @@ function notification()
     $user = Auth::user()->Roles->sts;
     if (Auth::user()['role_id'] >= 8 && Auth::user()['role_id'] <= 11) {
         $dalnis = ProgramKerja::where('grouping', $user)->where('status', 0)->count();
+        $dalnis = ProgramKerja::where('grouping', $user)->where('status', 3)->count();
         $dalnis1 = ProgramKerja::where('grouping', $user)->where('status_lhp', 1)->count();
         $dalnis2 = Lhp::where('grouping', $user)->where('status', 2)->count();
         $data = $dalnis + $dalnis1 + $dalnis2;
