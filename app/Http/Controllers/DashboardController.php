@@ -28,6 +28,7 @@ class DashboardController extends Controller
             $calc = $sesuai;
             $calc2 = $belumSesuai;
             $calc3 = $a;
+            $opd = "-- PILIH OPD --";
         } else {
 
             $pkpt = PKPT::all();
@@ -46,8 +47,9 @@ class DashboardController extends Controller
             $calc = $sesuai;
             $calc2 = $belumSesuai;
             $calc3 = $a;
+            $opd = $request->opd;
         }
-        return view('dashboard.index', compact('menu', 'pkpt', 'all', 'calc', 'calc2', 'calc3', 'pkpt2', 'programkerja', 'kertaskerja'));
+        return view('dashboard.index', compact('menu', 'pkpt', 'all', 'calc', 'calc2', 'calc3', 'pkpt2', 'programkerja', 'kertaskerja', 'opd'));
     }
 
     public function json(Request $request)

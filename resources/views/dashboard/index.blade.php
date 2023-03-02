@@ -16,7 +16,7 @@
                 <div class="row">
                     <div class="col-md-3">
                     <select class="form-control opdxx" id="select3" name="opd">
-                        <option >-- PILIH OPD --</option>
+                        <option selected>{{$opd}}</option>
                         @foreach ($pkpt as $item)
                         <option value="{{$item->opd}}">{{$item->opd}}<option>
                         @endforeach
