@@ -231,6 +231,7 @@ class ReviewController extends Controller
                 'kriteria' => $request->kriteria,
                 'penyebab' => $request->penyebab,
                 'akibat' => $request->akibat,
+                'grouping' => Auth::user()->roles->sts
             ];
 
             Lhp::create($data);
@@ -253,6 +254,7 @@ class ReviewController extends Controller
                 'kriteria' => $request->kriteria,
                 'penyebab' => $request->penyebab,
                 'akibat' => $request->akibat,
+                'grouping' => Auth::user()->roles->sts
             ];
 
             $a = Lhp::where('id', $request->id)->first();
@@ -380,13 +382,23 @@ class ReviewController extends Controller
     {
         error_reporting(0);
         $data = ProgramKerja::where('id', $request->id)->first();
-        $data->update([
-            "status_lhp" => 1,
-        ]);
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Data berhasil dikirim'
-        ]);
+        $lhp = Lhp::where('id_program_kerja', $request->id)->where('grouping', $data->grouping)->first();
+        $cek = Lhp::where('id_program_kerja', $request->id)->where('grouping', $data->grouping)->count();
+        $cek1 = RekomendasiModel::where('id_lhp', $lhp->id)->count();
+        if ($cek == 0 || $cek1 == 0) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Silahkan isi rekomendasi terlebih dahulu'
+            ]);
+        } else {
+            $data->update([
+                "status_lhp" => 1,
+            ]);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Data berhasil dikirim'
+            ]);
+        }
     }
 
     public function view(Request $request)

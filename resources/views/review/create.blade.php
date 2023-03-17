@@ -98,7 +98,15 @@
                     url: "{{url('pelaporan/review/kirim')}}",
                     data: "id=" + id,
                     success: function(msg){
-                        history.back()
+                        if (msg.status == 'success') {
+                            history.back()
+                        } else {
+                            Swal.fire(
+                                'Failed!',
+                                msg.message,
+                                'error'
+                            )
+                        }
                     }
                 });
             }
