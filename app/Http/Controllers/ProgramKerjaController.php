@@ -300,7 +300,7 @@ class ProgramKerjaController extends Controller
         if ($data->status == 1) {
             $data->update([
                 'pesan' => $request->pesan,
-                'status' => 1,
+                'status' => 0,
             ]);
         } else if ($data->status == 2) {
             $data->update([
