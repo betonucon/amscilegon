@@ -156,7 +156,9 @@ class ProgramKerjaController extends Controller
                         $btn = 'Penerbitan Surat Perintah';
                     }
                 } else if ($roles >= 12 && $roles <= 15) {
-                    if ($status == 1) {
+                    if ($status == 0) {
+                        $btn = 'Disposisi Dalnis';
+                    } else if ($status == 1) {
                         $btn = '<span class="btn btn-ghost-success waves-effect waves-light btn-sm" onclick="approved(' . $row['id'] . ')">Terima</span>
                         <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="refused(' . $row['id'] . ')">Tolak</span>';
                     } else  if ($status == 2) {
