@@ -130,7 +130,12 @@ class ProgramKerjaController extends Controller
             ->addColumn('action', function ($row) {
                 $roles =  Auth::user()['role_id'];
                 $status = $row['status'];
-                if ($roles >= 4 && $roles <= 7) {
+
+                if ($roles == 1) {
+                    $btn = '
+                    <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="hapus(' . $row['id'] . ')">Delete</span>
+                ';
+                } else if ($roles >= 4 && $roles <= 7) {
                     if ($status == 0) {
                         $btn = '
                         <span class="btn btn-ghost-danger waves-effect waves-light btn-sm"  onclick="hapus(' . $row['id'] . ')">Delete</span>
